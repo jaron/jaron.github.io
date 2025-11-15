@@ -1,0 +1,165 @@
+/* src/styles/global.css */
+
+/* 1. Reset and Base Styles */
+/* src/styles/global.css */
+
+/* 1. Reset and Base Styles */
+:root {
+    --bg-color: #111111;
+    --text-color: #e2e2e2;
+    --primary-color: #ffffff;
+    --secondary-color: #888888; /* Slightly darker grey for more contrast */
+    --accent-color: #007AFF;   /* A more refined, Apple-style blue */
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+        Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+        sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    text-align: center;
+    scroll-behavior: smooth;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+main {
+    max-width: 800px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4rem;
+}
+
+a {
+    color: var(--accent-color); /* <-- CHANGE THIS LINE */
+    text-decoration: none;
+    transition: filter 0.2s ease; /* Smoother transition on hover */
+}
+
+a:hover {
+    filter: brightness(1.2); /* <-- ADD THIS LINE for a nice pop on hover */
+}
+
+.accent {
+    color: var(--accent-color);
+}
+
+/* 2. Section Specific Styles */
+
+/* Hero Section */
+.hero {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Increase gap slightly */
+}
+
+.hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem); /* Make it even bigger */
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    color: var(--primary-color); /* Change to primary, not accent */
+}
+
+.hero h2 {
+    font-size: clamp(1.5rem, 4vw, 2.25rem); /* Also slightly larger */
+    font-weight: 700;
+    color: var(--accent-color); /* Apply accent color here for impact */
+}
+
+.hero h4 {
+    font-size: 1rem; /* Smaller, fixed size */
+    font-weight: 400;
+    color: var(--secondary-color);
+    margin-top: 0.5rem; /* Add a little space */
+}
+
+/* Pillars Section */
+.pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    width: 100%;
+}
+
+.pillar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    border: 1px solid #333;
+    border-radius: 8px;
+}
+
+.pillar-title {
+    font-size: 0.875rem; /* Make the label even more subtle */
+    font-weight: 700;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+}
+
+.pillar-text {
+    font-size: 1.125rem;
+    color: var(--primary-color); /* Make proof text the brightest */
+    line-height: 1.5;
+}
+
+/* Contact Section */
+.contact {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contact h3 {
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    font-weight: 900;
+    color: var(--primary-color);
+}
+
+.contact .links {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.contact .links span {
+    color: var(--secondary-color);
+    margin: 0 0.5rem;
+}
+
+
+/* 3. Media Query for Mobile Responsiveness */
+@media (max-width: 768px) {
+    body {
+        padding: 1.5rem;
+    }
+
+    main {
+        gap: 3rem;
+    }
+    
+    .pillars {
+        grid-template-columns: 1fr; /* Stack pillars vertically */
+        gap: 1.5rem;
+    }
+
+    .pillar {
+        padding: 1.25rem;
+    }
+}
