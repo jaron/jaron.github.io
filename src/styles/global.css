@@ -143,6 +143,29 @@ a:hover {
     margin: 0 0.5rem;
 }
 
+.contact .links {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center the links */
+    align-items: center; /* Align items vertically */
+    gap: 1.5rem; /* Space between icons */
+}
+
+.contact .icon-link {
+    display: flex; /* Make the link a flex container */
+    align-items: center; /* Vertically align icon and text (if any) */
+    color: var(--text-color); /* Set icon color */
+}
+
+.contact .icon-link:hover {
+    color: var(--accent-color); /* Change color on hover */
+}
+
+.contact .icon-link svg {
+    width: 1.5em; /* Adjust icon size */
+    height: 1.5em; /* Adjust icon size */
+    fill: currentColor; /* Ensure SVG uses the parent's text color */
+}
+
 
 /* 3. Media Query for Mobile Responsiveness */
 @media (max-width: 768px) {
