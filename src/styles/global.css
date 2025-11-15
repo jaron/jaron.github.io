@@ -104,6 +104,12 @@ a:hover {
     padding: 1.5rem;
     border: 1px solid #333;
     border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+.pillar:hover {
+    transform: translateY(-5px); /* Lift effect */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px var(--accent-color); /* Shadow and glow */
 }
 
 .pillar-title {
@@ -154,6 +160,7 @@ a:hover {
     display: flex; /* Make the link a flex container */
     align-items: center; /* Vertically align icon and text (if any) */
     color: var(--text-color); /* Set icon color */
+    transition: color 0.3s ease; /* Smooth color transition */
 }
 
 .contact .icon-link:hover {
@@ -164,6 +171,11 @@ a:hover {
     width: 1.5em; /* Adjust icon size */
     height: 1.5em; /* Adjust icon size */
     fill: currentColor; /* Ensure SVG uses the parent's text color */
+    transition: transform 0.3s ease; /* Smooth transform transition */
+}
+
+.contact .icon-link:hover svg {
+    transform: scale(1.1); /* Pop effect */
 }
 
 
