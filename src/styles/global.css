@@ -70,10 +70,10 @@ a:hover {
 }
 
 .hero h1 {
-    font-size: clamp(2.5rem, 6vw, 4rem); /* Make it even bigger */
+    font-size: clamp(1.5rem, 6vw, 3.5rem); /* Make it even bigger */
     font-weight: 900;
     letter-spacing: -0.01em;
-    color: var(--primary-color); /* Change to primary, not accent */
+    color: var(--primary-color); 
 }
 
 .hero h2 {
@@ -182,7 +182,7 @@ a:hover {
 /* 3. Media Query for Mobile Responsiveness */
 @media (max-width: 768px) {
     body {
-        padding: 1.5rem;
+        padding: 1rem; /* Reduced padding for mobile */
     }
 
     main {
@@ -196,5 +196,9 @@ a:hover {
 
     .pillar {
         padding: 1.25rem;
+    }
+
+    .hero h1 {
+        font-size: clamp(1.8rem, 3.5vw, 2.5rem); /* Even smaller font size for mobile h1 */
     }
 }
