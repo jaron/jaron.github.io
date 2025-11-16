@@ -1,0 +1,38 @@
+---
+interface Props {
+  captions: string[];
+}
+
+const { captions } = Astro.props;
+const uniqueId = `cycling-h2-${crypto.randomUUID()}`;
+---
+
+<h2 id={uniqueId}>
+  {captions[0]}
+</h2>
+
+<script define:vars={{ captions, uniqueId }}>
+  const h2 = document.getElementById(uniqueId);
+  if (h2) {
+    let currentIndex = 0;
+    const intervalId = setInterval(() => {
+      currentIndex = (currentIndex + 1) % captions.length;
+      h2.style.opacity = '0';
+      setTimeout(() => {
+        h2.innerText = captions[currentIndex];
+        h2.style.opacity = '1';
+      }, 300); // Match this with transition duration
+    }, 10000);
+
+    // Clean up the interval when the element is removed from the page
+    h2.addEventListener('astro:unmount', () => {
+      clearInterval(intervalId);
+    });
+  }
+</script>
+
+<style>
+  h2 {
+    transition: opacity 0.3s ease-in-out;
+  }
+</style>

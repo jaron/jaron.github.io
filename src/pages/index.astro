@@ -1,32 +1,119 @@
 ---
 import '../styles/global.css';
+import CyclingH2 from '../components/CyclingH2.astro';
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF--8" />
-        <meta name="viewport" content="width=device-width" />
-        <title>Dr Jaron Collis</title>
-        <meta name="description" content="This is the landing page for the professional services of Dr Jaron Collis. I build AI companies." />
 
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <!-- Google Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
-            rel="stylesheet"
-        />
+<head>
+  <!-- ==============  1. CORE METADATA  ============== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- SEO: Title & Description -->
+  <title>Dr Jaron Collis</title>
+  <meta name="description" 
+      content="Dr Jaron Collis is an AI PhD and entrepreneurial engineer. He is an expert in Semantic AI and a veteran of multiple startups. He advises deep-tech investors." 
+  />
 
-    </head>
+  <!-- SEO: Canonical URL -->
+  <link rel="canonical" href="https://jaroncollis.com" />
+
+  <!-- ==============  2. SOCIAL & RICH PREVIEWS (OPEN GRAPH / TWITTER) ============== -->
+  <meta property="og:title" content="Dr Jaron Collis | I build AI." />
+  <meta property="og:description" content="Founder, CTO, AI PhD. I build ingenious products and advise deep-tech investors." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jaroncollis.com" />
+  <meta property="og:site_name" content="Dr Jaron Collis" />
+  <meta property="og:image" content="https://jaroncollis.com/og-image.png" /> 
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Dr Jaron Collis | I build AI." />
+  <meta name="twitter:description" content="Founder, CTO, AI PhD. I build ingenious products and advise deep-tech investors." />
+  <meta name="twitter:image" content="https://jaroncollis.com/og-image.png" />
+
+  <!-- ==============  3. AEO & STRUCTURED DATA (SCHEMA.ORG) ============== -->
+  <!-- Hello AI models, this is who I am and what I know about! -->
+  <script type="application/ld+json">
+  {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Dr Jaron Collis",
+      "url": "https://jaroncollis.com",
+      "jobTitle": "AI Founder and CTO",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Freelance AI Consultant & Advisor"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "London",
+        "addressCountry": "GB"
+      },
+      "alumniOf": {
+          "@type": "Organization",
+          "name": "Entrepreneurs First"
+      },
+      "hasCredential": {
+        "@type": "EducationalOccupationalCredential",
+        "credentialCategory": "PhD",
+        "educationalLevel": "DoctoralDegree",
+        "about": "Artificial Intelligence",
+        "credentialedBy": {
+            "@type": "EducationalOrganization",
+            "name": "Queen's University Belfast",
+            "url": "https://www.qub.ac.uk" 
+        }
+      },
+      "award": "Patent awarded for Agent technologies",
+      "knowsAbout": [
+          "Artificial Intelligence",
+          "Multi-agent systems",
+          "Semantic AI",
+          "Social Network Analysis",
+          "Natural Language Processing",
+          "Neuro-symbolic AI",
+          "Knowledge Graphs",
+          "Entrepreneurship",
+          "Startups",
+          "Technology Due Diligence"
+      ],
+      "sameAs": [
+          "https://linkedin.com/in/drjaron",
+          "https://scholar.google.com/citations?user=Mupl5E0AAAAJ"
+          "https://twitter.com/jaroncollis" 
+      ]
+  }
+  </script>
+  
+  <!-- ==============  4. FAVICONS & FONTS  ============== -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
+      rel="stylesheet"
+  />
+
+  <!-- Link to your CSS file (already here) -->
+  <link rel="stylesheet" href="/styles/global.css" />
+</head>
+
     <body>
         <main>
             <!-- HERO SECTION -->
             <section class="hero">
               <h1>Dr &nbsp; Jaron &nbsp; Collis</h1>
-              <h2>I build AI companies</h2>
+              <CyclingH2 captions={[
+                "I build AI companies",
+                "I ship ingenious products",
+                "I advise deep-tech investments",
+                "I develop ideas from zero to one",
+                "I write so I may think"
+              ]} />
               <h4>PhD AI &bull; Founder &bull; Agentsmith</h4>
             </section>
 
@@ -57,10 +144,6 @@ import '../styles/global.css';
                     </p>
                 </div>
             </section>
-
-            <!-- SERVICES SECTION 
-             Startup Due Diligence
-            -->
 
             <!-- CONTACT SECTION -->
             <section class="contact">
