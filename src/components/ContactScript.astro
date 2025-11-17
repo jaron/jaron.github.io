@@ -1,0 +1,33 @@
+---
+---
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const contactH4 = document.getElementById('contact-h4');
+    const socialLinks = document.querySelectorAll('.contact .links a');
+    const defaultText = 'Contact me through';
+    let resetTimeoutId = null;
+
+    if (contactH4 && socialLinks.length > 0) {
+      socialLinks.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+          // If there's a pending reset, cancel it
+          if (resetTimeoutId) {
+            clearTimeout(resetTimeoutId);
+            resetTimeoutId = null;
+          }
+          const title = link.getAttribute('title');
+          if (title) {
+            contactH4.innerText = title;
+          }
+        });
+
+        link.addEventListener('mouseleave', () => {
+          // Schedule the text to be reset after a short delay
+          resetTimeoutId = setTimeout(() => {
+            contactH4.innerText = defaultText;
+          }, 500); // 500ms delay
+        });
+      });
+    }
+  });
+</script>

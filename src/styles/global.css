@@ -139,6 +139,13 @@ a:hover {
     color: var(--primary-color);
 }
 
+.contact h4 {
+    font-size: 1rem; /* Smaller, fixed size */
+    font-weight: 400;
+    color: var(--secondary-color);
+    margin-top: 0.5rem; /* Add a little space */
+}
+
 .contact .links {
     font-size: 1.25rem;
     font-weight: 700;
