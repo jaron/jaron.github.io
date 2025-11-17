@@ -3,8 +3,7 @@ import '../styles/global.css';
 import CyclingH2 from '../components/CyclingH2.astro';
 import ContactScript from '../components/ContactScript.astro';
 
-const personSchema = {
-    "@context": "https://schema.org",
+const person = {
     "@type": "Person",
     "name": "Dr Jaron Collis",
     "url": "https://jaroncollis.com",
@@ -53,7 +52,13 @@ const personSchema = {
     ]
 };
 
-const stringifiedSchema = JSON.stringify(personSchema);
+const profilePageSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "mainEntity": person
+};
+
+const stringifiedSchema = JSON.stringify(profilePageSchema);
 ---
 
 <!DOCTYPE html>
