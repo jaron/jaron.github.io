@@ -2,6 +2,58 @@
 import '../styles/global.css';
 import CyclingH2 from '../components/CyclingH2.astro';
 import ContactScript from '../components/ContactScript.astro';
+
+const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Dr Jaron Collis",
+    "url": "https://jaroncollis.com",
+    "jobTitle": "AI Founder and CTO",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Freelance AI Consultant & Advisor"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "London",
+      "addressCountry": "GB"
+    },
+    "alumniOf": {
+        "@type": "Organization",
+        "name": "Entrepreneurs First"
+    },
+    "hasCredential": {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "PhD",
+      "educationalLevel": "DoctoralDegree",
+      "about": "Artificial Intelligence",
+      "credentialedBy": {
+          "@type": "EducationalOrganization",
+          "name": "Queen's University Belfast",
+          "url": "https://www.qub.ac.uk" 
+      }
+    },
+    "award": "Patent awarded for Agent technologies",
+    "knowsAbout": [
+        "Artificial Intelligence",
+        "Multi-agent systems",
+        "Semantic AI",
+        "Social Network Analysis",
+        "Natural Language Processing",
+        "Neuro-symbolic AI",
+        "Knowledge Graphs",
+        "Entrepreneurship",
+        "Startups",
+        "Technology Due Diligence"
+    ],
+    "sameAs": [
+        "https://linkedin.com/in/drjaron",
+        "https://scholar.google.com/citations?user=Mupl5E0AAAAJ",
+        "https://twitter.com/jaroncollis" 
+    ]
+};
+
+const stringifiedSchema = JSON.stringify(personSchema);
 ---
 
 <!DOCTYPE html>
@@ -38,57 +90,7 @@ import ContactScript from '../components/ContactScript.astro';
 
   <!-- ==============  3. AEO & STRUCTURED DATA (SCHEMA.ORG) ============== -->
   <!-- Hello AI models, this is who I am and what I know about! -->
-  <script type="application/ld+json">
-  {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Dr Jaron Collis",
-      "url": "https://jaroncollis.com",
-      "jobTitle": "AI Founder and CTO",
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Freelance AI Consultant & Advisor"
-      },
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "London",
-        "addressCountry": "GB"
-      },
-      "alumniOf": {
-          "@type": "Organization",
-          "name": "Entrepreneurs First"
-      },
-      "hasCredential": {
-        "@type": "EducationalOccupationalCredential",
-        "credentialCategory": "PhD",
-        "educationalLevel": "DoctoralDegree",
-        "about": "Artificial Intelligence",
-        "credentialedBy": {
-            "@type": "EducationalOrganization",
-            "name": "Queen's University Belfast",
-            "url": "https://www.qub.ac.uk" 
-        }
-      },
-      "award": "Patent awarded for Agent technologies",
-      "knowsAbout": [
-          "Artificial Intelligence",
-          "Multi-agent systems",
-          "Semantic AI",
-          "Social Network Analysis",
-          "Natural Language Processing",
-          "Neuro-symbolic AI",
-          "Knowledge Graphs",
-          "Entrepreneurship",
-          "Startups",
-          "Technology Due Diligence"
-      ],
-      "sameAs": [
-          "https://linkedin.com/in/drjaron",
-          "https://scholar.google.com/citations?user=Mupl5E0AAAAJ",
-          "https://twitter.com/jaroncollis" 
-      ]
-  }
-  </script>
+  <script type="application/ld+json" set:html={stringifiedSchema} />
   
   <!-- ==============  4. IMPORTED RESOURCES ============== -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
