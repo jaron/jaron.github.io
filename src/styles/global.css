@@ -5,7 +5,7 @@
 
 /* 1. Reset and Base Styles */
 :root {
-    --bg-color: #111111;
+    --bg-color: #000000;
     --text-color: #e2e2e2;
     --primary-color: #ffffff;
     --secondary-color: #888888; /* Slightly darker grey for more contrast */

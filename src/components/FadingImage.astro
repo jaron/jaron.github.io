@@ -1,0 +1,49 @@
+<style>
+  .fading-image-container {
+    --image-size: 250px; /* Variable for image dimensions */
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    width: var(--image-size);
+    height: var(--image-size);
+    overflow: hidden; /* Ensure image doesn't spill out */
+    opacity: 0; /* Hidden by default */
+    visibility: hidden; /* Hidden by default */
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition for initial appearance */
+  }
+
+  .fading-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the container, cropping if necessary */
+    display: block;
+  }
+
+  /* Media query for large screens */
+  @media (min-width: 1200px) {
+    .fading-image-container {
+      opacity: 1; /* Make visible on large screens */
+      visibility: visible;
+      animation: fadeOutAndDisappear 20s forwards; /* Apply animation */
+    }
+  }
+
+  @keyframes fadeOutAndDisappear {
+    0% {
+      opacity: 1;
+      visibility: visible;
+    }
+    50% { /* Hold full opacity for 50% of the duration (10 seconds) */
+      opacity: 1;
+      visibility: visible;
+    }
+    100% { /* Fade out over the last 50% (10 seconds) */
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+</style>
+
+<div class="fading-image-container">
+  <img src="/imgs/profile.jpg" alt="Profile Image" />
+</div>

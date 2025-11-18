@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import CyclingH2 from '../components/CyclingH2.astro';
 import ContactScript from '../components/ContactScript.astro';
+import FadingImage from '../components/FadingImage.astro';
 
 const person = {
     "@type": "Person",
@@ -109,6 +110,7 @@ const stringifiedSchema = JSON.stringify(profilePageSchema);
 </head>
 
     <body>
+        <FadingImage />
         <main>
             <!-- HERO SECTION -->
             <section class="hero">
