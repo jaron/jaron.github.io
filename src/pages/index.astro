@@ -3,6 +3,7 @@ import '../styles/global.css';
 import CyclingH2 from '../components/CyclingH2.astro';
 import ContactScript from '../components/ContactScript.astro';
 import FadingImage from '../components/FadingImage.astro';
+import Footer from '../components/Footer.astro';
 
 const person = {
     "@type": "Person",
@@ -175,6 +176,7 @@ const stringifiedSchema = JSON.stringify(profilePageSchema);
                     </a>
                 </div>
             </section>
+            <Footer />
         </main>
         <ContactScript />
     </body>
