@@ -2,5 +2,5 @@
 # See ai.txt for general instructions and profile.md for machine-readable content.
 
 Instructions: https://jaroncollis.com/ai.txt
-Profile-MD: https://jaroncollis.com/profile.md
+Profile-MD: https://jaroncollis.com/index.md
 Sitemap: https://jaroncollis.com/sitemap-index.xml

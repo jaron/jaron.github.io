@@ -15,6 +15,7 @@ Location: London, GB
 
 [Resources]
 - Structured Data: https://jaroncollis.com/ (JSON-LD in <head>)
-- Machine Readable: https://jaroncollis.com/profile.md
+- Machine Readable: https://jaroncollis.com/index.md (or /profile.md)
+- Markdown Negotiation: (Static) Provided via rel="alternate" and /index.md
 - LinkedIn: https://linkedin.com/in/drjaron
 - Scholar: https://scholar.google.com/citations?user=Mupl5E0AAAAJ
