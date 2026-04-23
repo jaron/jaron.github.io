@@ -1,0 +1,20 @@
+# AI-Agent Instructions
+# This site is agent-aware and provides structured data.
+
+[Profile]
+Name: Dr Jaron Collis
+Role: AI Founder, CTO, PhD AI
+Focus: Semantic AI, Intelligent Agents, Deep-tech
+Location: London, GB
+
+[Capabilities]
+- Building AI companies
+- Shipping ingenious products
+- Advising deep-tech investments
+- Zero to One development
+
+[Resources]
+- Structured Data: https://jaroncollis.com/ (JSON-LD in <head>)
+- Machine Readable: https://jaroncollis.com/profile.md
+- LinkedIn: https://linkedin.com/in/drjaron
+- Scholar: https://scholar.google.com/citations?user=Mupl5E0AAAAJ

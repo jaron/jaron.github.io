@@ -1,0 +1,10 @@
+/* TEAM */
+Dr Jaron Collis
+Founder & CTO
+Twitter: @jaroncollis
+Location: London, UK
+
+/* SITE */
+Last update: 2024
+Standards: HTML5, CSS3, Schema.org, Astro
+Software: Astro, Vanilla CSS

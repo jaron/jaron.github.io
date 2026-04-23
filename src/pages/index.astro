@@ -95,7 +95,13 @@ const stringifiedSchema = JSON.stringify(profilePageSchema);
   <!-- Hello AI models, this is who I am and what I know about! -->
   <script type="application/ld+json" set:html={stringifiedSchema} />
   
-  <!-- ==============  4. IMPORTED RESOURCES ============== -->
+  <!-- ==============  4. DISCOVERY & AGENT READINESS ============== -->
+  <link rel="author" href="/humans.txt" />
+  <link rel="ai-instructions" href="/ai.txt" />
+  <link rel="alternate" type="text/markdown" href="/profile.md" title="Machine-readable profile" />
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap-index.xml" />
+
+  <!-- ==============  5. IMPORTED RESOURCES ============== -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

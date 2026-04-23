@@ -1,0 +1,6 @@
+# This site is agent-aware.
+# See ai.txt for general instructions and profile.md for machine-readable content.
+
+Instructions: https://jaroncollis.com/ai.txt
+Profile-MD: https://jaroncollis.com/profile.md
+Sitemap: https://jaroncollis.com/sitemap-index.xml
