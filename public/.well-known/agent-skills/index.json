@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "skills": [
+    {
+      "id": "get-profile",
+      "name": "Get Professional Profile",
+      "description": "Retrieves the professional background, expertise, and contact information for Dr Jaron Collis.",
+      "url": "https://jaroncollis.com/profile.md",
+      "output_format": "text/markdown"
+    },
+    {
+      "id": "get-ai-instructions",
+      "name": "Get AI Instructions",
+      "description": "Retrieves specific instructions for how AI agents should interact with this site and its data.",
+      "url": "https://jaroncollis.com/ai.txt",
+      "output_format": "text/plain"
+    }
+  ]
+}

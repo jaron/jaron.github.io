@@ -1,0 +1,16 @@
+{
+  "mcpId": "jaron-collis-profile",
+  "name": "Dr Jaron Collis Profile Server",
+  "version": "1.0.0",
+  "description": "A Model Context Protocol server providing structured access to Jaron's professional profile and AI advisory services.",
+  "capabilities": {
+    "resources": [
+      {
+        "uri": "https://jaroncollis.com/profile.md",
+        "name": "Professional Profile",
+        "mimeType": "text/markdown"
+      }
+    ],
+    "tools": []
+  }
+}
