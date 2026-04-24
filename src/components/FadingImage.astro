@@ -19,9 +19,10 @@
     display: block;
   }
 
-  /* Media query for large screens */
-  @media (min-width: 1200px) {
+  /* Media query for very large screens to prevent overlap with 800px centered content */
+  @media (min-width: 1400px) {
     .fading-image-container {
+      z-index: -1; /* Ensure it stays behind any content just in case */
       opacity: 1; /* Make visible on large screens */
       visibility: visible;
       animation: fadeOutAndDisappear 20s forwards; /* Apply animation */
