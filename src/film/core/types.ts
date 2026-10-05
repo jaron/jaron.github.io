@@ -1,0 +1,99 @@
+// Shared types for the film layer (see docs/spec.md). Data files import only types from here, so the
+// content checker can load them under plain Node.
+import type * as THREE from 'three';
+import type { Frame, SceneCtx } from '../engine/scene';
+
+export type BeatName = 'bridge' | 'problem' | 'era1996' | 'chain' | 'era2026';
+export const BEAT_ORDER: BeatName[] = ['bridge', 'problem', 'era1996', 'chain', 'era2026'];
+export const DEFAULT_BEATS: Record<BeatName, number> = { bridge: 3.5, problem: 4.5, era1996: 11, chain: 9, era2026: 8.5 };
+
+/** Original thesis pagination vs scan page: thesis page = PDF page - 7. */
+/** `page` is null for unnumbered front matter (title page, abstract, acknowledgements). */
+export interface ThesisRef { page: number | null; pdfPage: number; quote?: string }
+
+export type VoiceName = 'type' | 'reveal' | 'lock' | 'fail' | 'call' | 'step' | 'morph' | 'stamp';
+/** A sound cue at film time `t` (seconds). Sound is data: derived from the same timing as the animation. */
+export interface Cue { t: number; voice: VoiceName; gain?: number; pan?: number; /** frequency multiplier (1 = the voice's own pitch) */ pitch?: number }
+
+/** How a modern model reads the same sentence: pieces, numbers, attention, a reply. A simplified illustration. */
+export interface LanguageSpec {
+  kind: 'language';
+  /** transcript the reply lines are taken from (verbatim) */
+  src: string;
+  lead: string;
+  /** the sentence split into display pieces, in rows */
+  rows: string[][];
+  /** word relations to draw as arcs: flattened token indexes within one row, weight 0..1 */
+  links: { a: number; b: number; w: number }[];
+  /** verbatim lines from the transcript excerpt to show as the reply */
+  reply: string[];
+  highlight?: string[];
+}
+
+export type Era2026Spec =
+  | { kind: 'transcript'; src: string; highlight?: string[] }
+  | LanguageSpec
+  | { kind: 'raindrop'; src: string };
+
+export interface Era1996Spec {
+  kind: string;
+  refs: ThesisRef[];
+  /** Renderer-specific data (kept as data, not scattered through render code). */
+  data: Record<string, unknown>;
+}
+
+export interface SceneContent {
+  id: string;
+  /** a short first-person lead-in that says why this scene matters (like the supervisor's challenge) */
+  bridge: { text: string; emphasis?: string; refs?: ThesisRef[] };
+  /** Short label for the thesis passage the scene redraws, e.g. '§5.3 · EXAMPLE 3'. */
+  figure: string;
+  /** 1-based scene number and the total, for the "01 / 07" marker. */
+  number: number;
+  total: number;
+  title: string;
+  beats?: Partial<Record<BeatName, number>>;
+  /** Optional: a scene whose bridge already says the problem can skip this beat. */
+  problem?: { text: string; why: string; refs?: ThesisRef[] };
+  era1996: Era1996Spec;
+  /** Key into data/chains.json. */
+  chain: string;
+  era2026: Era2026Spec;
+  note: { label: 'ECHO' | 'DIFFERS'; text: string };
+}
+
+/** A Connections chain: an opening line, then dated nodes that each led to the next. */
+export interface ChainData { intro?: string; nodes: ChainNode[] }
+
+export interface ChainNode {
+  year: number;
+  name: string;
+  /** One plain sentence on why it mattered (not just what it was). */
+  gist: string;
+  source: { title: string; authors: string; url: string };
+  /** False until checked against the primary source. */
+  verified: boolean;
+}
+
+/** Local time within a beat. */
+export interface Local { lt: number; p: number; dur: number }
+
+export interface Era1996Renderer {
+  init(content: SceneContent, ctx: SceneCtx): void | Promise<void>;
+  render(f: Frame, out: THREE.WebGLRenderTarget, local: Local): void;
+  /** Cue times relative to the beat start. */
+  cues(content: SceneContent, dur: number): Cue[];
+}
+
+export interface Era2026Renderer {
+  init(spec: Era2026Spec, ctx: SceneCtx): void | Promise<void>;
+  render(f: Frame, out: THREE.WebGLRenderTarget, local: Local): void;
+  cues(spec: Era2026Spec, dur: number): Cue[];
+}
+
+export function beatDurations(c: SceneContent): Record<BeatName, number> {
+  const d = { ...DEFAULT_BEATS, ...(c.beats ?? {}) } as Record<BeatName, number>;
+  if (!c.problem) d.problem = 0;
+  return d;
+}
+export const sceneDuration = (c: SceneContent) => BEAT_ORDER.reduce((s, b) => s + beatDurations(c)[b], 0);

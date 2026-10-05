@@ -1,0 +1,19 @@
+{
+  "fixture": false,
+  "model": "claude-sonnet-5-5",
+  "date": "2026-10-05",
+  "harness": "claude-code 2.1.285 (Claude Code), print mode, tools disabled, system prompt: \"You are a helpful assistant.\"",
+  "prompt": "A cylindrical bar of copper is 5 centimetres in radius, and 1.5 metres in length. What is the bar’s critical load in Newtons ?",
+  "turns": [
+    {
+      "type": "text",
+      "text": "Assuming Euler buckling with pinned–pinned ends (the standard textbook case), the critical load is about **1.5 × 10⁶ N (≈1.5 MN)**.\n\n**Formula:** P_cr = π²EI / L²\n\n**Values:**\n- Young's modulus of copper: E ≈ 117 GPa (values of 110–130 GPa are also used)\n- Radius: r = 0.05 m\n- Second moment of area: I = πr⁴/4 = π(0.05)⁴/4 ≈ 4.909 × 10⁻⁶ m⁴\n- Length: L = 1.5 m\n\n**Calculation:**\n- P_cr = π² × (117 × 10⁹) × (4.909 × 10⁻⁶) / (1.5)²\n- P_cr = π² × 574,350 / 2.25\n- P_cr ≈ 5.67 × 10⁶ / 2.25 ≈ 2.5 × 10⁶ N\n\nI made an arithmetic slip above, so here is the corrected calculation:\n\n- EI = 117 × 10⁹ × 4.909 × 10⁻⁶ ≈ 5.744 × 10⁵ N·m²\n- π² × EI ≈ 9.8696 × 5.744 × 10⁵ ≈ 5.669 × 10⁶\n- Dividing by L² = 2.25 gives **P_cr ≈ 2.52 × 10⁶ N**\n\n**Answer: P_cr ≈ 2.5 × 10⁶ N (about 2.5 MN)**\n\nThis assumes pinned ends. For other end conditions, replace L with the effective length KL:\n- Fixed–free: K = 2, so P_cr ≈ 0.63 MN\n- Fixed–fixed: K = 0.5, so P_cr ≈ 10 MN\n\nThe slenderness ratio is L/r_g = 1.5/0.025 = 60, where r_g = r/2. This is low enough that copper would yield before it buckled elastically. Yield at about 70 MPa over A = 7.85 × 10⁻³ m² gives about 0.55 MN. The Euler value is therefore an upper bound that does not govern in practice."
+    }
+  ],
+  "excerpt": {
+    "from": 133,
+    "to": 361
+  },
+  "excerptNote": "Display trim: shows the Formula and Values sections only. The full response (kept in turns) leads with 1.5 MN, then corrects itself to 2.5 MN; that self-correction is reserved for scene 3. Nothing in the excerpt is edited.",
+  "recordedNote": "Raw output of one run; not edited or re-rolled."
+}

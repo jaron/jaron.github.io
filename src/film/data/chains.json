@@ -1,0 +1,31 @@
+{
+  "understanding": {
+    "intro": "In the 30 years since, a series of breakthroughs led to the thinking machines we use every day.",
+    "nodes": [
+      {
+        "year": 2013, "name": "Word embeddings",
+        "gist": "Words became numbers a machine could compare, so similar meanings landed close together.",
+        "source": { "title": "Efficient Estimation of Word Representations in Vector Space", "authors": "Mikolov, Chen, Corrado, Dean", "url": "https://arxiv.org/abs/1301.3781" },
+        "verified": false
+      },
+      {
+        "year": 2017, "name": "The Transformer",
+        "gist": "Attention let a model weigh every word against every other, and it scaled to huge amounts of text.",
+        "source": { "title": "Attention Is All You Need", "authors": "Vaswani et al.", "url": "https://arxiv.org/abs/1706.03762" },
+        "verified": false
+      },
+      {
+        "year": 2020, "name": "Few-shot prompting",
+        "gist": "A large model could take on a new task from instructions written in plain language.",
+        "source": { "title": "Language Models are Few-Shot Learners", "authors": "Brown et al.", "url": "https://arxiv.org/abs/2005.14165" },
+        "verified": false
+      },
+      {
+        "year": 2022, "name": "Instruction tuning",
+        "gist": "Models learned to follow instructions and answer questions, so anyone could simply ask.",
+        "source": { "title": "Training language models to follow instructions with human feedback", "authors": "Ouyang et al.", "url": "https://arxiv.org/abs/2203.02155" },
+        "verified": false
+      }
+    ]
+  }
+}

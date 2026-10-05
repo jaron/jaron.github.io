@@ -1,0 +1,114 @@
+{
+  "title": "Weight of a raindrop: the backward-chaining tree",
+  "source": "Thesis p.2 (PDF p.9) states the question and the chain (force, mass, density, volume, diameter). Values are computed from it.",
+  "nodes": [
+    {
+      "id": "F",
+      "label": "F",
+      "kind": "goal",
+      "level": 0,
+      "row": 0,
+      "name": "FORCE",
+      "value": "5.1 × 10⁻⁶ N",
+      "source": "mass × gravity"
+    },
+    {
+      "id": "f1",
+      "label": "F = m g",
+      "kind": "formula",
+      "level": 1,
+      "row": 0,
+      "parent": "F"
+    },
+    {
+      "id": "m",
+      "label": "m",
+      "kind": "qty",
+      "level": 2,
+      "row": 0,
+      "parent": "f1",
+      "name": "MASS",
+      "value": "5.2 × 10⁻⁷ kg",
+      "source": "density × volume"
+    },
+    {
+      "id": "g",
+      "label": "g",
+      "kind": "known",
+      "level": 2,
+      "row": 1,
+      "parent": "f1",
+      "name": "GRAVITY",
+      "value": "9.81 m/s²",
+      "source": "a constant"
+    },
+    {
+      "id": "f2",
+      "label": "m = ρ V",
+      "kind": "formula",
+      "level": 3,
+      "row": 0,
+      "parent": "m"
+    },
+    {
+      "id": "rho",
+      "label": "ρ",
+      "kind": "known",
+      "level": 4,
+      "row": 1,
+      "parent": "f2",
+      "name": "DENSITY",
+      "value": "1000 kg/m³",
+      "source": "property of water"
+    },
+    {
+      "id": "V",
+      "label": "V",
+      "kind": "qty",
+      "level": 4,
+      "row": 0,
+      "parent": "f2",
+      "name": "VOLUME",
+      "value": "5.2 × 10⁻¹⁰ m³",
+      "source": "sphere formula"
+    },
+    {
+      "id": "f3",
+      "label": "V = 4/3 π r³",
+      "kind": "formula",
+      "level": 5,
+      "row": 0,
+      "parent": "V"
+    },
+    {
+      "id": "r",
+      "label": "r",
+      "kind": "qty",
+      "level": 6,
+      "row": 0,
+      "parent": "f3",
+      "name": "RADIUS",
+      "value": "0.5 mm",
+      "source": "half the diameter"
+    },
+    {
+      "id": "f4",
+      "label": "r = d / 2",
+      "kind": "formula",
+      "level": 7,
+      "row": 0,
+      "parent": "r"
+    },
+    {
+      "id": "d",
+      "label": "d",
+      "kind": "known",
+      "level": 8,
+      "row": 0,
+      "parent": "f4",
+      "name": "DIAMETER",
+      "value": "1 mm",
+      "source": "given in the question"
+    }
+  ]
+}
