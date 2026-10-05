@@ -1,0 +1,8 @@
+[
+  {
+    "pdfPage": 111,
+    "find": "s = \\int_t^t_{t_0} v \\, dt \\quad \\text{where : } s \\text{ is distance, } v \\text{ is velocity, and } t_0 \\text{ and } t_1 \\text{ are initial and final time respectively}",
+    "replace": "s = \\int_{t_i}^{t_f} v \\, dt \\quad \\text{where : } s \\text{ is distance, } v \\text{ is velocity, and } t_i \\text{ and } t_f \\text{ are initial and final time respectively}",
+    "reason": "Conversion error: the integral limits are t_i and t_f in the scan (Example 9). The following v = 1/2 a t^2 is printed that way in the original and is left as printed."
+  }
+]

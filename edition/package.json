@@ -1,0 +1,17 @@
+{
+  "name": "qps-thesis-edition",
+  "private": true,
+  "type": "module",
+  "description": "Builds a re-typeset PDF of the 1996 thesis from the marker text (see ../docs/design.md)",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/source-serif-4": "^5.3.0",
+    "hyphen": "^1.14.1",
+    "katex": "^0.18.9",
+    "marked": "^18.0.14",
+    "pagedjs": "^0.4.3",
+    "playwright-core": "^1.63.0"
+  }
+}
