@@ -25,3 +25,12 @@ pnpm-debug.log*
 
 # VS Code extension
 .vscode
+
+# thesis source material that is not for publication yet: the 1996 scan, figures extracted from it, the unproofread
+# re-typeset edition, and the machine-converted thesis text (the content checker warns, but still runs, without it)
+source/
+src/film/data/thesis-text/
+edition/build.log
+
+# local tooling config
+.claude/
