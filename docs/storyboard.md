@@ -67,12 +67,12 @@ Optional personal detail for the opening or outro: the Sinclair Spectrum bought 
 - **2026: how we talk to machines now (orange).** "Now we've been speaking to machines naturally for years." Then the same sentence read by a modern model, at a very high level: (1) broken into pieces, (2) each piece turned into numbers that capture meaning, (3) attention links the words that relate (copper–bar, 5 centimetres–radius, critical–load…), (4) a reply written one word at a time, shown as three verbatim lines from a recorded Claude run. Stages 1–3 are a labelled, simplified illustration (the attention links are authored, not extracted from a model); Raindrop will replace them with real internals.
 - **Note:** ECHO. The fixed form my program required is gone: the model reads the sentence itself.
 
-### 2. Finding the right knowledge
-- **Problem:** Thousands of facts and formulae. Which ones matter?
-- **1996:** Engine step 1: find all formulae containing the goal quantity (p.91). The goal fires a query and matching formulae light up as an OR node. Heuristic: fewest unknowns first (p.89).
-- **Chain:** soft attention for alignment (Bahdanau, 2014) → self-attention (Transformer, 2017) → retrieval-augmented generation (2020).
-- **2026:** Attention. Goal as query, formulae as keys, soft weights as a heatmap.
-- **Note:** ECHO. Attention is the soft, learned version of this lookup step. It is not the search.
+### 2. Finding the right knowledge (first cut built)
+- **Bridge:** "My program knew 122 formulae. Checking whether one fits is easy. Knowing which to try is the hard part." (p.154: 122 formulae.)
+- **1996 (15 s), on the thesis's helium example (Example 4).** (1) A field of 122 formula cards; the goal, the mass *m*, lights the cards that contain it, exactly, by symbol (p.84, step 1). (2) Each formula needs more quantities, so the choices multiply: 3 → 9 → 27 … and the counter jumps to 3²⁰ = 3,486,784,401 for 20 levels (p.92: some mass searches are ~20 levels deep; three choices per step is an illustration). (3) A light-touch card, "Easy to check. Hard to find.", naming the shape: P versus NP, unproven, most researchers believe finding is harder; hindsight, not in the thesis. (4) The hand-written rule that made it workable: try the formula with the fewest unknowns first (p.82); the tree prunes. "A heuristic doesn't change the worst case. It makes the typical case fast."
+- **Chain:** "Finding is still hard. The shortcuts are now learned from data, not written by hand." Attention (2014) → dense retrieval (2020) → retrieval-augmented generation (2020). Dates unverified.
+- **2026 (12 s, orange):** "Now we don't tell it where to look. We just ask." Knowledge as a cloud of points; similar meanings sit close together; the question becomes a point; its nearest points light up and name what the real reply then uses (ideal gas law, molar mass of helium, volume of a cylinder); three verbatim lines from a recorded Claude run. A labelled, simplified illustration.
+- **Note:** DIFFERS. Nothing here solves P versus NP. A model finds by learned intuition, not by guarantee: usually right, never certain.
 
 ### 3. Dead ends and loops
 - **Problem:** Some paths go nowhere, and some go in circles.

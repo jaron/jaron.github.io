@@ -21,7 +21,7 @@ for (const f of readdirSync(dir).filter((x) => x.endsWith('.ts'))) {
   const c = (await import(pathToFileURL(join(dir, f)).href)).default;
   if (c.id === id) content = c;
 }
-if (!content || content.era2026.kind !== 'transcript') { console.error(`no transcript scene '${id}'`); process.exit(2); }
+if (!content || !['transcript', 'language', 'meaning'].includes(content.era2026.kind)) { console.error(`no scene '${id}' with a recorded reply`); process.exit(2); }
 const prompt = content.era1996.data.sentence;
 if (!prompt) { console.error('scene has no era1996.data.sentence to use as the prompt'); process.exit(2); }
 

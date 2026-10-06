@@ -1,5 +1,6 @@
 import type { Era2026Renderer, Era2026Spec, SceneContent } from '../core/types';
 import LanguageRenderer from './language';
+import MeaningRenderer from './meaning';
 import TranscriptRenderer from './transcript';
 
 // Scenes never import a renderer directly: the 2026 beat is a slot filled by `kind`.
@@ -8,6 +9,7 @@ export function createEra2026(spec: Era2026Spec, content: SceneContent): Era2026
   switch (spec.kind) {
     case 'transcript': return new TranscriptRenderer(content);
     case 'language': return new LanguageRenderer(content);
+    case 'meaning': return new MeaningRenderer(content);
     case 'raindrop': throw new Error('raindrop renderer not available yet');
   }
 }

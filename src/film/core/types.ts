@@ -30,9 +30,26 @@ export interface LanguageSpec {
   highlight?: string[];
 }
 
+/** How a modern model finds what is relevant by meaning: knowledge as points, a question as a point, the nearest light up. */
+export interface MeaningSpec {
+  kind: 'meaning';
+  src: string;
+  lead: string;
+  /** clusters of knowledge, drawn as labelled groups of points */
+  clusters: { name: string; x: number; y: number; r: number; n: number }[];
+  /** the question and which cluster it lands next to */
+  question: { label: string; near: string };
+  /** items that light up, as labels (they match what the recorded reply actually uses) */
+  found: string[];
+  /** verbatim lines from the transcript excerpt to show as the reply */
+  reply: string[];
+  highlight?: string[];
+}
+
 export type Era2026Spec =
   | { kind: 'transcript'; src: string; highlight?: string[] }
   | LanguageSpec
+  | MeaningSpec
   | { kind: 'raindrop'; src: string };
 
 export interface Era1996Spec {

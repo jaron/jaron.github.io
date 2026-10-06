@@ -1,0 +1,13 @@
+{
+  "fixture": false,
+  "model": "claude-sonnet-5-5",
+  "date": "2026-10-06",
+  "harness": "claude-code 2.1.285 (Claude Code), print mode, tools disabled, system prompt: \"You are a helpful assistant.\"",
+  "prompt": "A cylinder 2 centimetres in diameter, and 10 centimetres in length, is filled with helium gas. Measurements of the gas show it is at a temperature of 293 K, and at a pressure of 2 × 10⁵ Pa. What is the mass of the gas in grams ?",
+  "turns": [
+    {
+      "type": "text",
+      "text": "**Volume:**\nr = 1 cm = 0.01 m, L = 0.10 m\nV = πr²L = π(0.01)²(0.10) = 3.14 × 10⁻⁵ m³\n\n**Moles (ideal gas law):**\nn = PV/(RT) = (2 × 10⁵ × 3.14 × 10⁻⁵) / (8.314 × 293)\nn = 6.283 / 2436 ≈ 2.58 × 10⁻³ mol\n\n**Mass:**\nHelium molar mass = 4.00 g/mol\nm = 2.58 × 10⁻³ × 4.00 ≈ 0.0103 g\n\n**Mass of helium ≈ 0.010 g (about 1.0 × 10⁻² g)**"
+    }
+  ]
+}

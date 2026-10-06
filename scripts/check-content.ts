@@ -85,7 +85,7 @@ for (const f of files) {
     if (years.some((y, i) => i && y < years[i - 1]!)) fail(`${where}: chain years are not in order`);
   }
 
-  if (c.era2026.kind === 'transcript' || c.era2026.kind === 'language') {
+  if (c.era2026.kind === 'transcript' || c.era2026.kind === 'language' || c.era2026.kind === 'meaning') {
     const tp = join(root, 'data', 'transcripts', `${c.era2026.src}.json`);
     if (!existsSync(tp)) fail(`${where}: transcript ${c.era2026.src}.json missing`);
     else {
@@ -95,6 +95,12 @@ for (const f of files) {
       const full = t.turns.map((x: { text: string }) => x.text).join('\n\n');
       const shown = (t.excerpt ? full.slice(t.excerpt.from, t.excerpt.to) : full).replace(/\*\*/g, '').replace(/^- /gm, '· ');
       for (const h of c.era2026.highlight ?? []) if (!shown.includes(h)) fail(`${where}: highlight "${h}" is not in the transcript text shown`);
+      if (c.era2026.kind === 'meaning') {
+        const m = c.era2026;
+        if (!m.clusters.some((x: { name: string }) => x.name === m.question.near)) fail(`${where}: question.near '${m.question.near}' is not a cluster`);
+        if (m.found.length > 3) fail(`${where}: at most 3 found labels are supported`);
+        for (const line of m.reply) if (!shown.split('\n').includes(line)) fail(`${where}: reply line is not verbatim in the transcript: "${line}"`);
+      }
       if (c.era2026.kind === 'language') {
         const lang = c.era2026;
         const joined = lang.rows.flat().join('');
