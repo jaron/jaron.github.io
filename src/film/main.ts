@@ -96,6 +96,10 @@ async function boot() {
   const determinism = async (times: number[]) => {
     busy = true;
     try {
+      // warm-up: the very first renders in a fresh browser differ by about one level on a few hundred pixels
+      // (cold GPU/text pipeline). Render every time once and let it settle before measuring.
+      for (const t of times) engine.render(t, 1 / 60);
+      await new Promise((r) => setTimeout(r, 1500));
       const first = new Map<number, string>();
       for (const t of times) first.set(t, await hashFrame(t));
       const shuffled = [...times].reverse().concat(times.slice(0, 3));

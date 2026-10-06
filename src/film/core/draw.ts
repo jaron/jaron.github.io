@@ -2,6 +2,7 @@
 import { W } from '../engine/gl';
 import type { LineBatch } from '../engine/lines';
 import { LIN } from '../engine/palette';
+import { textPath2D } from '../engine/type';
 
 /** The faint ruled plate every figure sits on. */
 export function ruledSheet(lb: LineBatch, alpha = 0.07) {
@@ -38,3 +39,20 @@ export function spanOnLine(c: CanvasRenderingContext2D, line: WrappedLine, sub: 
 /** 1996 register: motion steps at a fixed low frame rate instead of flowing. */
 export const STEP_FPS = 15;
 export const stepTime = (t: number) => Math.floor(t * STEP_FPS + 1e-6) / STEP_FPS;
+
+const bigCache = new Map<string, Path2D>();
+/**
+ * Fill very large type from the font's own outlines instead of fillText. The browser's GPU canvas draws big glyphs
+ * through a glyph cache whose state changes what a handful of edge pixels look like (about one level), which
+ * breaks "a frame is a pure function of time". Outlines are plain geometry, so they render the same every time.
+ * Use it for display type of about 80 px and up; ordinary text is unaffected and stays on the fast path.
+ */
+export function fillBigText(c: CanvasRenderingContext2D, text: string, family: string, size: number, x: number, y: number) {
+  const key = `${family}|${size}|${text}`;
+  let p = bigCache.get(key);
+  if (!p) { p = textPath2D(text, family, size, 0, 0); bigCache.set(key, p); }
+  c.save();
+  c.translate(x, y);
+  c.fill(p);
+  c.restore();
+}

@@ -8,7 +8,7 @@ import { LineBatch } from '../engine/lines';
 import { LIN, rgba } from '../engine/palette';
 import { F, font } from '../engine/type';
 import { clamp, ease, lerp, prog, pulse } from '../engine/util';
-import { ruledSheet, wrap } from '../core/draw';
+import { fillBigText, ruledSheet, wrap } from '../core/draw';
 import type { Cue } from '../core/types';
 import { COLD_OPEN as C, type Beat } from '../data/cold-open';
 import tree from '../data/figures/raindrop.json';
@@ -103,8 +103,7 @@ export default class ColdOpen extends Scene {
     let flash = 0;
 
     if (t < C.challenge.end) this.partA(t, c, lb2);
-    else if (t < C.card.from) this.partB(t, c, lb2, lb3, out);
-    else this.partC(t, c, lb2);
+    else this.partB(t, c, lb2, lb3, out);
 
     // impact shake and lock flash, from the beat times
     for (const b of C.beats) {
@@ -124,36 +123,54 @@ export default class ColdOpen extends Scene {
 
   private poseCache = { pos: new THREE.Vector3(), look: new THREE.Vector3(), focusId: 'F' };
 
-  // ------------------------------------------------------------------ A: the challenge
+  // ------------------------------------------------------------------ A: the title, then the challenge
   private partA(t: number, c: CanvasRenderingContext2D, lb: LineBatch) {
     ruledSheet(lb, 0.06);
-    const ch = C.challenge;
+    const ch = C.challenge, ti = C.title;
     const exit = ease.inOutCubic(prog(t, ch.exitAt, ch.end));
     const keep = 1 - exit;
-    // the date slams in big, then settles into the corner
-    const slam = ease.outExpo(prog(t, 0.3, 0.7));
-    const settle = ease.inOutCubic(prog(t, 2.1, 2.8));
-    const size = lerp(250, 30, settle);
-    const x = 96, y = lerp(520, 140, settle);
-    const months = ch.date.replace('.', '').split(' ');
-    if (slam > 0 && settle < 0.999) {
+    c.textBaseline = 'alphabetic';
+
+    // the title card opens the film: big type slams in, then clears away for the date and the challenge
+    const tOut = ease.inOutCubic(prog(t, ti.exitAt, ti.end));
+    if (tOut < 1) {
       c.save();
-      c.globalAlpha = clamp(slam * 3);
-      const yy = y + (1 - slam) * 50;
-      c.font = font(F.archivo(100, 900), size);
-      c.fillStyle = rgba('bone', 1);
-      c.fillText(months[0]!, x, yy);
-      c.fillStyle = rgba('signal', 1);
-      c.fillText(months[1]! + '.', x, yy + size * 0.95 * (1 - settle));
+      c.globalAlpha = 1 - tOut;
+      ti.lines.forEach((l, i) => {
+        const p = ease.outExpo(prog(t, 0.3 + i * 0.32, 0.3 + i * 0.32 + 0.45));
+        if (p <= 0) return;
+        c.save(); c.globalAlpha *= clamp(p * 3);
+        c.fillStyle = rgba('bone', 1);
+        fillBigText(c, l, F.archivo(100, 900), 188, 90, 330 + i * 172 + (1 - p) * 56 - tOut * 40);
+        c.restore();
+      });
+      const tp = ease.outExpo(prog(t, 1.45, 1.9));
+      if (tp > 0) {
+        c.save(); c.globalAlpha *= clamp(tp * 3);
+        c.fillStyle = rgba('signal', 1);
+        fillBigText(c, ti.tag, F.archivo(100, 700), 84, 96, 330 + 3 * 172 - 6 + (1 - tp) * 30 - tOut * 40);
+        c.restore();
+      }
+      const sp = ease.outCubic(prog(t, 2.0, 2.5));
+      if (sp > 0) {
+        c.save(); c.globalAlpha *= sp;
+        c.font = font(F.mono(500), 22); c.letterSpacing = '4px'; c.fillStyle = rgba('ash', 1);
+        c.fillText(ti.sub.toUpperCase(), 96, 960); c.letterSpacing = '0px';
+        c.restore();
+      }
+      lb.seg2(96, 925, 96 + 220 * ease.outExpo(prog(t, 1.8, 2.4)), 925, 2, LIN.signal, 1 - tOut);
       c.restore();
     }
-    if (settle > 0.6) {
-      c.save(); c.globalAlpha = clamp((settle - 0.6) * 4) * keep;
+
+    // the date: a small caption, with a rule
+    const dp = prog(t, ch.dateAt, ch.dateAt + 0.4);
+    if (dp > 0) {
+      c.save(); c.globalAlpha = dp * keep;
       c.font = font(F.mono(500), 18); c.letterSpacing = '4px'; c.fillStyle = rgba('signal', 1);
-      c.fillText('SEPTEMBER 1993', 96, 140); c.letterSpacing = '0px';
+      c.fillText(ch.date, 96, 140); c.letterSpacing = '0px';
       c.restore();
     }
-    lb.seg2(96, 168, 96 + 1728 * ease.outExpo(prog(t, 2.2, 3.0)) * keep, 168, 1, LIN.bone, 0.35);
+    lb.seg2(96, 168, 96 + 1728 * ease.outExpo(prog(t, ch.dateAt, ch.dateAt + 0.8)) * keep, 168, 1, LIN.bone, 0.35);
 
     // the quote, word by word, in big Archivo; at the end it clears away, handing over to the drawing
     c.font = font(F.archivo(100, 600), 64);
@@ -453,46 +470,13 @@ export default class ColdOpen extends Scene {
     }
   }
 
-  // ------------------------------------------------------------------ C: the title card
-  private partC(t: number, c: CanvasRenderingContext2D, lb: LineBatch) {
-    const cd = C.card;
-    ruledSheet(lb, 0.05);
-    const lt = t - cd.from;
-    c.textBaseline = 'alphabetic';
-    cd.lines.forEach((l, i) => {
-      const p = ease.outExpo(prog(lt, i * 0.32, i * 0.32 + 0.45));
-      if (p <= 0) return;
-      c.save();
-      c.globalAlpha = clamp(p * 3);
-      c.font = font(F.archivo(100, 900), 188);
-      c.fillStyle = rgba('bone', 1);
-      c.fillText(l, 90, 330 + i * 172 + (1 - p) * 56);
-      c.restore();
-    });
-    const tp = ease.outExpo(prog(lt, 1.15, 1.6));
-    if (tp > 0) {
-      c.save(); c.globalAlpha = clamp(tp * 3);
-      c.font = font(F.archivo(100, 700), 84);
-      c.fillStyle = rgba('signal', 1);
-      c.fillText(cd.tag, 96, 330 + 3 * 172 - 6 + (1 - tp) * 30);
-      c.restore();
-    }
-    const sp = ease.outCubic(prog(lt, 1.7, 2.2));
-    if (sp > 0) {
-      c.save(); c.globalAlpha = sp;
-      c.font = font(F.mono(500), 22); c.letterSpacing = '4px'; c.fillStyle = rgba('ash', 1);
-      c.fillText(cd.sub.toUpperCase(), 96, 960); c.letterSpacing = '0px';
-      c.restore();
-    }
-    lb.seg2(96, 925, 96 + 220 * ease.outExpo(prog(lt, 1.5, 2.1)), 925, 2, LIN.signal, 1);
-  }
-
   /** sound cues in film time (scene start is 0) */
   cues(start: number): Cue[] {
     const cues: Cue[] = [];
     const add = (t: number, voice: Cue['voice'], gain = 1, pitch = 1) => cues.push({ t: start + t, voice, gain, pitch });
     const ch = C.challenge, pb = C.problem;
-    add(0.3, 'stamp', 0.9); add(0.7, 'stamp', 0.8, 1.2);
+    C.title.lines.forEach((_, i) => add(0.3 + i * 0.32, 'stamp', 0.8, 0.85 + i * 0.12));
+    add(1.45, 'reveal', 0.5, 1.1);
     const nW = ch.text.split(' ').length;
     for (let i = 0; i < nW; i += 2) add(ch.wordsFrom + i * ch.wordGap, 'type', 0.22);
     // the bridge: the drop draws, the bar, the arrow, the question mark
@@ -512,8 +496,6 @@ export default class ColdOpen extends Scene {
     C.ledger.forEach((l, i) => add(l.at, 'step', 0.6, 0.8 + i * 0.22));
     add(C.answer.at, 'lock', 0.8, 1.2); add(C.answer.at, 'stamp', 0.5, 1.1);
     add(C.reveal.from, 'morph', 0.45);
-    C.card.lines.forEach((_, i) => add(C.card.from + i * 0.32, 'stamp', 0.8, 0.85 + i * 0.12));
-    add(C.card.from + 1.15, 'reveal', 0.5, 1.1);
     return cues.sort((a, b) => a.t - b.t);
   }
 }
