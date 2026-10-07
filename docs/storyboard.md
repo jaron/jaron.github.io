@@ -81,12 +81,13 @@ Optional personal detail for the opening or outro: the Sinclair Spectrum bought 
 - **2026 (12 s, orange):** "Now a model can do the same: try something, notice it's wrong, and go back." Four verbatim excerpts, in order, from the recorded run shown in scene 1 (`s03-dead-ends.json` is the same run without the trim): the claim (1.5 MN), the model's own working that disagrees, "I made an arithmetic slip above…", the corrected answer (2.5 MN). The first line is struck out and a curve backs up to it, like the cursor. Labelled as an arithmetic slip fixed in its own words, not a change of approach.
 - **Note:** ECHO. Same move: try, notice a dead end, go back. Then by rules I wrote; now learned from practice.
 
-### 4. Knowing what to hand off
-- **Problem:** Reasoning and calculating are different jobs, and some problems break the main loop.
-- **1996:** The Solver decides, the Interpreter computes (p.100). Symbolic rearrangement fails, so InverseInterpreter runs bisection. Example 6 stalls on the F꜀ ↔ Eₜ cycle, so SimSolver takes over (p.101–103), then IntegralSolver. Results return and the search resumes.
-- **Chain:** ReAct (2022) → Toolformer (2023) → function calling in model APIs (2023) → Model Context Protocol (2024).
-- **2026:** Tool calling. The model emits a call, a calculator or code interpreter returns a value, reasoning resumes.
-- **Note:** ECHO. DIFFERS: depth-first search handles one goal at a time, attention weighs everything at once. Interdependent goals are where QPS broke.
+### 4. Tool calling (first cut built)
+- **Bridge (6.5 s):** "Reasoning and calculating are different jobs. My solver decided what to find. Specialist programs did the sums, and it carried on with their answers." (p.91: formula evaluation and the rest "were delegated to other objects".) The title uses the modern term because viewers understand it.
+- **1996 (18 s).** The Solver (left, with its tree of needs) hands each calculation to a specialist (right); a packet carries the formula over, the specialist works, the answer comes back into the tree. Three hand-offs of rising difficulty: (1) the Interpreter works out a sum (p.93); (2) a formula that can't be rearranged goes to a specialist that tries values and narrows in by halving, drawn as the real bisection on x = 2 cos x, "thousands of tries in practice" (p.93); (3) unknowns that depend on each other send the search in circles (scene 3's loop), so both formulae go to the simultaneous-equation specialist, which settles both values together (p.95–96). Integrals are only named (p.104). The equations are labelled illustrations. The thesis's printed answers for Examples 7 and 8 are not used: Example 7's problem says 1.0 m but its printed answers only fit 1.1 m.
+- **Chain:** ReAct (2022) → Toolformer (2023) → function calling in model APIs (2023) → Model Context Protocol (2024). Dates and attributions unverified.
+- **2026 (14 s, orange):** "Now a model decides for itself when to ask a tool." A real recorded run (`s04-tool-calling.json`; `npm run capture:transcript` now records tool runs: one tool, Bash restricted to python3, call and result kept as turns). The model was asked to solve x = 2 cos(x); it chose to call Python, wrote Newton's method, got 1.0298665293 back, and replied. Shown in order: its code, the value returned, its reply. The footnote says the model was told a Python tool was available and the code is its own.
+- **Note:** ECHO. Same split. I wired in each specialist; now the model chooses when to call a tool.
+- **Saved for the outro:** the thesis's own agents idea (p.163: domain experts "controlled by the problem solver").
 
 ### 5. Admitting uncertainty
 - **Problem:** Real data is never exact. Floating-point numbers pretend it is.

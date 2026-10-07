@@ -1,0 +1,25 @@
+{
+  "fixture": false,
+  "model": "claude-sonnet-5-5",
+  "date": "2026-10-07",
+  "harness": "claude-code 2.1.285 (Claude Code), print mode, one tool (Bash restricted to python3), system prompt: \"You are a helpful assistant. You can run Python 3 through the Bash tool when a calculation needs it.\"",
+  "prompt": "Solve x = 2 cos(x) for x in radians, to six decimal places.",
+  "turns": [
+    {
+      "type": "tool_call",
+      "name": "Bash",
+      "input": {
+        "command": "python3 -c \"\nfrom math import cos\nx=1.0\nfor _ in range(100):\n    x=x-(x-2*cos(x))/(1+2*__import__('math').sin(x))\nprint('%.10f'%x)\""
+      }
+    },
+    {
+      "type": "tool_result",
+      "text": "1.0298665293",
+      "error": false
+    },
+    {
+      "type": "text",
+      "text": "x ≈ **1.029867** radians (more precisely, 1.0298665293). I found it with Newton's method on f(x) = x − 2cos(x)."
+    }
+  ]
+}

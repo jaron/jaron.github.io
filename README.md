@@ -16,7 +16,7 @@ Run from the repository root. CI builds with Node 22.
 | `npm run preview` | Serve the build locally |
 | `npm run check:content` | Validate the film's content data: quotes against the thesis text, chain dates, transcripts (`-- --strict` before publishing) |
 | `npm run check:determinism` | Check that every film frame is a pure function of time (needs `npm run dev` and Chrome) |
-| `npm run capture:transcript -- <scene-id>` | Record a real model reply for a scene's 2026 half (needs a logged-in `claude` CLI) |
+| `npm run capture:transcript -- <scene-id>` | Record a real model reply, or a tool-using run, for a scene's 2026 half (needs a logged-in `claude` CLI) |
 
 Pushes to `main` build and deploy through `.github/workflows/deploy.yml`.
 

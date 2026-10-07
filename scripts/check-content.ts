@@ -85,7 +85,7 @@ for (const f of files) {
     if (years.some((y, i) => i && y < years[i - 1]!)) fail(`${where}: chain years are not in order`);
   }
 
-  if (c.era2026.kind === 'transcript' || c.era2026.kind === 'language' || c.era2026.kind === 'meaning' || c.era2026.kind === 'correction') {
+  if (c.era2026.kind === 'transcript' || c.era2026.kind === 'language' || c.era2026.kind === 'meaning' || c.era2026.kind === 'correction' || c.era2026.kind === 'toolcall') {
     const tp = join(root, 'data', 'transcripts', `${c.era2026.src}.json`);
     if (!existsSync(tp)) fail(`${where}: transcript ${c.era2026.src}.json missing`);
     else {
@@ -100,6 +100,20 @@ for (const f of files) {
         if (!m.clusters.some((x: { name: string }) => x.name === m.question.near)) fail(`${where}: question.near '${m.question.near}' is not a cluster`);
         if (m.found.length > 3) fail(`${where}: at most 3 found labels are supported`);
         for (const line of m.reply) if (!shown.split('\n').includes(line)) fail(`${where}: reply line is not verbatim in the transcript: "${line}"`);
+      }
+      if (c.era2026.kind === 'toolcall') {
+        const tc = c.era2026;
+        const turns = t.turns as { type: string; text?: string; input?: { command?: string } }[];
+        const calls = turns.filter((x) => x.type === 'tool_call').map((x) => x.input?.command ?? '').join('\n');
+        const results = turns.filter((x) => x.type === 'tool_result').map((x) => x.text ?? '').join('\n').split('\n');
+        const reply = turns.filter((x) => x.type === 'text').map((x) => x.text ?? '').join('\n').replace(/\*\*/g, '');
+        if (!calls) fail(`${where}: transcript ${tc.src}.json has no tool call`);
+        let from = 0;
+        for (const l of tc.call) { const at = calls.indexOf(l, from); if (at < 0) fail(`${where}: call line is not verbatim, in order, in the recorded call: "${l}"`); else from = at + l.length; }
+        for (const l of tc.result) if (!results.includes(l)) fail(`${where}: result line is not in the tool's output: "${l}"`);
+        for (const l of tc.reply) if (!reply.includes(l)) fail(`${where}: reply line is not verbatim in the model's reply: "${l}"`);
+        for (const h of tc.highlight ?? []) if (!tc.reply.join(' ').includes(h)) fail(`${where}: highlight "${h}" is not in the reply shown`);
+        if (tc.prompt !== t.prompt) fail(`${where}: prompt in the content file differs from the one recorded`);
       }
       if (c.era2026.kind === 'correction') {
         const body = shown.split('\n');

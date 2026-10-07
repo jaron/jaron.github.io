@@ -54,8 +54,27 @@ export interface CorrectionSpec {
   lines: { role: 'claim' | 'working' | 'catch' | 'answer'; text: string }[];
 }
 
+/** How a model asks a tool for help: its call, the tool's result, and its reply. Lines are verbatim from one recorded run. */
+export interface ToolCallSpec {
+  kind: 'toolcall';
+  src: string;
+  /** the question put to the model when the run was recorded (scripts/capture-transcript.ts) */
+  prompt: string;
+  lead: string;
+  /** what the tool is, in plain words */
+  toolLabel: string;
+  /** verbatim lines from the model's tool call (its code) */
+  call: string[];
+  /** verbatim lines the tool returned */
+  result: string[];
+  /** verbatim lines from the model's reply after the result */
+  reply: string[];
+  highlight?: string[];
+}
+
 export type Era2026Spec =
   | { kind: 'transcript'; src: string; highlight?: string[] }
+  | ToolCallSpec
   | CorrectionSpec
   | LanguageSpec
   | MeaningSpec

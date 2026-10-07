@@ -134,5 +134,54 @@
         "verified": false
       }
     ]
+  },
+  "toolcalling": {
+    "intro": "A model that can reason can also decide when to ask a specialist for help.",
+    "nodes": [
+      {
+        "year": 2022,
+        "name": "ReAct",
+        "gist": "A language model could alternate between reasoning and acting: call a tool, read what came back, and carry on.",
+        "source": {
+          "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+          "authors": "Yao et al.",
+          "url": "https://arxiv.org/abs/2210.03629"
+        },
+        "verified": false
+      },
+      {
+        "year": 2023,
+        "name": "Toolformer",
+        "gist": "A model taught itself when to call a calculator or a search engine, and how to use the answer.",
+        "source": {
+          "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
+          "authors": "Schick et al.",
+          "url": "https://arxiv.org/abs/2302.04761"
+        },
+        "verified": false
+      },
+      {
+        "year": 2023,
+        "name": "Function calling",
+        "gist": "Model makers gave developers a standard way to let a model request a tool and receive the result.",
+        "source": {
+          "title": "Function calling and other API updates",
+          "authors": "OpenAI",
+          "url": "https://openai.com/index/function-calling-and-other-api-updates/"
+        },
+        "verified": false
+      },
+      {
+        "year": 2024,
+        "name": "Model Context Protocol",
+        "gist": "An open standard let any tool connect to any model, so a tool written once works everywhere.",
+        "source": {
+          "title": "Introducing the Model Context Protocol",
+          "authors": "Anthropic",
+          "url": "https://www.anthropic.com/news/model-context-protocol"
+        },
+        "verified": false
+      }
+    ]
   }
 }
