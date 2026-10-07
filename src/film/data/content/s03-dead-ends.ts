@@ -5,15 +5,15 @@ import type { SceneContent } from '../../core/types';
 const content: SceneContent = {
   id: 's03-dead-ends',
   bridge: {
-    text: 'Sometimes my program chose the wrong formula first. What mattered was that it noticed, and went back.',
-    emphasis: 'noticed, and went back.',
+    text: 'In my system, scientific formulae were the rules for problem solving. But the route to the answer may hit dead ends, so it was essential the solver could detect potential failures and backtrack from them.',
+    emphasis: 'detect potential failures and backtrack from them.',
     refs: [{ page: 82, pdfPage: 89, quote: 'retraces its steps to its most recent choice' }],
   },
   figure: '§5.3 · EXAMPLE 4 (FIG 5.4, REDRAWN)',
   number: 3,
   total: 7,
   title: 'Backtracking from failure',
-  beats: { bridge: 4, era1996: 15, era2026: 12 },
+  beats: { bridge: 8, era1996: 15, era2026: 12 },
   era1996: {
     kind: 'backtrack',
     refs: [

@@ -185,14 +185,16 @@ export default class BacktrackRenderer implements Era1996Renderer {
     }
     lb.polyline(pts, 2.6, LIN.ember, 0.95 * fade);
     lb.polyline(pts, 12, LIN.signal, 0.2 * fade);
-    if (k > 0.97) {      // arrowhead pointing down into the goal
-      lb.seg2(ex, ey, ex - 10, ey - 17, 2.6, LIN.ember, 0.95 * fade);
-      lb.seg2(ex, ey, ex + 12, ey - 15, 2.6, LIN.ember, 0.95 * fade);
+    if (k > 0.97) {      // arrowhead along the curve's own direction at its end
+      const tx = ex - cx, ty = ey - cy, tl = Math.hypot(tx, ty);
+      const bx = -tx / tl, by = -ty / tl;          // unit vector pointing back along the curve
+      const wing = (a: number) => ({ x: ex + 24 * (bx * Math.cos(a) - by * Math.sin(a)), y: ey + 24 * (bx * Math.sin(a) + by * Math.cos(a)) });
+      for (const a of [0.45, -0.45]) { const w = wing(a); lb.seg2(ex, ey, w.x, w.y, 2.6, LIN.ember, 0.95 * fade); }
     }
     const la = ease.outCubic(prog(lt, lp.t + 0.5, lp.t + 0.9)) * fade;
     c.save(); c.globalAlpha = la; c.textAlign = 'center';
-    c.font = font(F.mono(500), 15); c.letterSpacing = '4px'; c.fillStyle = rgba('ember', 1);
-    c.fillText('A LOOP: THE GOAL IS BACK', cx, 296); c.restore();
+    c.font = font(F.mono(500), 22); c.letterSpacing = '5px'; c.fillStyle = rgba('ember', 1);
+    c.fillText('A LOOP: THE GOAL IS BACK', cx + 80, 298); c.restore();
     void clamp;
   }
 
