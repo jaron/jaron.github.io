@@ -1,0 +1,13 @@
+{
+  "fixture": false,
+  "model": "claude-sonnet-5-5",
+  "date": "2026-10-07",
+  "harness": "claude-code 2.1.285 (Claude Code), print mode, tools disabled, system prompt: \"You are a helpful assistant.\"",
+  "prompt": "A cylindrical bar of copper is 5 centimetres in radius, and 1.5 metres in length. What is the bar’s critical load in Newtons ? Show your working, and say where each value comes from.",
+  "turns": [
+    {
+      "type": "text",
+      "text": "# Critical (Euler buckling) load of a copper bar\n\n## Method\nFor a long, slender column, the critical buckling load is given by Euler's formula:\n\n$$P_{cr} = \\frac{\\pi^2 E I}{(K L)^2}$$\n\n## Values and where they come from\n\n| Quantity | Value | Source |\n|---|---|---|\n| Radius, r | 0.05 m | Given (5 cm) |\n| Length, L | 1.5 m | Given |\n| Young's modulus, E | ≈ 117 GPa (1.17×10¹¹ Pa) | Standard handbook value for copper (typically 110–130 GPa, depending on the alloy and temperature) |\n| End condition factor, K | 1.0 | **Assumption**: both ends pinned, since the question doesn't specify. |\n| Second moment of area, I | 4.909×10⁻⁶ m⁴ | Calculated below for a solid circular section |\n\n**Second moment of area (solid circle):**\n\n$$I = \\frac{\\pi r^4}{4} = \\frac{\\pi (0.05)^4}{4} = \\frac{\\pi (6.25\\times10^{-6})}{4} = 4.909\\times10^{-6}\\ \\text{m}^4$$\n\n## Calculation\n\n$$P_{cr} = \\frac{\\pi^2 (1.17\\times10^{11})(4.909\\times10^{-6})}{(1.0 \\times 1.5)^2}$$\n\n$$P_{cr} = \\frac{9.8696 \\times 5.743\\times10^{5}}{2.25} \\approx 2.52\\times10^{6}\\ \\text{N}$$\n\n## Answer\n**P_cr ≈ 2.5 MN (about 2,520,000 N)**, assuming pinned–pinned ends.\n\nFor other end conditions, K changes the result:\n- Fixed–fixed (K = 0.5): ≈ 10.1 MN\n- Fixed–free (K = 2): ≈ 0.63 MN\n\n## Validity check\nEuler's formula only applies if the bar buckles elastically before it yields.\n- Area: A = πr² = 7.854×10⁻³ m²\n- Radius of gyration: k = r/2 = 0.025 m, so slenderness L/k = 60, which is fairly stocky.\n- Stress at P_cr: 2.52×10⁶ / 7.854×10⁻³ ≈ **321 MPa**\n\nThis is well above copper's yield strength (about 70 MPa annealed, and roughly 200–300 MPa when cold-worked). So in practice the bar would **yield in compression before it buckles**. The Euler value is the theoretical elastic buckling load, but the real failure load is much lower, roughly σ_y·A ≈ 0.55 MN for annealed copper. For a bar this stocky, a Johnson (parabolic) formula or a straight yield check is more appropriate."
+    }
+  ]
+}

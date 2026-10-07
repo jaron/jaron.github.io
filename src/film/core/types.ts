@@ -5,7 +5,7 @@ import type { Frame, SceneCtx } from '../engine/scene';
 
 export type BeatName = 'bridge' | 'problem' | 'era1996' | 'chain' | 'era2026';
 export const BEAT_ORDER: BeatName[] = ['bridge', 'problem', 'era1996', 'chain', 'era2026'];
-export const DEFAULT_BEATS: Record<BeatName, number> = { bridge: 3.5, problem: 4.5, era1996: 11, chain: 9, era2026: 8.5 };
+export const DEFAULT_BEATS: Record<BeatName, number> = { bridge: 3.5, problem: 4.5, era1996: 11, chain: 11, era2026: 8.5 };
 
 /** Original thesis pagination vs scan page: thesis page = PDF page - 7. */
 /** `page` is null for unnumbered front matter (title page, abstract, acknowledgements). */
@@ -89,8 +89,23 @@ export interface RangeSpec {
   highlight?: string[];
 }
 
+/** A model's working, as a table of quantities with where each value came from. Every field is verbatim from the recorded reply. */
+export interface WorkingSpec {
+  kind: 'working';
+  src: string;
+  prompt: string;
+  lead: string;
+  /** the formula as the reply typesets it, and a plain-text rendering of it for the screen */
+  formula: { evidence: string; text: string };
+  /** `tag` is our plain-word classification of the source: given, looked up, assumed, worked out */
+  rows: { quantity: string; value: string; source: string; tag: 'given' | 'looked up' | 'assumed' | 'worked out' }[];
+  /** the model's answer line */
+  answer: string;
+}
+
 export type Era2026Spec =
   | { kind: 'transcript'; src: string; highlight?: string[] }
+  | WorkingSpec
   | RangeSpec
   | ToolCallSpec
   | CorrectionSpec

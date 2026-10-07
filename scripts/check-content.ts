@@ -14,7 +14,7 @@ const warn = (m: string) => (strict ? errors : warnings).push(m);
 
 let total = 0;
 const BEATS = ['bridge', 'problem', 'era1996', 'chain', 'era2026'] as const;
-const DEFAULTS = { bridge: 3.5, problem: 4.5, era1996: 11, chain: 9, era2026: 8.5 };
+const DEFAULTS = { bridge: 3.5, problem: 4.5, era1996: 11, chain: 11, era2026: 8.5 };
 
 const norm = (s: string) => s.replace(/[*_`]/g, '').replace(/[’‘]/g, "'").replace(/[“”]/g, '"').replace(/\s+/g, ' ').trim().toLowerCase();
 // marker's paginated markdown: pages are introduced by `{N}------` with N the 0-based PDF page index
@@ -85,11 +85,16 @@ for (const f of files) {
       if (!n.verified) warn(`${where}: chain node ${n.year} ${n.name} is not verified against ${n.source.url}`);
       if (!/^https?:\/\//.test(n.source.url)) fail(`${where}: chain node ${n.name} has no source url`);
     }
+    // the finished chain lingers 2 s before the fade (core/chain.ts: fade 1.3 s, node pop 0.55 s); nodes need >= 1.4 s each
+    const words = (chainDef!.intro ?? '').split(' ').filter(Boolean).length;
+    const lead = chainDef!.intro ? 0.6 + words * 0.085 + 0.55 : 0.35;
+    const need = lead + 1.3 + 2 + 0.55 + 1.4 * Math.max(0, chain.length - 1);
+    if (durs.chain < need - 1e-6) fail(`${where}: the chain beat is ${durs.chain}s but ${chain.length} nodes need at least ${need.toFixed(1)}s (2 s linger on the finished chain, 1.4 s per node)`);
     const years = chain.map((n) => n.year);
     if (years.some((y, i) => i && y < years[i - 1]!)) fail(`${where}: chain years are not in order`);
   }
 
-  if (c.era2026.kind === 'transcript' || c.era2026.kind === 'language' || c.era2026.kind === 'meaning' || c.era2026.kind === 'correction' || c.era2026.kind === 'toolcall' || c.era2026.kind === 'range') {
+  if (c.era2026.kind === 'transcript' || c.era2026.kind === 'language' || c.era2026.kind === 'meaning' || c.era2026.kind === 'correction' || c.era2026.kind === 'toolcall' || c.era2026.kind === 'range' || c.era2026.kind === 'working') {
     const tp = join(root, 'data', 'transcripts', `${c.era2026.src}.json`);
     if (!existsSync(tp)) fail(`${where}: transcript ${c.era2026.src}.json missing`);
     else {
@@ -104,6 +109,16 @@ for (const f of files) {
         if (!m.clusters.some((x: { name: string }) => x.name === m.question.near)) fail(`${where}: question.near '${m.question.near}' is not a cluster`);
         if (m.found.length > 3) fail(`${where}: at most 3 found labels are supported`);
         for (const line of m.reply) if (!shown.split('\n').includes(line)) fail(`${where}: reply line is not verbatim in the transcript: "${line}"`);
+      }
+      if (c.era2026.kind === 'working') {
+        const wk = c.era2026;
+        const raw = t.turns.map((x: { text?: string }) => x.text ?? '').join('\n');
+        const text = raw.replace(/\*\*/g, '');
+        if (!raw.includes(wk.formula.evidence)) fail(`${where}: formula evidence is not in the reply: "${wk.formula.evidence}"`);
+        for (const r of wk.rows) for (const k of ['quantity', 'value', 'source'] as const)
+          if (!text.includes(r[k])) fail(`${where}: row "${r.quantity}": ${k} is not verbatim in the reply: "${r[k]}"`);
+        if (!text.includes(wk.answer)) fail(`${where}: answer line is not verbatim in the reply: "${wk.answer}"`);
+        if (wk.prompt !== t.prompt) fail(`${where}: prompt in the content file differs from the one recorded`);
       }
       if (c.era2026.kind === 'range') {
         const rg = c.era2026;

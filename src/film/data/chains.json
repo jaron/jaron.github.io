@@ -232,5 +232,54 @@
         "verified": false
       }
     ]
+  },
+  "explaining": {
+    "intro": "Explaining a machine’s answer became a field of research in its own right.",
+    "nodes": [
+      {
+        "year": 2016,
+        "name": "LIME",
+        "gist": "A method could explain any single prediction by showing which parts of the input mattered most.",
+        "source": {
+          "title": "“Why Should I Trust You?”: Explaining the Predictions of Any Classifier",
+          "authors": "Ribeiro, Singh, Guestrin",
+          "url": "https://arxiv.org/abs/1602.04938"
+        },
+        "verified": false
+      },
+      {
+        "year": 2017,
+        "name": "SHAP",
+        "gist": "One principled way to share the credit for an answer among its inputs, so explanations could be compared.",
+        "source": {
+          "title": "A Unified Approach to Interpreting Model Predictions",
+          "authors": "Lundberg, Lee",
+          "url": "https://arxiv.org/abs/1705.07874"
+        },
+        "verified": false
+      },
+      {
+        "year": 2021,
+        "name": "Scratchpads",
+        "gist": "Models that wrote out their intermediate steps got long calculations right far more often.",
+        "source": {
+          "title": "Show Your Work: Scratchpads for Intermediate Computation with Language Models",
+          "authors": "Nye et al.",
+          "url": "https://arxiv.org/abs/2112.00114"
+        },
+        "verified": false
+      },
+      {
+        "year": 2024,
+        "name": "Mechanistic interpretability",
+        "gist": "Researchers found human-readable features inside a large language model, and began tracing how they combine into an answer.",
+        "source": {
+          "title": "Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet",
+          "authors": "Templeton et al.",
+          "url": "https://transformer-circuits.pub/2024/scaling-monosemanticity/"
+        },
+        "verified": false
+      }
+    ]
   }
 }

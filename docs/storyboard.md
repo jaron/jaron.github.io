@@ -17,10 +17,12 @@ Each scene has four beats and one signature device, the **Connections chain** (a
 | **BRIDGE** | 3.5s | A first-person lead-in that says why this scene matters, like the supervisor's challenge in the cold open. The scene fades up from black into it, so no cut is abrupt. |
 | **PROBLEM** | 4.5s | Bold type states the problem and why it is hard. |
 | **1996** | 11s | Wireframe depiction of how the program solved it, in the discrete, hard-edged register, in signal blue. |
-| **CHAIN** | 9s | Opens with one line on why the innovations matter ("In the 30 years since, a series of breakthroughs led to the thinking machines we use every day."), then dated nodes, each saying **why it mattered**, with the 1996 frame softening into the 2026 frame behind. The accent shifts from blue to orange as the nodes arrive. |
+| **CHAIN** | 11s | Opens with one line on why the innovations matter ("In the 30 years since, a series of breakthroughs led to the thinking machines we use every day."), then dated nodes, each saying **why it mattered**, with the 1996 frame softening into the 2026 frame behind. The accent shifts from blue to orange as the nodes arrive. |
 | **2026** | 8.5s | How it is solved now, from a real recorded transcript, in the 2026 register: **orange accent**. Ends on a plain note under a **1996 vs 2026** headline (so it reads as a comparison, not part of the answer above it). |
 
 Scene length is now about 40–50s (each beat is set per scene in its content file); with the 41s cold open and a 25s outro the film runs about 5:20.
+
+**Chain linger.** The finished chain (every node fully shown) stays for 2 seconds before the screen fades, so the nodes can be read; `check:content` fails a chain beat too short for its nodes (2 s linger plus 1.4 s per node).
 
 **Linger rule.** The note appears at `note.at` seconds into the 2026 beat (data, per scene) and the scene then holds for 5 seconds before advancing, so viewers can read the finished screen and take a breath. `npm run check:content` fails any scene whose 2026 beat is shorter than `note.at` + 0.5 s fade + 5 s.
 
@@ -99,19 +101,20 @@ Optional personal detail for the opening or outro: the Sinclair Spectrum bought 
 - **Note:** ECHO. Same cube law, same range, and no one gave it the rule. Its confidence is learned, so it can be wrong.
 - Not used: the thesis's rule that turns an exact "14" into "14 ± 0.2" (it contradicts its own description), and any numbers from Chapter 7 (it prints no uncertain outputs).
 
-### 6. Showing your work
-- **Problem:** An answer nobody can check is not trusted.
-- **1996:** ReportMaker lists the formulae in order with the source of every value (Fig 5.8). FailureReporter says why it failed and what to supply next (p.113–114).
-- **Chain:** LIME (2016) → SHAP (2017) → chain-of-thought as visible reasoning (2022) → mechanistic interpretability of language models (2020s).
-- **2026:** A reasoning trace with cited steps, or the model asking a clarifying question.
-- **Note:** ECHO. DIFFERS: a trace may not be the real reason for the answer (faithfulness). The Raindrop project goes after this directly.
+### 6. Showing our work (first cut built)
+- **Bridge (7 s):** "An answer nobody can check is not trusted. So my program wrote out its working: every formula, and where every value came from." (p.105: "The user will expect to see how the answer was derived".)
+- **1996 (27 s), the copper bar of scene 1, redrawn from the thesis's Explain window (Fig 5.8, p.105–106).** The answer first, then the explanation: each formula in the order it was used, with every value tagged given, from the knowledge base, or worked out above. The first answer is the program's real one, **8.23 × 10⁵ N**, computed from the formula as the thesis prints it (p.84): P = π E I / l². Then "Thirty years later, the working lets me check it": the π is ringed, Euler's formula has π squared, the missing square appears on screen, the old value is struck out and the answer is recomputed with the same values: **2.58 × 10⁶ N**. "An answer can be wrong. Without the working, how would we ever know?" The beat ends on an illustrated failure report (p.106–107): not solved, not enough known quantities, supply: temperature (the resistivity example in the thesis). All numbers on screen are computed from the data, using the report's own 3-figure value of I.
+- **Chain:** LIME (2016) → SHAP (2017) → Scratchpads (2021, "Show Your Work") → mechanistic interpretability (2024). Dates and attributions unverified.
+- **2026 (15.9 s, orange):** a real recorded reply (`s06-showing-our-work.json`) to the copper-bar question with the added request "Show your working, and say where each value comes from." It drew a table of quantities with their sources: given (radius, length), looked up (Young's modulus, a handbook value), **assumed** (end condition: pinned, "since the question doesn't specify"), worked out (I), used π² and got 2.5 MN, in line with the corrected 1996 figure. The film draws the table row by row with the same plain-word tags as the 1996 key, and shows the model's own answer line.
+- **Note:** DIFFERS. My report recorded what the program did. A model's explanation is more text, and may not be what happened inside it (faithfulness: the Raindrop project goes after this).
+- **Honest detail:** the formula in the program's knowledge base was missing a square (Jaron's reading: a ^2 left out when it was entered). The thesis's own printed answer reflects it.
 
 ### 7. The bottleneck
 - **Problem:** Everything above works only if someone typed in the knowledge.
 - **1996:** The knowledge base as a hand-entered list. A stress-engineering KB "would be a major endeavour" (p.181).
 - **Chain:** Wikipedia (2001) → Google Knowledge Graph (2012) → neural scaling laws (2020) → large language models trained on text.
 - **2026:** The knowledge is learned from text. The same raindrop question typed in English and answered.
-- **Note:** DIFFERS. A model has no guarantee the formula is right, and QPS did.
+- **Note:** DIFFERS. A model has no guarantee the formula is right. Neither did QPS: it applied whatever formula was typed in, as scene 6 showed. (Revise before building this scene.)
 
 ## Outro (4:35–5:00)
 

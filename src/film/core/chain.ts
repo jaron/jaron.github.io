@@ -13,6 +13,11 @@ import type { ChainData, Cue } from './types';
 const CHAINS = chainData as unknown as Record<string, ChainData>;
 const STEP_DUR = 0.7;     // morph spring per node
 const INTRO_FROM = 0.6, INTRO_GAP = 0.085;
+/** The finished chain (every node fully shown) stays this long before the screen fades out, so it can be read. */
+export const CHAIN_LINGER = 2;
+const NODE_POP = 0.55, FADE_OUT = 1.3;     // a node's pop-in, and how long before the beat's end the fade-out starts
+/** Time the intro line needs before the first node (shared with the content checker's arithmetic). */
+export const chainLead = (intro: string | undefined) => (intro ? INTRO_FROM + intro.split(' ').length * INTRO_GAP + 0.55 : 0.35);
 
 export const chainOf = (key: string): ChainData => {
   const c = CHAINS[key];
@@ -39,12 +44,12 @@ export class Chain {
   constructor(key: string, private dur: number) {
     this.data = chainOf(key);
     // the opening line needs room before the first node
-    this.lead = this.data.intro ? INTRO_FROM + this.data.intro.split(' ').length * INTRO_GAP + 0.55 : 0.35;
+    this.lead = chainLead(this.data.intro);
   }
   get nodes() { return this.data.nodes; }
 
   /** Time (seconds into the beat) node i appears. */
-  at(i: number) { const span = (this.dur - this.lead - 1.9) / Math.max(1, this.nodes.length - 1); return this.lead + i * span; }
+  at(i: number) { const span = (this.dur - this.lead - (FADE_OUT + CHAIN_LINGER + NODE_POP)) / Math.max(1, this.nodes.length - 1); return this.lead + i * span; }
 
   /** Morph scalar 0..1 at local time lt. Each node adds 1/N with an eased step. */
   k(lt: number) {
@@ -63,7 +68,7 @@ export class Chain {
     const L = this.layer; L.clear();
     const c = L.ctx;
     const n = this.nodes.length;
-    const fadeOut = 1 - ease.inOutCubic(prog(lt, this.dur - 1.3, this.dur - 0.3));
+    const fadeOut = 1 - ease.inOutCubic(prog(lt, this.dur - FADE_OUT, this.dur - 0.3));
     // each node carries its own colour: the line runs from signal blue (earliest) to orange (now)
     const at = (i: number) => accent(n === 1 ? 1 : i / (n - 1));
     const bone = (a: number) => `rgba(238,233,223,${a})`;
