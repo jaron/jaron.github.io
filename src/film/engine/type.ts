@@ -3,43 +3,31 @@
 import * as opentype from 'opentype.js';
 
 /**
- * Font keys. Archivo comes in static width instances (w = wdth*10) x weights so we can
- * animate width in discrete steps: 620, 750, 875, 1000, 1125, 1250 and weights 300/500/700/900.
+ * Font keys. Only the faces the film draws are shipped and loaded (the forked engine registered ~40; see git history
+ * for the full set). Archivo comes as static width instances (w = wdth*10) x weights: 1000 (normal width) at 500, 700
+ * and 900, plus 1125 at 900 for the cold open's slam. IBM Plex Mono is the machine voice (400, 500).
  */
-export const ARCHIVO_WIDTHS = [620, 750, 875, 1000, 1125, 1250] as const;
-export const ARCHIVO_WEIGHTS = [300, 500, 700, 900] as const;
+export const ARCHIVO_FACES = [[1000, 500], [1000, 700], [1000, 900], [1125, 900]] as const;
+const ARCHIVO_WEIGHTS = [500, 700, 900];
+const PLEX_WEIGHTS = [400, 500];
 
 /** `features`: OpenType features switched on for the face (Canvas2D has no font-feature-settings). */
 type FontDef = { family: string; file: string; features?: string };
 const DEFS: FontDef[] = [];
-for (const w of ARCHIVO_WIDTHS) for (const wt of ARCHIVO_WEIGHTS) DEFS.push({ family: `Archivo-${w}-${wt}`, file: `Archivo-w${w}-${wt}.ttf` });
-for (const w of [750, 1000]) for (const wt of [400, 800]) DEFS.push({ family: `ArchivoItalic-${w}-${wt}`, file: `ArchivoItalic-w${w}-${wt}.ttf` });
-// Cormorant defaults to old-style figures ("10" reads as "IO" at display sizes): lining figures instead
-for (const wt of [400, 600]) {
-  DEFS.push({ family: `Cormorant-${wt}`, file: `Cormorant-${wt}.ttf`, features: '"lnum" 1' });
-  DEFS.push({ family: `CormorantItalic-${wt}`, file: `CormorantItalic-${wt}.ttf`, features: '"lnum" 1' });
-}
-for (const [n, f] of [['300', 'Light'], ['400', 'Regular'], ['500', 'Medium'], ['600', 'SemiBold'], ['700', 'Bold']] as const)
-  DEFS.push({ family: `Plex-${n}`, file: `src/IBMPlexMono-${f}.ttf` });
-DEFS.push({ family: 'PlexItalic-400', file: 'src/IBMPlexMono-Italic.ttf' });
+for (const [w, wt] of ARCHIVO_FACES) DEFS.push({ family: `Archivo-${w}-${wt}`, file: `Archivo-w${w}-${wt}.ttf` });
+const PLEX_FILES: Record<number, string> = { 400: 'Regular', 500: 'Medium' };
+for (const wt of PLEX_WEIGHTS) DEFS.push({ family: `Plex-${wt}`, file: `src/IBMPlexMono-${PLEX_FILES[wt]}.ttf` });
 
 /** Convenience family names. */
 export const F = {
-  /** Archivo at nearest available width/weight. width in [62..125] (percent), weight 300..900 */
+  /** Archivo at the nearest shipped weight (500, 700 or 900); width in percent, 1125 is only available at 900. */
   archivo(width = 100, weight = 700): string {
-    const w = nearest(ARCHIVO_WIDTHS as unknown as number[], width * 10);
-    const wt = nearest(ARCHIVO_WEIGHTS as unknown as number[], weight);
+    const wt = nearest(ARCHIVO_WEIGHTS, weight);
+    const w = wt === 900 && width >= 106.25 ? 1125 : 1000;
     return `Archivo-${w}-${wt}`;
   },
-  archivoItalic(width = 100, weight = 800): string {
-    return `ArchivoItalic-${width < 88 ? 750 : 1000}-${weight < 600 ? 400 : 800}`;
-  },
-  serif(weight = 400, italic = false): string {
-    return `${italic ? 'CormorantItalic' : 'Cormorant'}-${weight < 500 ? 400 : 600}`;
-  },
-  mono(weight = 400, italic = false): string {
-    if (italic) return 'PlexItalic-400';
-    return `Plex-${nearest([300, 400, 500, 600, 700], weight)}`;
+  mono(weight = 400): string {
+    return `Plex-${nearest(PLEX_WEIGHTS, weight)}`;
   },
 };
 

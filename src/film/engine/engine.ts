@@ -6,7 +6,6 @@ import { DEFAULT_POST, Post, SHOULDER_GLSL, type PostParams } from './post';
 import { Hud, type Caption } from './hud';
 import type { Frame, Scene, SceneClass, SceneCtx, PostOverrides } from './scene';
 import { loadFonts } from './type';
-import { loadStrokeFonts } from './stroke';
 
 export interface TimelineEntry {
   id: string;
@@ -135,7 +134,7 @@ export class Engine {
   }
 
   async init(only?: (e: TimelineEntry) => boolean) {
-    await Promise.all([loadFonts(), loadStrokeFonts()]);
+    await loadFonts();
     this.timeline = this.makeTimeline();
     this.ctx = { renderer: this.renderer, comp: this.comp, W, H, id: '', params: {}, start: 0, end: 0 };
     this.post = new Post();

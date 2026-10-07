@@ -59,7 +59,7 @@ export class Hud {
     const x = W - 64, y = H - 66;
     c.textAlign = 'right';
     c.textBaseline = 'alphabetic';
-    c.font = font(F.serif(400, true), 26);
+    c.font = font(F.archivo(100, 500), 26);
     c.fillStyle = this.ink ? rgba('ink', 0.9) : rgba('bone', 0.85);
     // a soft halo keeps the caption legible over busy plates
     c.shadowColor = rgba('ink', 0.85);

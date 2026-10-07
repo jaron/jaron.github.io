@@ -222,7 +222,7 @@ Exposed as `window.film` and emitted as DOM events. `refs` is built from the act
 - Logical layout stays 1920×1080; `SCALE` (engine, set once at load) is 1 or 2.
 - Tier chosen at boot from a probe render: **high** (SCALE 2 on 4K/retina displays with headroom), **mid** (SCALE 1, full post), **low** (SCALE 1, bloom radius and grain reduced, no halation). The probe measures ~30 frames; if sustained < 30 fps on **low**, show the YouTube embed of the same film instead of the live canvas (privacy-enhanced `youtube-nocookie.com` embed, loaded only when needed, so nothing is requested from YouTube until then).
 - Budget: < 12 ms/frame at 1080p on a mid laptop. The placeholder measured 6.2 ms/frame on an M4 (no post tuning yet).
-- Loading: fonts and scene modules load behind a short "loading" state; scenes load lazily and the first scene starts as soon as it is ready. Archivo widths/weights unused by scenes are pruned from `public/fonts`.
+- Loading: fonts and scene modules load behind a short "loading" state; scenes load lazily and the first scene starts as soon as it is ready. Fonts that no scene draws are pruned from `public/fonts` (six faces load: four Archivo, two Plex Mono; `public/fonts/src` also keeps the variable Archivo and Plex files the PDF edition build uses).
 - `prefers-reduced-motion`: do not autoplay; show a poster frame and a play button.
 
 ## 11. Accessibility and fallbacks
