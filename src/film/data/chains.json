@@ -85,5 +85,54 @@
         "verified": false
       }
     ]
+  },
+  "backtracking": {
+    "intro": "Going back is still how hard problems get solved. Now the machine learns when to do it.",
+    "nodes": [
+      {
+        "year": 2006,
+        "name": "Monte Carlo tree search",
+        "gist": "A program could try many random lines of play and spend its effort on the branches that kept working.",
+        "source": {
+          "title": "Bandit based Monte-Carlo Planning",
+          "authors": "Kocsis, Szepesvári",
+          "url": "https://link.springer.com/chapter/10.1007/11871842_29"
+        },
+        "verified": false
+      },
+      {
+        "year": 2016,
+        "name": "AlphaGo",
+        "gist": "Networks trained on past games learned which branches were worth trying, so the shortcuts were no longer written by hand.",
+        "source": {
+          "title": "Mastering the game of Go with deep neural networks and tree search",
+          "authors": "Silver et al.",
+          "url": "https://www.nature.com/articles/nature16961"
+        },
+        "verified": false
+      },
+      {
+        "year": 2022,
+        "name": "Chain-of-thought prompting",
+        "gist": "Language models solved harder problems when they wrote out their steps, so the search could happen in words.",
+        "source": {
+          "title": "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models",
+          "authors": "Wei et al.",
+          "url": "https://arxiv.org/abs/2201.11903"
+        },
+        "verified": false
+      },
+      {
+        "year": 2024,
+        "name": "Reasoning models",
+        "gist": "Models trained by trial and reward learned to try an approach, notice it failing, and switch to another.",
+        "source": {
+          "title": "Learning to reason with LLMs",
+          "authors": "OpenAI",
+          "url": "https://openai.com/index/learning-to-reason-with-llms/"
+        },
+        "verified": false
+      }
+    ]
   }
 }

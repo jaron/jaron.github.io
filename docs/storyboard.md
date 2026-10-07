@@ -74,12 +74,12 @@ Optional personal detail for the opening or outro: the Sinclair Spectrum bought 
 - **2026 (12 s, orange):** "Now we don't tell it where to look. We just ask." Knowledge as a cloud of points; similar meanings sit close together; the question becomes a point; its nearest points light up and name what the real reply then uses (ideal gas law, molar mass of helium, volume of a cylinder); three verbatim lines from a recorded Claude run. A labelled, simplified illustration.
 - **Note:** DIFFERS. Nothing here solves P versus NP. A model finds by learned intuition, not by guarantee: usually right, never certain.
 
-### 3. Dead ends and loops
-- **Problem:** Some paths go nowhere, and some go in circles.
-- **1996:** Helium example (Fig 5.4, p.92–94): branches fail and retract, backtracking, a reappearing quantity kills the path (rejection strategy, p.95). The premature-rejection bug (Fig 5.5).
-- **Chain:** Monte Carlo tree search (2006) → AlphaGo (2016) → chain-of-thought prompting (2022) → tree-of-thoughts (2023) → reasoning models trained with reinforcement learning (2024–25).
-- **2026:** A model reasoning step by step, trying and abandoning approaches.
-- **Note:** ECHO for backtracking. DIFFERS: the thesis's tree is explicit and inspectable, a model's search is implicit.
+### 3. Dead ends and loops (first cut built)
+- **Bridge:** "Sometimes my program chose the wrong formula first. What mattered was that it noticed, and went back." (p.82: backtracking "retraces its steps to its most recent choice".)
+- **1996 (15 s), on the helium example again (Fig 5.4, thesis p.86–87, redrawn and simplified).** A cursor walks the search tree. F = m g needs the force; the only formula for force, F = m a, needs the mass: the goal has come back, a loop, so the path is abandoned (p.86 note 1). The cursor backs up to its last choice. m = M n works for the molar mass, but one way to get the moles needs a count of molecules that nothing supplies: a dead end. It backs up again; the gas law succeeds. Failed branches fade; only the path that worked stays lit ("the user will not be interested in the search paths that failed", p.105). Captions say each step in full sentences. The thesis's Fig 5.5 (premature rejection) is left out on purpose.
+- **Chain:** Monte Carlo tree search (2006) → AlphaGo (2016) → chain-of-thought prompting (2022) → reasoning models (2024). Dates and attributions unverified.
+- **2026 (12 s, orange):** "Now a model can do the same: try something, notice it's wrong, and go back." Four verbatim excerpts, in order, from the recorded run shown in scene 1 (`s03-dead-ends.json` is the same run without the trim): the claim (1.5 MN), the model's own working that disagrees, "I made an arithmetic slip above…", the corrected answer (2.5 MN). The first line is struck out and a curve backs up to it, like the cursor. Labelled as an arithmetic slip fixed in its own words, not a change of approach.
+- **Note:** ECHO. Same move: try, notice a dead end, go back. Then by rules I wrote; now learned from practice.
 
 ### 4. Knowing what to hand off
 - **Problem:** Reasoning and calculating are different jobs, and some problems break the main loop.

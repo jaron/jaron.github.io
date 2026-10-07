@@ -46,8 +46,17 @@ export interface MeaningSpec {
   highlight?: string[];
 }
 
+/** A model's real self-correction: the lines are verbatim excerpts, in order, from one recorded reply. */
+export interface CorrectionSpec {
+  kind: 'correction';
+  src: string;
+  lead: string;
+  lines: { role: 'claim' | 'working' | 'catch' | 'answer'; text: string }[];
+}
+
 export type Era2026Spec =
   | { kind: 'transcript'; src: string; highlight?: string[] }
+  | CorrectionSpec
   | LanguageSpec
   | MeaningSpec
   | { kind: 'raindrop'; src: string };
