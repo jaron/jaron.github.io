@@ -48,6 +48,11 @@ verifyRefs('data/cold-open.ts', cold.refs);
 console.log(`  ${'cold-open'.padEnd(22)} ${cold.duration}s  ${cold.refs.length} quotes checked`);
 total += cold.duration;
 
+// the outro's predictions
+const outro = (await import(pathToFileURL(join(root, 'data', 'outro.ts')).href)).OUTRO;
+verifyRefs('data/outro.ts', outro.refs);
+console.log(`  ${'outro'.padEnd(22)} ${outro.refs.length} quotes checked`);
+
 const dir = join(root, 'data', 'content');
 const files = readdirSync(dir).filter((f) => f.endsWith('.ts')).sort();
 const ids = new Set<string>();

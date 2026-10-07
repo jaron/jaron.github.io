@@ -1,6 +1,6 @@
 // The outro: pages of plain type, one after another, each clearing completely before the next. Pure data.
-// Planned: a page of the author's 1996 predictions and how they turned out will go before these (under discussion);
-// the film then ends on a parting thought, not on credits (credits live in the repository), and stays on that page.
+// Three of the author's 1996 predictions come first, each with how it turned out and a small drawing; the film then
+// ends on a parting thought, not on credits (credits live in the repository), and stays on that page.
 export interface Run {
   text: string;
   emphasis?: 'past' | 'present' | 'coda';
@@ -8,15 +8,65 @@ export interface Run {
   pauseBefore?: number;
   /** start a new paragraph: a blank line, then this run */
   newParagraph?: boolean;
+  /** type size for this run (default: the page's) */
+  size?: number;
+  /** pixels from the previous line's baseline to this run's first baseline (overrides newParagraph) */
+  gap?: number;
 }
-export interface OutroPage { id: string; runs: Run[]; size: number; /** seconds the finished page stays before it clears (or the film ends) */ hold: number }
+export interface Prediction {
+  /** thesis page the quote is on (printed number) */
+  page: number;
+  verdict: string;
+  /** orange when the 1996 idea came true, grey when it was a road not taken */
+  verdictKind: 'right' | 'missed';
+  art: 'agents' | 'graph' | 'desktop';
+}
+export interface OutroPage { id: string; runs: Run[]; size: number; prediction?: Prediction; maxW?: number; wordGap?: number; /** seconds the finished page stays before it clears (or the film ends) */ hold: number }
 
 const WORD_GAP = 0.19, LEAD_IN = 0.6, FADE = 0.6, GAP_BETWEEN = 0.4, END_FADE = 0;   // the final page stays on screen
 
 export const OUTRO = {
   label: 'A PARTING THOUGHT',
   wordGap: WORD_GAP, leadIn: LEAD_IN, fade: FADE, gapBetween: GAP_BETWEEN, endFade: END_FADE,
+  /** every quotation on the prediction pages, checked against the thesis text by check:content */
+  refs: [
+    { page: 163, pdfPage: 170, quote: 'system would consist of several domain experts' },
+    { page: 163, pdfPage: 170, quote: 'all controlled by the problem solver' },
+    { page: 162, pdfPage: 169, quote: 'already described some potential heuristics based on a knowledge base that learns from experience' },
+    { page: 162, pdfPage: 169, quote: 'However, heuristics will not improve the speed of search if insufficient knowledge has been provided to solve the problem' },
+    { page: 174, pdfPage: 181, quote: 'Perhaps one day people will run an automatic problem solver instead of reaching for a calculator' },
+  ] as { page: number; pdfPage: number; quote: string }[],
   pages: [
+    {
+      id: 'agents',
+      size: 30, maxW: 1060, wordGap: 0.15, hold: 4.5,
+      prediction: { page: 163, verdict: 'I WAS RIGHT, AGENTS WERE THE FUTURE!', verdictKind: 'right', art: 'agents' },
+      runs: [
+        { text: 'In my thesis, I made several predictions…', size: 30 },
+        { text: '“An agent based [solver] system would consist of several domain experts… all controlled by the problem solver.”', emphasis: 'past', size: 40, gap: 78, pauseBefore: 0.5 },
+        { text: 'I first met software agents in 1993. Each had its own specialism, took requests in a high-level language, and decided for itself how to react. Giving a general reasoning engine specialised tools to call is what we now call tool-calling.', gap: 136, pauseBefore: 0.9 },
+      ],
+    },
+    {
+      id: 'learned-choice',
+      size: 30, maxW: 1060, wordGap: 0.15, hold: 6,
+      prediction: { page: 162, verdict: 'LEARNING WAS TO PROVE FAR MORE IMPORTANT THAN STATIC KNOWLEDGE', verdictKind: 'right', art: 'graph' },
+      runs: [
+        { text: 'A Road Not Taken', size: 30 },
+        { text: '“[I have] already described some potential heuristics based on a knowledge base that learns from experience. However, heuristics will not improve the speed of search if insufficient knowledge has been provided to solve the problem.”', emphasis: 'past', size: 36, gap: 78, pauseBefore: 0.5 },
+        { text: 'Not having time to explore the emerging field of unsupervised learning is the road not taken I regret most. If only I’d found citation and social network analysis then. I’d have represented the knowledge base as a graph.', gap: 136, pauseBefore: 0.9 },
+      ],
+    },
+    {
+      id: 'calculator',
+      size: 30, maxW: 1060, wordGap: 0.15, hold: 5,
+      prediction: { page: 174, verdict: 'RIGHT, BUT NOT HOW I EXPECTED', verdictKind: 'right', art: 'desktop' },
+      runs: [
+        { text: 'The Calculator That Knows Everything', size: 30 },
+        { text: '“Perhaps one day people will run an automatic problem solver instead of reaching for a calculator.”', emphasis: 'past', size: 40, gap: 78, pauseBefore: 0.5 },
+        { text: 'It came true. But if you’d told me in 1996 that neural networks would be the technology that changed the world, I’d have been amazed. Back then they were black magic: weird and unintelligible. Look how they’ve grown.', gap: 136, pauseBefore: 0.9 },
+      ],
+    },
     {
       id: 'connections',
       size: 56,
@@ -46,7 +96,7 @@ export function wordTimes(p: OutroPage): number[] {
   let t = LEAD_IN;
   for (const r of p.runs) {
     t += r.pauseBefore ?? 0;
-    for (const _ of r.text.split(/[ \t\r\n]+/).filter(Boolean)) { times.push(t); t += WORD_GAP; }
+    for (const _ of r.text.split(/[ \t\r\n]+/).filter(Boolean)) { times.push(t); t += p.wordGap ?? WORD_GAP; }
   }
   return times;
 }
@@ -56,7 +106,7 @@ export function outroTimes() {
   let t = 0;
   const out = OUTRO.pages.map((p, i) => {
     const wt = wordTimes(p);
-    const typed = wt[wt.length - 1]! + WORD_GAP + 0.3;
+    const typed = wt[wt.length - 1]! + (p.wordGap ?? WORD_GAP) + 0.3;
     const start = t;
     const clearAt = start + typed + p.hold;                 // the page is finished, has held, and now clears
     const last = i === OUTRO.pages.length - 1;
