@@ -8,7 +8,7 @@ import { LineBatch } from '../engine/lines';
 import { LIN, rgba } from '../engine/palette';
 import { F, font } from '../engine/type';
 import { clamp, ease, lerp, prog, pulse } from '../engine/util';
-import { fillBigText, ruledSheet, wrap } from '../core/draw';
+import { fillBigText, wrap } from '../core/draw';
 import type { Cue } from '../core/types';
 import { COLD_OPEN as C, type Beat } from '../data/cold-open';
 import tree from '../data/figures/raindrop.json';
@@ -138,7 +138,6 @@ export default class ColdOpen extends Scene {
 
   // ------------------------------------------------------------------ A: the title, then the challenge
   private partA(t: number, c: CanvasRenderingContext2D, lb: LineBatch) {
-    ruledSheet(lb, 0.06);
     const ch = C.challenge, ti = C.title;
     const exit = ease.inOutCubic(prog(t, ch.exitAt, ch.end));
     const keep = 1 - exit;
@@ -212,7 +211,6 @@ export default class ColdOpen extends Scene {
 
   // ------------------------------------------------------------------ B: the problem, then the chain of questions
   private partB(t: number, c: CanvasRenderingContext2D, lb2: LineBatch, lb3: LineBatch, _out: THREE.WebGLRenderTarget) {
-    ruledSheet(lb2, 0.05);
     this.poseCache = this.pose(t);
     this.applyCamera();
     const reveal = prog(t, C.reveal.from, C.reveal.to);
@@ -413,10 +411,6 @@ export default class ColdOpen extends Scene {
 
   /** the wireframe tree, with each node carrying its property name, its value and where the value came from */
   private drawTree(t: number, lb: LineBatch, c: CanvasRenderingContext2D, reveal: number) {
-    // faint ground for depth
-    for (let i = -6; i <= 14; i++) lb.seg(i * 380, -480, 200, i * 380, -480, -1100, 1, LIN.graphite[0], LIN.graphite[1], LIN.graphite[2], 0.05 + 0.04 * reveal);
-    for (let k = 0; k <= 8; k++) lb.seg(-2000, -480, 200 - k * 160, 5800, -480, 200 - k * 160, 1, LIN.graphite[0], LIN.graphite[1], LIN.graphite[2], 0.05 + 0.04 * reveal);
-
     const dim = lerp(0.8, 1, reveal);
     const textFade = 1 - prog(t, C.reveal.from, C.reveal.from + 0.8);
     for (const n of NODES) {

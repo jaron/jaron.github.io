@@ -36,6 +36,13 @@
       #play { flex: none; width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; padding: 0; background: rgba(5, 5, 7, 0.62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border: 1px solid rgba(238, 233, 223, 0.3); border-radius: 50%; color: #eee9df; cursor: pointer; opacity: 0.82; transition: opacity .3s, border-color .2s; }
       #play:hover, #play:focus-visible { opacity: 1; border-color: #007aff; outline: none; }
       #play svg { width: 16px; height: 16px; }
+      #play .i-replay { display: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+      #play .lbl { display: none; letter-spacing: 0.2em; }
+      /* once the film has ended the play button becomes REPLAY, at the bottom left of the final page */
+      #play[data-state="ended"] { width: auto; gap: 10px; padding: 0 20px 0 14px; border-radius: 999px; border-color: rgba(238, 233, 223, 0.55); opacity: 1; }
+      #play[data-state="ended"] .i-play, #play[data-state="ended"] .i-pause { display: none; }
+      #play[data-state="ended"] .i-replay, #play[data-state="ended"] .lbl { display: inline; }
+      #play[data-state="ended"] svg { width: 18px; height: 18px; }
       #play[data-state="playing"] .i-play, #play[data-state="paused"] .i-pause { display: none; }
       #seek { flex: 1 1 auto; min-width: 0; }
       #play, #seek { pointer-events: auto; }
@@ -71,7 +78,9 @@
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <g class="i-pause"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></g>
           <path class="i-play" d="M8 5.2v13.6L19 12z" />
+          <g class="i-replay"><path d="M4 12a8 8 0 1 0 2.6-5.9" /><path d="M4 4v4.6h4.6" /></g>
         </svg>
+        <span class="lbl">REPLAY</span>
       </button>
       <div id="seek" role="progressbar" aria-label="Film progress" aria-valuemin="0" aria-valuenow="0">
         <div id="seekLabel"></div>

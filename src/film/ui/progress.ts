@@ -9,7 +9,7 @@ const IDLE_MS = 2600, FIRST_SHOW_MS = 4500, DRAG_PX = 4;
 interface Seg { span: SceneSpan; el: HTMLElement; fill: HTMLElement; label: string }
 
 const labelOf = (s: SceneSpan) =>
-  s.content ? `${s.content.number} of ${s.content.total} · ${s.content.title}` : 'The challenge';
+  s.content ? `${s.content.number} of ${s.content.total} · ${s.content.title}` : (s.label ?? 'The challenge');
 
 export function mountProgress(ctl: FilmController, spans: SceneSpan[]) {
   const dock = document.getElementById('dock');
@@ -56,8 +56,8 @@ export function mountProgress(ctl: FilmController, spans: SceneSpan[]) {
   playBtn.addEventListener('click', () => { ctl.toggle(); wake(); });
   const syncPlay = () => {
     const playing = ctl.playing;
-    playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
-    playBtn.dataset.state = playing ? 'playing' : 'paused';
+    playBtn.setAttribute('aria-label', ctl.ended ? 'Replay' : playing ? 'Pause' : 'Play');
+    playBtn.dataset.state = ctl.ended ? 'ended' : playing ? 'playing' : 'paused';
     if (!playing) dock.classList.remove('idle');
   };
   window.addEventListener('film:state', syncPlay);

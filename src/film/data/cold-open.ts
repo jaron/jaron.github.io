@@ -26,7 +26,7 @@ export const COLD_OPEN = {
   duration: 39,
   /** the film opens on its title; it clears away as the date and the supervisor's challenge arrive */
   title: {
-    lines: ['How I got', 'machines', 'to think.'],
+    lines: ['How I made', 'a machine', 'think'],
     tag: '(in 1996)',
     sub: 'A PhD thesis in artificial intelligence, thirty years on',
     exitAt: 3.7, end: 4.2,

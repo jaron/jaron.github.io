@@ -56,7 +56,7 @@ Personal framing, then a concrete scientific problem, then the machine's reasoni
 
 **Pull-back (0:34–0:37).** The camera pulls back to show the whole tree: "GOAL-DIRECTED SEARCH · 1996. Each question was a node in a search tree."
 
-**C. Title card (0:37–0:41).** **How I got machines to think** with **(in 1996)** in blue beneath, and a small line: "A PhD thesis in artificial intelligence, thirty years on."
+**C. Title card (0:37–0:41).** **How I made a machine think** with **(in 1996)** in blue beneath, and a small line: "A PhD thesis in artificial intelligence, thirty years on."
 
 Removed from earlier drafts: the Whitman epigraph (it added nothing) and every on-screen mention of "QPS" (nobody knows what it means). The thesis's own name for its system stays in documentation only.
 
@@ -118,11 +118,16 @@ Optional personal detail for the opening or outro: the Sinclair Spectrum bought 
 - **Note:** DIFFERS. Typed in by hand then; learned at scale now. Errors wash out, but there is no single entry to check. (Sutton's essay says "general methods that leverage computation are ultimately the most effective"; the idea that errors wash out at scale is the film's own argument, not attributed to Sutton.)
 - **Honest limits:** GPT-3's mix is shown because its makers published it; Claude's own training data is not shown. A model's knowledge also has no guarantee, and cannot say which source a value came from.
 
-## Outro (4:35–5:00)
+## Outro (about 30 s so far, first cut of the last pages)
 
-Callback to the opening challenge: build software better at solving scientific problems than I was. In 2026 the answer is, on many problems, yes. State it plainly, with the caveat from scene 7.
+**Format (Jaron's):** look back at what the thesis predicted in 1996: what turned out right, and what turned out differently. The candidate predictions (all verbatim in Chapter 8 and the conclusions) are listed in `docs/roadmap.md`; which to use is still being decided, so those pages are not built yet and will go before the parting thought.
 
-Then the closing line from p.181: *"Perhaps one day people will run an automatic problem solver instead of reaching for a calculator."* End on the Whitman epigraph and "30 years".
+**The last pages: a parting thought, not credits** (credits live in the repository). Two pages of plain type, each appearing word by word, holding, and clearing completely before the next; the film then fades out.
+
+1. "We never know where our roads will lead. How the endeavours of one will become the inspirations of another. The story you've been watching is how technology is **a tale of connections**, from past and present, laying the foundations for possibilities yet to come." (The thesis's own last chapter opens with Frost's "The Road Not Taken".)
+2. "Sometimes the connections are simple acts of kindness, like the time my father bought me a Sinclair Spectrum home computer in the summer of 1983, and encouraged me to use it. Looking back, his inspired decision was the first step on the road that culminated in this thesis, and what you're reading now. **Thanks Dad.**" (From the thesis's acknowledgements, adapted.) Then a pause (2.4 s), a blank line, and the coda, in bold white: **Everything worthwhile is built from love.** The film stays on this last page (no fade out) and offers a replay at the bottom left.
+
+The Whitman epigraph from the early draft is not used.
 
 ## Decisions
 

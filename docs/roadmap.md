@@ -21,6 +21,10 @@ Status as of 2026-10-05. Detail lives in [spec.md](spec.md) (film), [storyboard.
 - Thesis text extracted (marker, 196 pages) and used for page-accurate quote checking.
 - **Re-typeset 2026 edition PDF** (192 pages): `source/thesis-2026-edition.pdf`, built by `edition/build.mjs`.
 
+## Outro: candidate predictions (Jaron is deciding)
+
+Verbatim from the thesis, with the verdict against scenes 1–7. **Right:** agents ("several domain experts… all controlled by the problem solver", p.163); linking to third-party tools (p.165); formulae chosen by past success, i.e. learned shortcuts (p.162); default values for implicit facts like temperature (p.162); explanations "tailored to the inexperience, expertise or scepticism of the reader" (p.164); education as the first application (p.164); AI to "solve problems autonomously" (p.165); "instead of reaching for a calculator" (p.174). **Different:** the stress-engineering knowledge base "would be a major endeavour" (p.174; it was absorbed from text instead); knowledge bases growing in size (p.174; scale mattered, but learned); component frameworks "hailed as the solution to bloated software" (p.158; OpenDoc was cancelled in 1997, to verify); a Java-enabled browser client (p.161; the browser won, Java applets did not); partitioning knowledge by domain (p.162; one network holds it all); uncertainty as lower/best/upper ranges (p.130; models state ranges in words). Pages are thesis page numbers.
+
 ## Next: the film
 
 | # | Item | Notes |

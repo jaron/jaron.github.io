@@ -7,7 +7,7 @@ import { LineBatch } from '../engine/lines';
 import { LIN, rgba } from '../engine/palette';
 import { F, font } from '../engine/type';
 import { prog } from '../engine/util';
-import { ruledSheet, wrap } from '../core/draw';
+import { wrap } from '../core/draw';
 import { Note } from '../core/note';
 import type { Cue, Era2026Renderer, Era2026Spec, Local, SceneContent } from '../core/types';
 
@@ -63,7 +63,6 @@ export default class TranscriptRenderer implements Era2026Renderer {
     const lb = this.lb; lb.clear();
     const T = this.text; T.clear();
     const c = T.ctx;
-    ruledSheet(lb, 0.05);
     c.textBaseline = 'alphabetic';
 
     c.font = font(F.mono(500), 18);

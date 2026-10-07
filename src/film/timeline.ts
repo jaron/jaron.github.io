@@ -17,13 +17,14 @@ const contentFiles = import.meta.glob<SceneContent>('./data/content/*.ts', { eag
 export const CONTENT: SceneContent[] = Object.keys(contentFiles).sort().map((k) => contentFiles[k]!);
 
 import { COLD_OPEN as COLD } from './data/cold-open';
+import { OUTRO_DURATION } from './data/outro';
 const COLD_OPEN = COLD.duration;
 
 interface Built { entries: TimelineEntry[]; spans: SceneSpan[]; duration: number }
 
 export function buildTimeline(): Built {
   const entries: TimelineEntry[] = [{ id: 'cold-open', load: scene('cold-open'), start: 0, end: COLD_OPEN }];
-  const spans: SceneSpan[] = [{ id: 'cold-open', start: 0, end: COLD_OPEN }];
+  const spans: SceneSpan[] = [{ id: 'cold-open', start: 0, end: COLD_OPEN, label: 'The challenge' }];
   let t = COLD_OPEN;
   for (const content of CONTENT) {
     const end = t + sceneDuration(content);
@@ -31,5 +32,9 @@ export function buildTimeline(): Built {
     spans.push({ id: content.id, start: t, end, content, beats: beatSpans(content) });
     t = end;
   }
+  // the outro: a parting thought, then the end
+  entries.push({ id: 'outro', load: scene('outro'), start: t, end: t + OUTRO_DURATION });
+  spans.push({ id: 'outro', start: t, end: t + OUTRO_DURATION, label: 'A parting thought' });
+  t += OUTRO_DURATION;
   return { entries, spans, duration: t };
 }

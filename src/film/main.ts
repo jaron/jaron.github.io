@@ -1,4 +1,4 @@
-// Mode 1 player: autoplays silently on load; sound is opt-in. Space pauses, arrows seek. ui/progress.ts is the viewer's
+// Mode 1 player: autoplays silently on load; sound is opt-in. Space pauses (or replays at the end), arrows seek. The film stops at its end and offers a replay; it does not loop. ui/progress.ts is the viewer's
 // progress bar (sections, label, play/pause, click to jump a scene, drag to scrub).
 // `?debug` shows a scrubber and fps, `?t=12` starts at a time. Frames are a pure function of time.
 import { Engine } from './engine/engine';

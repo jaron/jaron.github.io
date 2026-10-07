@@ -11,7 +11,7 @@ import { LineBatch } from '../engine/lines';
 import { LIN, rgba } from '../engine/palette';
 import { F, font } from '../engine/type';
 import { ease, lerp, prog } from '../engine/util';
-import { fillBigText, ruledSheet, wrap } from '../core/draw';
+import { fillBigText, wrap } from '../core/draw';
 import type { Cue, Era1996Renderer, Local, SceneContent } from '../core/types';
 
 interface Category { id: string; label: string; count: number; color: 'signal' | 'bone' | 'ember' | 'ash' }
@@ -61,7 +61,6 @@ export default class KnowledgeRenderer implements Era1996Renderer {
     const T = this.text; T.clear();
     const c = T.ctx;
     c.textBaseline = 'alphabetic';
-    ruledSheet(lb, 0.05);
 
     c.font = font(F.mono(500), 18); c.letterSpacing = '4px'; c.fillStyle = rgba('bone', 1);
     c.fillText('1996', 96, 140); c.letterSpacing = '0px';

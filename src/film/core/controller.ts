@@ -5,17 +5,19 @@ import { sceneDuration, type SceneContent } from './types';
 
 export type FilmBeat = BeatName | 'intro' | 'outro';
 export interface FilmState {
-  t: number; playing: boolean; muted: boolean;
+  t: number; playing: boolean; muted: boolean; /** the film has played to its end and stopped */ ended: boolean;
   scene: string | null; beat: FilmBeat | null; chainNode: number | null;
   refs: ThesisRef[];
 }
 
-export interface SceneSpan { id: string; start: number; end: number; content?: SceneContent; beats?: { name: BeatName; start: number; end: number }[] }
+export interface SceneSpan { id: string; start: number; end: number; /** what the progress bar calls this section when it has no scene content */ label?: string; content?: SceneContent; beats?: { name: BeatName; start: number; end: number }[] }
 
 export class FilmController {
   t = 0;
   playing = true;
   muted = true;
+  /** True once the film has reached its end: it stops there (no looping) until it is replayed. */
+  ended = false;
   /** Set true for one frame after any jump, so the audio engine and stateful scenes can flush. */
   seeked = true;
   private listeners = new Set<(s: FilmState) => void>();
@@ -24,10 +26,12 @@ export class FilmController {
 
   constructor(public duration: number, private spans: SceneSpan[]) {}
 
-  play() { this.playing = true; this.emit(); }
+  play() { if (this.ended) { this.replay(); return; } this.playing = true; this.emit(); }
+  /** Start again from the beginning. */
+  replay() { this.ended = false; this.t = 0; this.seeked = true; this.playing = true; this.emit(); }
   pause() { this.playing = false; this.emit(); }
   toggle() { this.playing ? this.pause() : this.play(); }
-  seek(t: number) { this.t = Math.max(0, Math.min(this.duration - 0.001, t)); this.seeked = true; this.emit(); }
+  seek(t: number) { this.t = Math.max(0, Math.min(this.duration - 0.001, t)); this.seeked = true; if (this.t < this.duration - 0.05) this.ended = false; this.emit(); }
   seekTo(sceneId: string, beat?: string) {
     const s = this.spans.find((x) => x.id === sceneId);
     if (!s) return;
@@ -37,7 +41,7 @@ export class FilmController {
   advance(dt: number) {
     if (!this.playing) return;
     this.t += dt;
-    if (this.t >= this.duration) { this.t = 0; this.seeked = true; }
+    if (this.t >= this.duration) { this.t = this.duration - 0.001; this.playing = false; this.ended = true; this.seeked = true; this.emit(); }
   }
 
   getState(): FilmState {
@@ -51,9 +55,9 @@ export class FilmController {
         if (beat === 'chain' && b) chainNode = this.chainIndex(span.id, lt - b.start);
         const c = span.content;
         refs = beat === 'bridge' ? c.bridge.refs ?? [] : beat === 'problem' ? c.problem?.refs ?? [] : beat === 'era1996' ? c.era1996.refs : [];
-      } else beat = 'intro';
+      } else beat = span.id === 'outro' ? 'outro' : 'intro';
     }
-    return { t: this.t, playing: this.playing, muted: this.muted, scene: span?.id ?? null, beat, chainNode, refs };
+    return { t: this.t, playing: this.playing, muted: this.muted, ended: this.ended, scene: span?.id ?? null, beat, chainNode, refs };
   }
 
   on(event: 'state', cb: (s: FilmState) => void) { void event; this.listeners.add(cb); return () => { this.listeners.delete(cb); }; }
@@ -63,7 +67,7 @@ export class FilmController {
 
   private emit() {
     const s = this.getState();
-    const key = `${s.scene}|${s.beat}|${s.chainNode}|${s.playing}|${s.muted}`;
+    const key = `${s.scene}|${s.beat}|${s.chainNode}|${s.playing}|${s.muted}|${s.ended}`;
     if (key === this.last) return;
     this.last = key;
     this.listeners.forEach((cb) => cb(s));

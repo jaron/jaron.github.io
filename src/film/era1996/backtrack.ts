@@ -10,7 +10,7 @@ import { LineBatch } from '../engine/lines';
 import { LIN, rgba } from '../engine/palette';
 import { F, font } from '../engine/type';
 import { clamp, ease, lerp, prog } from '../engine/util';
-import { ruledSheet, wrap } from '../core/draw';
+import { wrap } from '../core/draw';
 import type { Cue, Era1996Renderer, Local, SceneContent } from '../core/types';
 
 type NodeKind = 'goal' | 'formula' | 'quantity' | 'known' | 'fail';
@@ -79,7 +79,6 @@ export default class BacktrackRenderer implements Era1996Renderer {
     const T = this.text; T.clear();
     const c = T.ctx;
     c.textBaseline = 'alphabetic';
-    ruledSheet(lb, 0.05);
     const sig = LIN.signal;
 
     // header

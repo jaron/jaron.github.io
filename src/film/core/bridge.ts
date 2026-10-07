@@ -7,7 +7,7 @@ import { LineBatch } from '../engine/lines';
 import { LIN, rgba } from '../engine/palette';
 import { F, font } from '../engine/type';
 import { clamp, ease, prog } from '../engine/util';
-import { ruledSheet, wrap } from './draw';
+import { wrap } from './draw';
 import type { Cue, Local, SceneContent } from './types';
 
 const FROM = 0.4;       // first word
@@ -26,7 +26,6 @@ export class BridgeBeat {
     const lb = this.lb; lb.clear();
     const T = this.text; T.clear();
     const c = T.ctx;
-    ruledSheet(lb, 0.06);
     c.textBaseline = 'alphabetic';
 
     // which problem this is

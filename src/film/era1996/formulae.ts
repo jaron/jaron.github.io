@@ -10,7 +10,7 @@ import { LineBatch } from '../engine/lines';
 import { LIN, rgba } from '../engine/palette';
 import { F, font, measure } from '../engine/type';
 import { clamp, ease, lerp, mulberry32, prog } from '../engine/util';
-import { fillBigText, ruledSheet, wrap } from '../core/draw';
+import { fillBigText, wrap } from '../core/draw';
 import type { Cue, Era1996Renderer, Local, SceneContent } from '../core/types';
 
 interface Cand { formula: string; unknowns: string[] }
@@ -73,7 +73,6 @@ export default class FormulaeRenderer implements Era1996Renderer {
     const T = this.text; T.clear();
     const c = T.ctx;
     c.textBaseline = 'alphabetic';
-    ruledSheet(lb, 0.05);
     const sig = LIN.signal;
 
     // header

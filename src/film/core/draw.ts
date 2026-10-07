@@ -1,14 +1,5 @@
-// Small drawing helpers shared by beats: the ruled sheet, word wrapping, span measuring.
-import { W } from '../engine/gl';
-import type { LineBatch } from '../engine/lines';
-import { LIN } from '../engine/palette';
+// Small drawing helpers shared by beats: word wrapping, span measuring, the 1996 frame rate, big type.
 import { textPath2D } from '../engine/type';
-
-/** The faint ruled plate every figure sits on. */
-export function ruledSheet(lb: LineBatch, alpha = 0.07) {
-  for (let x = 96; x <= W - 96; x += 96) lb.seg2(x, 96, x, 984, 1, LIN.graphite, alpha);
-  for (let y = 96; y <= 984; y += 96) lb.seg2(96, y, W - 96, y, 1, LIN.graphite, alpha);
-}
 
 export interface WrappedLine { text: string; start: number; y: number }
 

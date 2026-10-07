@@ -7,7 +7,7 @@ import { LineBatch } from '../engine/lines';
 import { LIN, rgba } from '../engine/palette';
 import { F, font } from '../engine/type';
 import { clamp, ease, prog } from '../engine/util';
-import { ruledSheet, spanOnLine, wrap } from '../core/draw';
+import { spanOnLine, wrap } from '../core/draw';
 import type { Cue, Era1996Renderer, Local, SceneContent } from '../core/types';
 
 interface Field { key: string; value: string; from: string[] }
@@ -40,7 +40,6 @@ export default class FormRenderer implements Era1996Renderer {
     const lb = this.lb; lb.clear();
     const T = this.text; T.clear();
     const c = T.ctx;
-    ruledSheet(lb, 0.06);
 
     c.textBaseline = 'alphabetic';
     c.font = font(F.mono(500), 18);

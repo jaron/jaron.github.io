@@ -6,7 +6,7 @@ import { LineBatch } from '../engine/lines';
 import { LIN, rgba } from '../engine/palette';
 import { F, font } from '../engine/type';
 import { clamp, ease, prog } from '../engine/util';
-import { ruledSheet, wrap } from './draw';
+import { wrap } from './draw';
 import type { Cue, Local, SceneContent } from './types';
 
 const WORD_AT = 0.18;       // first word, seconds into the beat
@@ -27,7 +27,6 @@ export class ProblemBeat {
     const lb = this.lb; lb.clear();
     const T = this.text; T.clear();
     const c = T.ctx;
-    ruledSheet(lb);
 
     // figure label + scene marker
     c.textBaseline = 'alphabetic';
