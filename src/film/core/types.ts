@@ -72,8 +72,26 @@ export interface ToolCallSpec {
   highlight?: string[];
 }
 
+/** A model's own estimates and ranges, drawn as triangles. Each range's evidence must appear in the recorded reply. */
+export interface RangeSpec {
+  kind: 'range';
+  src: string;
+  /** the question put to the model when the run was recorded (scripts/capture-transcript.ts) */
+  prompt: string;
+  lead: string;
+  /** what the numbers are measured in, e.g. 'µN', and the span of the axis */
+  unit: string;
+  axis: { min: number; max: number; step: number };
+  /** the ranges the model gave, headline first; `evidence` is a verbatim fragment of its reply that states them */
+  ranges: { label: string; low: number; best: number; high: number; evidence: string }[];
+  /** verbatim lines from the model's reply, in order */
+  reply: string[];
+  highlight?: string[];
+}
+
 export type Era2026Spec =
   | { kind: 'transcript'; src: string; highlight?: string[] }
+  | RangeSpec
   | ToolCallSpec
   | CorrectionSpec
   | LanguageSpec

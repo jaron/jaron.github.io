@@ -2,6 +2,7 @@ import type { Era2026Renderer, Era2026Spec, SceneContent } from '../core/types';
 import CorrectionRenderer from './correction';
 import LanguageRenderer from './language';
 import MeaningRenderer from './meaning';
+import RangeRenderer from './range';
 import ToolCallRenderer from './toolcall';
 import TranscriptRenderer from './transcript';
 
@@ -11,6 +12,7 @@ export function createEra2026(spec: Era2026Spec, content: SceneContent): Era2026
   switch (spec.kind) {
     case 'transcript': return new TranscriptRenderer(content);
     case 'language': return new LanguageRenderer(content);
+    case 'range': return new RangeRenderer(content);
     case 'toolcall': return new ToolCallRenderer(content);
     case 'correction': return new CorrectionRenderer(content);
     case 'meaning': return new MeaningRenderer(content);

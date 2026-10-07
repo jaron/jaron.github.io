@@ -85,7 +85,7 @@ for (const f of files) {
     if (years.some((y, i) => i && y < years[i - 1]!)) fail(`${where}: chain years are not in order`);
   }
 
-  if (c.era2026.kind === 'transcript' || c.era2026.kind === 'language' || c.era2026.kind === 'meaning' || c.era2026.kind === 'correction' || c.era2026.kind === 'toolcall') {
+  if (c.era2026.kind === 'transcript' || c.era2026.kind === 'language' || c.era2026.kind === 'meaning' || c.era2026.kind === 'correction' || c.era2026.kind === 'toolcall' || c.era2026.kind === 'range') {
     const tp = join(root, 'data', 'transcripts', `${c.era2026.src}.json`);
     if (!existsSync(tp)) fail(`${where}: transcript ${c.era2026.src}.json missing`);
     else {
@@ -100,6 +100,15 @@ for (const f of files) {
         if (!m.clusters.some((x: { name: string }) => x.name === m.question.near)) fail(`${where}: question.near '${m.question.near}' is not a cluster`);
         if (m.found.length > 3) fail(`${where}: at most 3 found labels are supported`);
         for (const line of m.reply) if (!shown.split('\n').includes(line)) fail(`${where}: reply line is not verbatim in the transcript: "${line}"`);
+      }
+      if (c.era2026.kind === 'range') {
+        const rg = c.era2026;
+        const text = t.turns.map((x: { text?: string }) => x.text ?? '').join('\n').replace(/\*\*/g, '');
+        const raw = t.turns.map((x: { text?: string }) => x.text ?? '').join('\n');
+        for (const l of rg.reply) if (!text.includes(l)) fail(`${where}: reply line is not verbatim in the recorded reply: "${l}"`);
+        for (const r of rg.ranges) if (!raw.includes(r.evidence) && !text.includes(r.evidence)) fail(`${where}: range "${r.label}" evidence is not in the reply: "${r.evidence}"`);
+        for (const h of rg.highlight ?? []) if (!rg.reply.join(' ').includes(h)) fail(`${where}: highlight "${h}" is not in the reply lines shown`);
+        if (rg.prompt !== t.prompt) fail(`${where}: prompt in the content file differs from the one recorded`);
       }
       if (c.era2026.kind === 'toolcall') {
         const tc = c.era2026;

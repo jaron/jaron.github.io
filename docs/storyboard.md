@@ -89,12 +89,13 @@ Optional personal detail for the opening or outro: the Sinclair Spectrum bought 
 - **Note:** ECHO. Same split. I wired in each specialist; now the model chooses when to call a tool.
 - **Saved for the outro:** the thesis's own agents idea (p.163: domain experts "controlled by the problem solver").
 
-### 5. Admitting uncertainty
-- **Problem:** Real data is never exact. Floating-point numbers pretend it is.
-- **1996:** Triangular fuzzy numbers carried through every calculation (Ch. 6), widening as they propagate. Brief nod to the Shorts stress problems (Ch. 7).
-- **Chain:** Bayesian networks (Pearl, 1988, the era QPS lived in) → Monte Carlo dropout (2016) → calibration of neural networks (2017) → language models that estimate their own correctness (2022).
-- **2026:** Probability distributions over outputs, calibrated confidence.
-- **Note:** ECHO, loosely. Fuzzy membership is not probability, and the thesis says so (§6.3.2).
+### 5. Knowing how sure we are (first cut built)
+- **Bridge (6.5 s):** "Every measurement is a little wrong. A single number pretends otherwise. So my program carried each number's uncertainty through every step." (p.109: "Almost all numerical scientific data is subject to error".)
+- **1996 (19 s), the film's own raindrop again.** Each value is a triangle: a best guess with a lower and an upper bound (the thesis's triangular fuzzy number, p.130), drawn on a common ±20% axis. Rows follow the cold open's tree: diameter, radius, volume, mass, force. The thesis's own arithmetic carries all three values through each rule, so the range widens: ±5% on the diameter becomes about −14% / +16% on the force, because the radius is cubed. Output: 5.1 µN, between 4.4 and 5.9. A funnel from the diameter's bounds down to the force's bounds makes the widening visible. The ±0.05 mm measurement error is an assumption for illustration, and the screen says so. Why a range and not a probability: probability needs at least 200 measurements (p.119); an engineer with one ruler has one. The scene's closing line is the Russell epigraph from the head of the thesis's chapter 6 (p.108), attributed to Russell alone, which appears once the old screen has fully faded once the old screen has fully faded.
+- **Chain:** Bayesian networks (Pearl, 1988) → Monte Carlo dropout (2016) → calibration of neural networks (2017) → language models that estimate their own correctness (2022). Dates and attributions unverified.
+- **2026 (13 s, orange):** a real recorded reply (`s05-uncertainty.json`) to the film's raindrop question with an added request: "Give your best estimate and a range showing how uncertain it is." Excerpts, in order: the cube law ("Force scales as d³"), the range for a diameter of 0.95 to 1.05 mm (4.4 to 5.9 × 10⁻⁶ N, the same as the 1996 illustration), its best estimate (5.1 µN), and its own plausible range (4 to 7 × 10⁻⁶ N). Both ranges are drawn as triangles. The footnote says the model was asked for a range.
+- **Note:** ECHO. Same cube law, same range, and no one gave it the rule. Its confidence is learned, so it can be wrong.
+- Not used: the thesis's rule that turns an exact "14" into "14 ± 0.2" (it contradicts its own description), and any numbers from Chapter 7 (it prints no uncertain outputs).
 
 ### 6. Showing your work
 - **Problem:** An answer nobody can check is not trusted.

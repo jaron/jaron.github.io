@@ -183,5 +183,54 @@
         "verified": false
       }
     ]
+  },
+  "uncertainty": {
+    "intro": "Machines have since learned to say how sure they are, and to be tested on whether they are right.",
+    "nodes": [
+      {
+        "year": 1988,
+        "name": "Bayesian networks",
+        "gist": "Probability became the standard way for a machine to say how sure it is, and to update that as evidence arrives.",
+        "source": {
+          "title": "Probabilistic Reasoning in Intelligent Systems",
+          "authors": "Pearl",
+          "url": "https://doi.org/10.1016/C2009-0-27609-4"
+        },
+        "verified": false
+      },
+      {
+        "year": 2016,
+        "name": "Monte Carlo dropout",
+        "gist": "A neural network could ask the same question many times with parts switched off, and read its uncertainty from how much the answers differed.",
+        "source": {
+          "title": "Dropout as a Bayesian Approximation",
+          "authors": "Gal, Ghahramani",
+          "url": "https://arxiv.org/abs/1506.02142"
+        },
+        "verified": false
+      },
+      {
+        "year": 2017,
+        "name": "Calibration",
+        "gist": "Modern networks turned out to be overconfident, and a simple fix made \"ninety percent sure\" mean right nine times in ten.",
+        "source": {
+          "title": "On Calibration of Modern Neural Networks",
+          "authors": "Guo et al.",
+          "url": "https://arxiv.org/abs/1706.04599"
+        },
+        "verified": false
+      },
+      {
+        "year": 2022,
+        "name": "Knowing what they know",
+        "gist": "Large language models could judge whether their own answers were likely to be right.",
+        "source": {
+          "title": "Language Models (Mostly) Know What They Know",
+          "authors": "Kadavath et al.",
+          "url": "https://arxiv.org/abs/2207.05221"
+        },
+        "verified": false
+      }
+    ]
   }
 }
