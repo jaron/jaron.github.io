@@ -18,13 +18,13 @@ Each scene has four beats and one signature device, the **Connections chain** (a
 | **PROBLEM** | 4.5s | Bold type states the problem and why it is hard. |
 | **1996** | 11s | Wireframe depiction of how the program solved it, in the discrete, hard-edged register, in signal blue. |
 | **CHAIN** | 9s | Opens with one line on why the innovations matter ("In the 30 years since, a series of breakthroughs led to the thinking machines we use every day."), then dated nodes, each saying **why it mattered**, with the 1996 frame softening into the 2026 frame behind. The accent shifts from blue to orange as the nodes arrive. |
-| **2026** | 8.5s | How it is solved now, from a real recorded transcript, in the 2026 register: **orange accent**. Ends on a plain **ECHO** or **DIFFERS** note. |
+| **2026** | 8.5s | How it is solved now, from a real recorded transcript, in the 2026 register: **orange accent**. Ends on a plain note under a **1996 vs 2026** headline (so it reads as a comparison, not part of the answer above it). |
 
 Scene length is 36.5s; with the 41s cold open and a 25s outro the film runs about 5:20.
 
 Visual grammar: 1996 is crisp lines, nodes and integer steps in signal blue. 2026 is the present, in orange. The chain is the transition: a calm blur-crossfade between the two frames (the earlier burning-edge dissolve was removed), with the accent colour shifting through it.
 
-ECHO means a close analogue. DIFFERS means where the analogy breaks. Wording is flat and factual, e.g. "ECHO: same job, learned instead of hand-written."
+ECHO means a close analogue; the viewer sees it as **A SIMILAR IDEA**. DIFFERS means where the analogy breaks; the viewer sees **DONE DIFFERENTLY NOW**. (The data keeps the short keys.) Wording is flat and factual, e.g. "ECHO: same job, learned instead of hand-written."
 
 ## Cold open (0:00–0:41)
 

@@ -107,7 +107,7 @@ export default class MeaningRenderer implements Era2026Renderer {
         const a = s === st ? ease.outCubic(prog(lt, STAGE_AT[s]!, STAGE_AT[s]! + 0.35)) : 1 - ease.outCubic(prog(lt, STAGE_AT[st]!, STAGE_AT[st]! + 0.25));
         if (a <= 0) continue;
         c.save(); c.globalAlpha = a; c.font = font(F.mono(500), 18); c.letterSpacing = '4px'; c.fillStyle = rgba('claude', 1);
-        c.fillText(LABELS[s]!, 96, s === 4 ? 742 : 300); c.letterSpacing = '0px'; c.restore();
+        c.fillText(LABELS[s]!, 96, s === 4 ? 712 : 300); c.letterSpacing = '0px'; c.restore();
       }
       c.save(); c.globalAlpha = 0.9; c.textAlign = 'right'; c.font = font(F.mono(400), 15); c.letterSpacing = '3px'; c.fillStyle = rgba('ash', 1);
       c.fillText('STAGES 1–4: SIMPLIFIED ILLUSTRATION OF MATCHING BY MEANING', 1824, 300);
@@ -175,7 +175,7 @@ export default class MeaningRenderer implements Era2026Renderer {
       let off = 0;
       c.save();
       c.font = font(F.mono(500), 15); c.letterSpacing = '3px'; c.fillStyle = rgba('ash', 1); c.textAlign = 'right';
-      c.fillText(`A REAL REPLY · ${this.meta.toUpperCase()}`, 1824, 742); c.letterSpacing = '0px'; c.textAlign = 'left';
+      c.fillText(`A REAL REPLY · ${this.meta.toUpperCase()}`, 1824, 712); c.letterSpacing = '0px'; c.textAlign = 'left';
       c.font = font(F.mono(500), 30);
       sp.reply.forEach((line, i) => {
         const shown = Math.max(0, Math.min(line.length, shownAll - off));
@@ -183,7 +183,7 @@ export default class MeaningRenderer implements Era2026Renderer {
         if (shown <= 0) return;
         const hl = (sp.highlight ?? []).some((h) => line.includes(h));
         c.fillStyle = hl ? rgba('claudeHot', 1) : rgba('bone', 0.95);
-        c.fillText(line.slice(0, shown), 96, 800 + i * 48);
+        c.fillText(line.slice(0, shown), 96, 770 + i * 46);
       });
       c.restore();
     }

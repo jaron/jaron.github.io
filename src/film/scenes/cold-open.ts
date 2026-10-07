@@ -19,6 +19,19 @@ const BY_ID = new Map(NODES.map((n) => [n.id, n]));
 
 // world layout: levels go right and slightly away from the camera, rows up and down
 const POS = (n: TNode) => new THREE.Vector3(n.level * 380, -n.row * 160, -n.level * 70);
+// the pull-back frames the whole tree: its bounding box in world space, and the camera distance that fits it with margin
+const BOX = (() => {
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity, z0 = Infinity, z1 = -Infinity;
+  for (const n of NODES) {
+    const p = POS(n), w = n.kind === 'formula' ? 270 : 230, h = n.kind === 'formula' ? 74 : 124;
+    x0 = Math.min(x0, p.x - w / 2); x1 = Math.max(x1, p.x + w / 2);
+    y0 = Math.min(y0, p.y - h / 2); y1 = Math.max(y1, p.y + h / 2);
+    z0 = Math.min(z0, p.z); z1 = Math.max(z1, p.z);
+  }
+  return { mid: new THREE.Vector3((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2), halfW: (x1 - x0) / 2, halfH: (y1 - y0) / 2 };
+})();
+/** distance at which the box fills 84% of the frame width (the camera looks slightly down and along the tree, so this is conservative) */
+const FIT_DIST = (BOX.halfW / 0.84) / (Math.tan((38 / 2) * Math.PI / 180) * (W / H));
 const SIZE = (n: TNode) => (n.kind === 'formula' ? { w: 270, h: 74 } : { w: 230, h: 124 });
 /** pixel width of a quantity node at the nominal camera distance: the scale text is designed for */
 const BASE_NODE_PX = 474;
@@ -70,10 +83,10 @@ export default class ColdOpen extends Scene {
     look.set(focus.x + 235, focus.y + 100, focus.z);
     const pull = ease.inOutCubic(prog(t, C.reveal.from, C.reveal.to - 0.6));
     if (pull > 0) {
-      const mid = new THREE.Vector3(1520, 20, -280);
-      const away = new THREE.Vector3(1520 - 1500 * Math.sin(pull * 0.9), 380 * pull + 40, 2300 * pull + 200);
+      // end pose: the whole tree centred, seen from a little above and to the left so it keeps its depth
+      const away = new THREE.Vector3(BOX.mid.x + 0.07 * FIT_DIST, BOX.mid.y + 0.16 * FIT_DIST, BOX.mid.z + FIT_DIST);
       pos.lerp(away, pull);
-      look.lerp(mid, pull);
+      look.lerp(BOX.mid, pull);
     }
     return { pos, look, focusId: cur.id };
   }

@@ -96,7 +96,7 @@ export default class LanguageRenderer implements Era2026Renderer {
         const a = s === st ? ease.outCubic(prog(lt, STAGE_AT[s]!, STAGE_AT[s]! + 0.35)) : 1 - ease.outCubic(prog(lt, STAGE_AT[st]!, STAGE_AT[st]! + 0.25));
         if (a <= 0 || (s === 3 && st === 3 && false)) continue;
         c.save(); c.globalAlpha = a; c.font = font(F.mono(500), 18); c.letterSpacing = '4px'; c.fillStyle = rgba('claude', 1);
-        c.fillText(LABELS[s]!, 96, s === 3 ? 742 : 296); c.letterSpacing = '0px'; c.restore();
+        c.fillText(LABELS[s]!, 96, s === 3 ? 712 : 296); c.letterSpacing = '0px'; c.restore();
       }
       c.save(); c.globalAlpha = 0.9; c.textAlign = 'right'; c.font = font(F.mono(400), 15); c.letterSpacing = '3px'; c.fillStyle = rgba('ash', 1);
       c.fillText('STAGES 1–3: SIMPLIFIED ILLUSTRATION', 1824, 296); c.restore();
@@ -151,7 +151,7 @@ export default class LanguageRenderer implements Era2026Renderer {
       let off = 0;
       c.save();
       c.font = font(F.mono(500), 15); c.letterSpacing = '3px'; c.fillStyle = rgba('ash', 1);
-      c.fillText(`A REAL REPLY · ${this.meta.toUpperCase()}`, 1824 - c.measureText(`A REAL REPLY · ${this.meta.toUpperCase()}`).width - 40, 742);
+      c.fillText(`A REAL REPLY · ${this.meta.toUpperCase()}`, 1824 - c.measureText(`A REAL REPLY · ${this.meta.toUpperCase()}`).width - 40, 712);
       c.letterSpacing = '0px';
       c.font = font(F.mono(500), 30);
       lines.forEach((line, i) => {
@@ -160,7 +160,7 @@ export default class LanguageRenderer implements Era2026Renderer {
         if (shown <= 0) return;
         const hl = (sp.highlight ?? []).some((h) => line.includes(h));
         c.fillStyle = hl ? rgba('claudeHot', 1) : rgba('bone', 0.95);
-        c.fillText(line.slice(0, shown), 96, 800 + i * 48);
+        c.fillText(line.slice(0, shown), 96, 770 + i * 46);
       });
       c.restore();
     }
