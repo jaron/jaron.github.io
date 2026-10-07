@@ -34,7 +34,7 @@ export function buildTimeline(): Built {
   }
   // the outro: a parting thought, then the end
   entries.push({ id: 'outro', load: scene('outro'), start: t, end: t + OUTRO_DURATION });
-  spans.push({ id: 'outro', start: t, end: t + OUTRO_DURATION, label: 'A parting thought' });
+  spans.push({ id: 'outro', start: t, end: t + OUTRO_DURATION, label: 'Foreseeing an amazing future' });
   t += OUTRO_DURATION;
   return { entries, spans, duration: t };
 }

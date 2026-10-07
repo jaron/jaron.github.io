@@ -30,7 +30,7 @@ Verbatim from the thesis, with the verdict against scenes 1–7. **Right:** agen
 | # | Item | Notes |
 |---|---|---|
 | M3 | ~~Real cold open (40 s)~~ **revised after review**: challenge, bridge to a vector raindrop with measurement bars, a self-annotating drawing, full-sentence questions over a 3D tree, collapse to 5.1 µN, pull-back, title card (no Whitman, no "QPS"). Values and provenance now live in the tree nodes (no giant number). Sound button redesigned and verified to fire. Still to do: listen to the sound (not possible from the build environment), confirm the title-card wording, Greek letters (ρ) fall back to a serif in Archivo | Storyboard section "Cold open" |
-| M3 | Finish scene 1: soften the 2026 register (glow, heat), verify the four chain dates | Chain facts are unverified |
+| M3 | Finish scene 1: soften the 2026 register (glow, heat), ~~verify the four chain dates~~ | Chains verified 7 Oct 2026; `check:content --strict` passes |
 | M4 | Scenes 2–7 | Each needs a 1996 renderer, data, chain, transcript, cues. Scene 3 uses the saved self-correcting transcript |
 | M5 | Outro, quality tiers, accessibility, YouTube embed fallback | |
 | M6 | Export pipeline (4K), reduced-grain upload master, YouTube upload (author) | |

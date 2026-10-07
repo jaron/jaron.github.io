@@ -11,46 +11,57 @@
           "authors": "Mikolov, Chen, Corrado, Dean",
           "url": "https://arxiv.org/abs/1301.3781"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2017,
         "name": "The Transformer",
-        "gist": "Attention let a model weigh every word against every other, and it scaled to huge amounts of text.",
+        "gist": "A model built on attention alone could weigh every word against every other, and train in parallel on far more text.",
         "source": {
           "title": "Attention Is All You Need",
           "authors": "Vaswani et al.",
           "url": "https://arxiv.org/abs/1706.03762"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2020,
         "name": "Few-shot prompting",
-        "gist": "A large model could take on a new task from instructions written in plain language.",
+        "gist": "A large model could take on a new task from a few examples written as text, with no retraining.",
         "source": {
           "title": "Language Models are Few-Shot Learners",
           "authors": "Brown et al.",
           "url": "https://arxiv.org/abs/2005.14165"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2022,
         "name": "Instruction tuning",
-        "gist": "Models learned to follow instructions and answer questions, so anyone could simply ask.",
+        "gist": "Models trained on human feedback learned to do what people actually asked, so anyone could simply ask.",
         "source": {
           "title": "Training language models to follow instructions with human feedback",
           "authors": "Ouyang et al.",
           "url": "https://arxiv.org/abs/2203.02155"
         },
-        "verified": false
+        "verified": true
       }
     ]
   },
   "finding": {
     "intro": "Finding is still hard. The shortcuts are now learned from data, not written by hand.",
     "nodes": [
+      {
+        "year": 1998,
+        "name": "PageRank",
+        "gist": "Search results began to be ranked by who linked to whom, so the web’s own links decided which pages mattered.",
+        "verified": true,
+        "source": {
+          "title": "The Anatomy of a Large-Scale Hypertextual Web Search Engine",
+          "authors": "Brin and Page",
+          "url": "https://research.google/pubs/the-anatomy-of-a-large-scale-hypertextual-web-search-engine/"
+        }
+      },
       {
         "year": 2014,
         "name": "Attention",
@@ -60,7 +71,7 @@
           "authors": "Bahdanau, Cho, Bengio",
           "url": "https://arxiv.org/abs/1409.0473"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2020,
@@ -71,7 +82,7 @@
           "authors": "Karpukhin et al.",
           "url": "https://arxiv.org/abs/2004.04906"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2020,
@@ -82,7 +93,7 @@
           "authors": "Lewis et al.",
           "url": "https://arxiv.org/abs/2005.11401"
         },
-        "verified": false
+        "verified": true
       }
     ]
   },
@@ -98,7 +109,7 @@
           "authors": "Kocsis, Szepesvári",
           "url": "https://link.springer.com/chapter/10.1007/11871842_29"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2016,
@@ -109,18 +120,18 @@
           "authors": "Silver et al.",
           "url": "https://www.nature.com/articles/nature16961"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2022,
         "name": "Chain-of-thought prompting",
-        "gist": "Language models solved harder problems when they wrote out their steps, so the search could happen in words.",
+        "gist": "Language models reasoned far better when they wrote out their steps, so the search could happen in words.",
         "source": {
           "title": "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models",
           "authors": "Wei et al.",
           "url": "https://arxiv.org/abs/2201.11903"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2024,
@@ -131,7 +142,7 @@
           "authors": "OpenAI",
           "url": "https://openai.com/index/learning-to-reason-with-llms/"
         },
-        "verified": false
+        "verified": true
       }
     ]
   },
@@ -147,7 +158,7 @@
           "authors": "Yao et al.",
           "url": "https://arxiv.org/abs/2210.03629"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2023,
@@ -158,29 +169,29 @@
           "authors": "Schick et al.",
           "url": "https://arxiv.org/abs/2302.04761"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2023,
         "name": "Function calling",
-        "gist": "Model makers gave developers a standard way to let a model request a tool and receive the result.",
+        "gist": "Developers could describe tools to a model, which would then ask for one to be called and read the result.",
         "source": {
           "title": "Function calling and other API updates",
           "authors": "OpenAI",
           "url": "https://openai.com/index/function-calling-and-other-api-updates/"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2024,
         "name": "Model Context Protocol",
-        "gist": "An open standard let any tool connect to any model, so a tool written once works everywhere.",
+        "gist": "An open standard let developers connect tools and data to AI models through one protocol, not a custom connector for each.",
         "source": {
           "title": "Introducing the Model Context Protocol",
           "authors": "Anthropic",
           "url": "https://www.anthropic.com/news/model-context-protocol"
         },
-        "verified": false
+        "verified": true
       }
     ]
   },
@@ -196,10 +207,10 @@
           "authors": "Pearl",
           "url": "https://doi.org/10.1016/C2009-0-27609-4"
         },
-        "verified": false
+        "verified": true
       },
       {
-        "year": 2016,
+        "year": 2015,
         "name": "Monte Carlo dropout",
         "gist": "A neural network could ask the same question many times with parts switched off, and read its uncertainty from how much the answers differed.",
         "source": {
@@ -207,7 +218,7 @@
           "authors": "Gal, Ghahramani",
           "url": "https://arxiv.org/abs/1506.02142"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2017,
@@ -218,18 +229,18 @@
           "authors": "Guo et al.",
           "url": "https://arxiv.org/abs/1706.04599"
         },
-        "verified": false
+        "verified": true
       },
       {
-        "year": 2022,
-        "name": "Knowing what they know",
-        "gist": "Large language models could judge whether their own answers were likely to be right.",
+        "year": 2024,
+        "name": "Semantic entropy",
+        "gist": "A method for language models: sample several answers, group them by meaning, and read strong disagreement as a sign the answer may be invented.",
         "source": {
-          "title": "Language Models (Mostly) Know What They Know",
-          "authors": "Kadavath et al.",
-          "url": "https://arxiv.org/abs/2207.05221"
+          "title": "Detecting hallucinations in large language models using semantic entropy",
+          "authors": "Farquhar, Kossen, Kuhn and Gal",
+          "url": "https://doi.org/10.1038/s41586-024-07421-0"
         },
-        "verified": false
+        "verified": true
       }
     ]
   },
@@ -239,24 +250,24 @@
       {
         "year": 2016,
         "name": "LIME",
-        "gist": "A method could explain any single prediction by showing which parts of the input mattered most.",
+        "gist": "A method could explain any single prediction by fitting a simple, readable model around it.",
         "source": {
           "title": "“Why Should I Trust You?”: Explaining the Predictions of Any Classifier",
           "authors": "Ribeiro, Singh, Guestrin",
           "url": "https://arxiv.org/abs/1602.04938"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2017,
         "name": "SHAP",
-        "gist": "One principled way to share the credit for an answer among its inputs, so explanations could be compared.",
+        "gist": "One framework gave every input an importance value for each answer, unifying six earlier methods so explanations could be compared.",
         "source": {
           "title": "A Unified Approach to Interpreting Model Predictions",
           "authors": "Lundberg, Lee",
           "url": "https://arxiv.org/abs/1705.07874"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2021,
@@ -267,18 +278,18 @@
           "authors": "Nye et al.",
           "url": "https://arxiv.org/abs/2112.00114"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2024,
         "name": "Mechanistic interpretability",
-        "gist": "Researchers found human-readable features inside a large language model, and began tracing how they combine into an answer.",
+        "gist": "Researchers found millions of human-readable features inside a large language model, and showed that adjusting them changed what it said.",
         "source": {
           "title": "Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet",
           "authors": "Templeton et al.",
           "url": "https://transformer-circuits.pub/2024/scaling-monosemanticity/"
         },
-        "verified": false
+        "verified": true
       }
     ]
   },
@@ -288,13 +299,13 @@
       {
         "year": 2008,
         "name": "Common Crawl",
-        "gist": "A free, regularly updated copy of the public web, so collecting text became a download, not a project.",
+        "gist": "An open archive of the public web, crawled from 2008 and still growing, so collecting text became a download, not a project.",
         "source": {
           "title": "Common Crawl",
           "authors": "Common Crawl Foundation",
           "url": "https://commoncrawl.org/"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2017,
@@ -305,7 +316,7 @@
           "authors": "Vaswani et al.",
           "url": "https://arxiv.org/abs/1706.03762"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2018,
@@ -316,7 +327,7 @@
           "authors": "Radford et al.",
           "url": "https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf"
         },
-        "verified": false
+        "verified": true
       },
       {
         "year": 2020,
@@ -327,7 +338,7 @@
           "authors": "Kaplan et al.",
           "url": "https://arxiv.org/abs/2001.08361"
         },
-        "verified": false
+        "verified": true
       }
     ]
   }
