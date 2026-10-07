@@ -31,13 +31,14 @@
       @media (prefers-reduced-motion: reduce) { #sound.attention { animation: none; } }
       body.debug #sound { bottom: 84px; }
       /* progress dock: play/pause, a label for where we are, and one segment per section */
-      #dock { --lift: 20px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; align-items: flex-end; gap: 14px; padding: 0 200px var(--lift) 22px; transition: opacity .3s; font: 500 12px/1 ui-monospace, Menlo, monospace; color: #eee9df; }
+      #dock { --lift: 20px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; align-items: flex-end; gap: 14px; padding: 0 200px var(--lift) 22px; transition: opacity .3s; pointer-events: none; font: 500 12px/1 ui-monospace, Menlo, monospace; color: #eee9df; }
       body.debug #dock { --lift: 84px; }
       #play { flex: none; width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; padding: 0; background: rgba(5, 5, 7, 0.62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border: 1px solid rgba(238, 233, 223, 0.3); border-radius: 50%; color: #eee9df; cursor: pointer; opacity: 0.82; transition: opacity .3s, border-color .2s; }
       #play:hover, #play:focus-visible { opacity: 1; border-color: #007aff; outline: none; }
       #play svg { width: 16px; height: 16px; }
       #play[data-state="playing"] .i-play, #play[data-state="paused"] .i-pause { display: none; }
       #seek { flex: 1 1 auto; min-width: 0; }
+      #play, #seek { pointer-events: auto; }
       #seekLabel { height: 14px; margin: 0 0 2px; letter-spacing: 0.16em; text-transform: uppercase; text-shadow: 0 0 8px #050507, 0 0 3px #050507; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: opacity .3s; }
       #segs { display: flex; gap: 3px; padding: 10px 0; cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none; }
       .seg { position: relative; flex: 1 1 0; min-width: 4px; height: 5px; border-radius: 3px; background: rgba(238, 233, 223, 0.24); overflow: hidden; transition: height .2s; }
@@ -45,7 +46,7 @@
       .seg .fill { position: absolute; inset: 0; background: #007aff; transform-origin: left center; transform: scaleX(0); }
       #dock.is2026 .seg.now .fill { background: #d97757; }
       /* idle: everything fades but a hairline of progress along the bottom edge */
-      #dock.idle { pointer-events: none; }
+      #dock.idle #play, #dock.idle #seek { pointer-events: none; }
       #dock.idle #play, #dock.idle #seekLabel { opacity: 0; }
       #dock.idle #segs { transform: translateY(calc(var(--lift) + 8px)); }
       #dock.idle .seg, #dock.idle #segs:hover .seg { height: 2px; border-radius: 0; }
