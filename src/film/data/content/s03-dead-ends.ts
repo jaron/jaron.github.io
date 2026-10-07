@@ -13,7 +13,7 @@ const content: SceneContent = {
   number: 3,
   total: 7,
   title: 'Backtracking from failure',
-  beats: { bridge: 8, era1996: 15, era2026: 12 },
+  beats: { bridge: 8, era1996: 15, era2026: 13.7 },
   era1996: {
     kind: 'backtrack',
     refs: [
@@ -95,6 +95,6 @@ const content: SceneContent = {
       { role: 'answer', text: 'Answer: P_cr ≈ 2.5 × 10⁶ N (about 2.5 MN)' },
     ],
   },
-  note: { label: 'ECHO', text: 'Same move: try, notice a dead end, go back. Then by rules I wrote; now learned from practice.' },
+  note: { label: 'ECHO', text: 'Same move: try, notice a dead end, go back. Then by rules I wrote; now learned from practice.', at: 8.2 },
 };
 export default content;

@@ -25,7 +25,6 @@ const LABELS = [
 ];
 const STAGE_AT = [S1, S2, S3, S4];
 const ROW_TOP = [330, 455, 580];
-const NOTE_FRAC = 0.87;
 
 interface Chip { text: string; row: number; x: number; w: number; i: number }
 
@@ -46,7 +45,7 @@ export default class LanguageRenderer implements Era2026Renderer {
     this.spec = spec;
     const tr = loadTranscript(spec.src);
     this.meta = tr.model ? `${tr.model} · ${tr.date ?? ''}` : 'layout fixture, not a recorded run';
-    if (this.content) this.note = new Note(this.content.note, NOTE_FRAC);
+    if (this.content) this.note = new Note(this.content.note);
     // lay the chips out once (the text canvas is only used for measuring here)
     const m = document.createElement('canvas').getContext('2d')!;
     m.font = font(F.mono(500), 22);
@@ -164,7 +163,7 @@ export default class LanguageRenderer implements Era2026Renderer {
       });
       c.restore();
     }
-    this.note?.draw(c, p);
+    this.note?.draw(c, lt);
 
     lb.render(renderer, out);
     comp.draw(renderer, T.upload(), out);
@@ -186,7 +185,7 @@ export default class LanguageRenderer implements Era2026Renderer {
     cues.push({ t: S3, voice: 'step', gain: 0.5, pitch: 1.2 });
     cues.push({ t: S4, voice: 'step', gain: 0.5, pitch: 1.4 });
     for (let t = S4 + 0.3; t < S4 + 3.0; t += 0.28) cues.push({ t, voice: 'type', gain: 0.16 });
-    if (this.note) cues.push(this.note.cue(dur));
+    if (this.note) cues.push(this.note.cue());
     return cues;
   }
 }

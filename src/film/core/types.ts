@@ -122,7 +122,8 @@ export interface SceneContent {
   /** Key into data/chains.json. */
   chain: string;
   era2026: Era2026Spec;
-  note: { label: 'ECHO' | 'DIFFERS'; text: string };
+  /** The closing comparison. `at` is when it appears, in seconds into the 2026 beat; the viewer then gets a 5 s linger (see LINGER). */
+  note: { label: 'ECHO' | 'DIFFERS'; text: string; at: number };
 }
 
 /** A Connections chain: an opening line, then dated nodes that each led to the next. */
@@ -153,6 +154,11 @@ export interface Era2026Renderer {
   render(f: Frame, out: THREE.WebGLRenderTarget, local: Local): void;
   cues(spec: Era2026Spec, dur: number): Cue[];
 }
+
+/** Seconds the finished 2026 screen (with its note) stays before the next scene, to read it and take a breath. */
+export const LINGER = 5;
+/** Seconds the note takes to fade in. */
+export const NOTE_FADE = 0.5;
 
 export function beatDurations(c: SceneContent): Record<BeatName, number> {
   const d = { ...DEFAULT_BEATS, ...(c.beats ?? {}) } as Record<BeatName, number>;

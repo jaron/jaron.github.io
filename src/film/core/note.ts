@@ -1,22 +1,21 @@
 // The note at the end of the 2026 beat: a '1996 vs 2026' headline, a label and one plain line.
+// It appears at `note.at` seconds into the beat and then stays for LINGER seconds (the content checker enforces this).
 import { Layer2D } from '../engine/gl';
 import { rgba } from '../engine/palette';
 import { F, font } from '../engine/type';
 import { clamp, ease, prog } from '../engine/util';
-import type { Cue, SceneContent } from './types';
-
-export const NOTE_AT = 0.62; // fraction of the 2026 beat
+import { NOTE_FADE, type Cue, type SceneContent } from './types';
 
 /** What the viewer reads for each kind of note (the data keeps the short keys). */
 const LABELS = { ECHO: 'A SIMILAR IDEA', DIFFERS: 'DONE DIFFERENTLY NOW' } as const;
 
 export class Note {
   layer = new Layer2D();
-  constructor(private note: SceneContent['note'], private at = NOTE_AT) {}
+  constructor(private note: SceneContent['note']) {}
 
-  /** Draw into a Canvas2D context the caller composites; `p` is progress through the 2026 beat. */
-  draw(c: CanvasRenderingContext2D, p: number) {
-    const a = ease.outCubic(prog(p, this.at, this.at + 0.08));
+  /** Draw into a Canvas2D context the caller composites; `lt` is seconds into the 2026 beat. */
+  draw(c: CanvasRenderingContext2D, lt: number) {
+    const a = ease.outCubic(prog(lt, this.note.at, this.note.at + NOTE_FADE));
     if (a <= 0) return;
     c.save();
     c.globalAlpha = a;
@@ -59,5 +58,5 @@ export class Note {
     c.restore();
   }
 
-  cue(dur: number): Cue { return { t: dur * this.at, voice: 'reveal', gain: 0.45 }; }
+  cue(): Cue { return { t: this.note.at, voice: 'reveal', gain: 0.45 }; }
 }

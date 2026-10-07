@@ -170,7 +170,7 @@ export default class ToolCallRenderer implements Era2026Renderer {
       c.fillText('A REAL RUN · THE MODEL WAS TOLD A PYTHON TOOL WAS AVAILABLE · THE CODE IS ITS OWN', 1824, 764);
       c.restore();
     }
-    this.note?.draw(c, p);
+    this.note?.draw(c, lt);
 
     lb.render(renderer, out);
     comp.draw(renderer, T.upload(), out);
@@ -208,7 +208,7 @@ export default class ToolCallRenderer implements Era2026Renderer {
     cues.push({ t: RESULT_AT, voice: 'lock', gain: 0.6, pitch: 1.2 });
     cues.push({ t: BACK_AT, voice: 'call', gain: 0.45, pitch: 1.3 });
     for (let t = REPLY_AT + 0.2; t < REPLY_AT + 0.2 + REPLY_LEN; t += 0.2) cues.push({ t, voice: 'type', gain: 0.14 });
-    if (this.note) cues.push(this.note.cue(dur));
+    if (this.note) cues.push(this.note.cue());
     return cues;
   }
 }

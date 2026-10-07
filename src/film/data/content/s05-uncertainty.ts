@@ -14,7 +14,7 @@ const content: SceneContent = {
   number: 5,
   total: 7,
   title: 'Knowing how sure we are',
-  beats: { bridge: 6.5, era1996: 19, era2026: 13 },
+  beats: { bridge: 6.5, era1996: 19, era2026: 15.0 },
   era1996: {
     kind: 'triangles',
     refs: [
@@ -68,6 +68,6 @@ const content: SceneContent = {
     ],
     highlight: ['Force scales as d³', '4.4×10⁻⁶ N to 5.9×10⁻⁶ N', '5.1 µN', '4×10⁻⁶ to 7×10⁻⁶ N'],
   },
-  note: { label: 'ECHO', text: 'Same cube law, same range, and no one gave it the rule. Its confidence is learned, so it can be wrong.' },
+  note: { label: 'ECHO', text: 'Same cube law, same range, and no one gave it the rule. Its confidence is learned, so it can be wrong.', at: 9.5 },
 };
 export default content;

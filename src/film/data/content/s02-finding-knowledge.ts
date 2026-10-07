@@ -13,7 +13,7 @@ const content: SceneContent = {
   number: 2,
   total: 7,
   title: 'Finding the right knowledge',
-  beats: { bridge: 4, era1996: 15, era2026: 12 },
+  beats: { bridge: 4, era1996: 15, era2026: 16.5 },
   era1996: {
     kind: 'formulae',
     refs: [
@@ -56,6 +56,6 @@ const content: SceneContent = {
     reply: ['V = πr²L = π(0.01)²(0.10) = 3.14 × 10⁻⁵ m³', 'n = PV/(RT) = (2 × 10⁵ × 3.14 × 10⁻⁵) / (8.314 × 293)', 'Helium molar mass = 4.00 g/mol'],
     highlight: ['V = πr²L', 'Helium molar mass'],
   },
-  note: { label: 'DIFFERS', text: 'Nothing here solves P versus NP. A model finds by learned intuition, not by guarantee: usually right, never certain.' },
+  note: { label: 'DIFFERS', text: 'Nothing here solves P versus NP. A model finds by learned intuition, not by guarantee: usually right, never certain.', at: 11.0 },
 };
 export default content;

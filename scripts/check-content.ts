@@ -65,6 +65,10 @@ for (const f of files) {
   const dur = BEATS.reduce((s, b) => s + durs[b], 0);
   total += dur;
 
+  // the finished 2026 screen (with its note) must stay long enough to read: note.at + its fade + 5 s of linger
+  if (typeof c.note?.at !== 'number') fail(`${where}: note.at (seconds into the 2026 beat) is missing`);
+  else if (durs.era2026 < c.note.at + 0.5 + 5 - 1e-6) fail(`${where}: the 2026 beat is ${durs.era2026}s but needs at least ${(c.note.at + 5.5).toFixed(1)}s (note at ${c.note.at}s + 0.5s fade + 5s linger)`);
+
   verifyRefs(where, [...(c.bridge?.refs ?? []), ...(c.problem?.refs ?? []), ...c.era1996.refs]);
   for (const f2 of (c.era1996.data.fields ?? []) as { from: string[] }[])
     for (const s of f2.from) if (!String(c.era1996.data.sentence).includes(s)) fail(`${where}: span "${s}" is not in the sentence`);

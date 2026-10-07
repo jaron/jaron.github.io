@@ -29,7 +29,7 @@ const content: SceneContent = {
       ],
     },
   },
-  beats: { bridge: 4.5, era2026: 12 },
+  beats: { bridge: 4.5, era2026: 15.9 },
   chain: 'understanding',
   era2026: {
     kind: 'language',
@@ -49,6 +49,6 @@ const content: SceneContent = {
     reply: ['Formula: P_cr = π²EI / L²', '· Radius: r = 0.05 m', '· Length: L = 1.5 m'],
     highlight: ['Radius: r = 0.05 m', 'Length: L = 1.5 m'],
   },
-  note: { label: 'ECHO', text: 'The fixed form my program required is gone: the model reads the sentence itself.' },
+  note: { label: 'ECHO', text: 'The fixed form my program required is gone: the model reads the sentence itself.', at: 10.4 },
 };
 export default content;

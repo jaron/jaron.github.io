@@ -138,7 +138,7 @@ export default class CorrectionRenderer implements Era2026Renderer {
       c.fillText('THE SLIP WAS IN THE ARITHMETIC, CAUGHT AND FIXED IN ITS OWN WORDS', 1824, 854);
       c.restore();
     }
-    this.note?.draw(c, p);
+    this.note?.draw(c, lt);
 
     lb.render(renderer, out);
     comp.draw(renderer, T.upload(), out);
@@ -154,7 +154,7 @@ export default class CorrectionRenderer implements Era2026Renderer {
     });
     cues.push({ t: STRIKE_AT, voice: 'fail', gain: 0.5, pitch: 1.1 });
     cues.push({ t: RETRACT_AT, voice: 'morph', gain: 0.3 });
-    if (this.note) cues.push(this.note.cue(dur));
+    if (this.note) cues.push(this.note.cue());
     return cues;
   }
 }

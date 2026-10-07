@@ -13,7 +13,7 @@ const content: SceneContent = {
   number: 4,
   total: 7,
   title: 'Tool calling',
-  beats: { bridge: 6.5, era1996: 18, era2026: 14 },
+  beats: { bridge: 6.5, era1996: 18, era2026: 15.4 },
   era1996: {
     kind: 'handoff',
     refs: [
@@ -63,6 +63,6 @@ const content: SceneContent = {
     reply: ["x ≈ 1.029867 radians (more precisely, 1.0298665293). I found it with Newton's method on f(x) = x − 2cos(x)."],
     highlight: ['1.029867'],
   },
-  note: { label: 'ECHO', text: 'Same split. I wired in each specialist; now the model chooses when to call a tool.' },
+  note: { label: 'ECHO', text: 'Same split. I wired in each specialist; now the model chooses when to call a tool.', at: 9.9 },
 };
 export default content;

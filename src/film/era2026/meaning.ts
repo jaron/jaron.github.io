@@ -24,7 +24,6 @@ const LABELS = [
   '5 · WRITE A REPLY, ONE WORD AT A TIME',
 ];
 const RX = 96, RY = 335, RW = 1728, RH = 345;      // the region the cloud lives in
-const NOTE_FRAC = 0.9;
 
 interface Pt { sx: number; sy: number; x: number; y: number; cluster: number; delay: number }
 
@@ -47,7 +46,7 @@ export default class MeaningRenderer implements Era2026Renderer {
     this.ctx = ctx; this.spec = spec;
     const tr = loadTranscript(spec.src);
     this.meta = tr.model ? `${tr.model} · ${tr.date ?? ''}` : 'layout fixture, not a recorded run';
-    if (this.content) this.note = new Note(this.content.note, NOTE_FRAC);
+    if (this.content) this.note = new Note(this.content.note);
 
     const rnd = mulberry32(2026);
     const gauss = () => { let s = 0; for (let i = 0; i < 4; i++) s += rnd(); return (s - 2) * 1.2; };
@@ -187,7 +186,7 @@ export default class MeaningRenderer implements Era2026Renderer {
       });
       c.restore();
     }
-    this.note?.draw(c, p);
+    this.note?.draw(c, lt);
 
     lb.render(renderer, out);
     comp.draw(renderer, T.upload(), out);
@@ -204,7 +203,7 @@ export default class MeaningRenderer implements Era2026Renderer {
     this.foundIdx.forEach((_, i) => cues.push({ t: S4 + 0.45 + i * 0.32, voice: 'lock', gain: 0.55, pitch: 0.95 + i * 0.15 }));
     cues.push({ t: S5, voice: 'step', gain: 0.5, pitch: 1.45 });
     for (let t = S5 + 0.3; t < S5 + 2.6; t += 0.28) cues.push({ t, voice: 'type', gain: 0.16 });
-    if (this.note) cues.push(this.note.cue(dur));
+    if (this.note) cues.push(this.note.cue());
     return cues.sort((a, b) => a.t - b.t);
   }
 }

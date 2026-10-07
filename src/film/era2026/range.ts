@@ -136,7 +136,7 @@ export default class RangeRenderer implements Era2026Renderer {
       c.fillText('A REAL REPLY · THE MODEL WAS ASKED FOR A RANGE · EXCERPTS, IN ORDER', 1824, 840);
       c.restore();
     }
-    this.note?.draw(c, p);
+    this.note?.draw(c, lt);
 
     lb.render(renderer, out);
     comp.draw(renderer, T.upload(), out);
@@ -164,7 +164,7 @@ export default class RangeRenderer implements Era2026Renderer {
     for (let i = 0; i < nLead; i += 2) cues.push({ t: LEAD_FROM + i * LEAD_GAP, voice: 'type', gain: 0.2 });
     LINE_AT.forEach((t0, i) => { for (let t = t0; t < t0 + (LINE_LEN[i] ?? 1); t += 0.2) cues.push({ t, voice: 'type', gain: 0.14 }); });
     TRI_AT.forEach((t, i) => cues.push({ t, voice: 'reveal', gain: 0.4, pitch: 0.9 + i * 0.2 }));
-    if (this.note) cues.push(this.note.cue(dur));
+    if (this.note) cues.push(this.note.cue());
     return cues;
   }
 }

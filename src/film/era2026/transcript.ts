@@ -8,7 +8,7 @@ import { LIN, rgba } from '../engine/palette';
 import { F, font } from '../engine/type';
 import { prog } from '../engine/util';
 import { ruledSheet, wrap } from '../core/draw';
-import { NOTE_AT, Note } from '../core/note';
+import { Note } from '../core/note';
 import type { Cue, Era2026Renderer, Era2026Spec, Local, SceneContent } from '../core/types';
 
 export interface Transcript {
@@ -55,7 +55,7 @@ export default class TranscriptRenderer implements Era2026Renderer {
     if (this.content) this.note = new Note(this.content.note);
   }
 
-  private streamEnd(dur: number) { return dur * NOTE_AT - 0.4; }
+  private streamEnd(dur: number) { return (this.content?.note.at ?? dur * 0.6) - 0.4; }
 
   render(_f: Frame, out: THREE.WebGLRenderTarget, { lt, p, dur }: Local) {
     const { renderer, comp } = this.ctx;
@@ -115,7 +115,7 @@ export default class TranscriptRenderer implements Era2026Renderer {
       if (shown <= 0) return;
       this.drawRow(c, r.text.slice(0, shown), 96, y);
     });
-    if (p < NOTE_AT - 0.02 && Math.floor(lt * 3) % 2 === 0) {
+    if (lt < (this.content?.note.at ?? dur * 0.6) - 0.05 && Math.floor(lt * 3) % 2 === 0) {
       const last = visible[visible.length - 1];
       if (last) {
         const w = c.measureText(last.text.slice(0, Math.max(0, Math.min(last.text.length, total - last.start)))).width;
@@ -124,7 +124,7 @@ export default class TranscriptRenderer implements Era2026Renderer {
         c.fillRect(96 + w + 6, TOP + 36 + i * LINE_H - 22, 12, 28);
       }
     }
-    this.note?.draw(c, p);
+    this.note?.draw(c, lt);
 
     lb.render(renderer, out);
     comp.draw(renderer, T.upload(), out);
@@ -150,7 +150,7 @@ export default class TranscriptRenderer implements Era2026Renderer {
     const cues: Cue[] = [];
     const end = this.streamEnd(dur);
     for (let t = START; t < end; t += 0.28) cues.push({ t, voice: 'type', gain: 0.16 });
-    if (this.note) cues.push(this.note.cue(dur));
+    if (this.note) cues.push(this.note.cue());
     return cues;
   }
 }
