@@ -9,7 +9,8 @@ Status as of 2026-10-05. Detail lives in [spec.md](spec.md) (film), [storyboard.
 - M2 framework: figure-scene template, Problem beat, Chain + dissolve morph, ECHO/DIFFERS note, 2026 transcript slot, synthesized sound cues, controller, content schema, content checker. Determinism verified in-page.
 - Scene 1 (understanding the question), restructured: bridge, entity extraction, Connections with an opening line and per-node significance, and a 2026 half that shows how a model reads language (tokens, numbers, attention, a real reply) in orange.
 - Scene 2 (finding the right knowledge, with a light touch of P versus NP): first cut built, with a real recorded helium transcript.
-- Scene 3 (dead ends and loops): first cut built. A redrawn Fig 5.4 search tree with a walking cursor; 2026 shows the real self-correction from scene 1's recorded run.
+- Viewer progress bar (`src/film/ui/progress.ts`): one segment per section ("The challenge", then each scene, proportional to length), a label for where you are, play/pause, click a segment to jump to that scene's start, drag to scrub; fades to a hairline while playing and returns on movement or pause; orange during a scene's 2026 half.
+- Scene 3 (backtracking from failure): first cut built. A redrawn Fig 5.4 search tree with a walking cursor; 2026 shows the real self-correction from scene 1's recorded run.
 - Determinism verified in clean headless Chrome (`npm run check:determinism`); very large type is drawn from outlines (`fillBigText`).
 - The film now opens on its title card; the dated challenge follows. Cold open is 39 s.
 - Cold open (40 s) first pass: `src/film/scenes/cold-open.ts`, data in `src/film/data/cold-open.ts` and `data/figures/raindrop.json`; its quotes are verified against the thesis text.

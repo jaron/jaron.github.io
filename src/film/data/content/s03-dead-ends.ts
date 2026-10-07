@@ -12,7 +12,7 @@ const content: SceneContent = {
   figure: '§5.3 · EXAMPLE 4 (FIG 5.4, REDRAWN)',
   number: 3,
   total: 7,
-  title: 'Dead ends and loops',
+  title: 'Backtracking from failure',
   beats: { bridge: 4, era1996: 15, era2026: 12 },
   era1996: {
     kind: 'backtrack',
