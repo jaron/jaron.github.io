@@ -1,4 +1,5 @@
-// Mode 1 player: autoplays silently on load; sound is opt-in. Space pauses, arrows seek.
+// Mode 1 player: autoplays silently on load; sound is opt-in. Space pauses, arrows seek. ui/progress.ts is the viewer's
+// progress bar (sections, label, play/pause, click to jump a scene, drag to scrub).
 // `?debug` shows a scrubber and fps, `?t=12` starts at a time. Frames are a pure function of time.
 import { Engine } from './engine/engine';
 import { PW, PH } from './engine/gl';
@@ -7,6 +8,7 @@ import { FilmController } from './core/controller';
 import type FigureScene from './core/figure';
 import type { Cue } from './core/types';
 import { SoundEngine } from './audio/engine';
+import { mountProgress } from './ui/progress';
 
 const params = new URLSearchParams(location.search);
 const DEBUG = params.has('debug');
@@ -47,11 +49,14 @@ async function boot() {
   };
   syncButton();
 
+  const progress = mountProgress(ctl, built.spans);
   scrub.max = String(built.duration);
   scrub.step = '0.001';
   scrub.oninput = () => ctl.seek(parseFloat(scrub.value));
   canvas.onclick = () => ctl.toggle();
   window.addEventListener('keydown', (ev) => {
+    // a focused button handles Space / Enter itself
+    if ((ev.target as HTMLElement | null)?.tagName === 'BUTTON' && (ev.key === ' ' || ev.key === 'Enter')) return;
     if (ev.key === ' ') { ev.preventDefault(); ctl.toggle(); }
     if (ev.key === 'ArrowRight') ctl.seek(ctl.t + (ev.shiftKey ? 5 : 1));
     if (ev.key === 'ArrowLeft') ctl.seek(ctl.t - (ev.shiftKey ? 5 : 1));
@@ -72,6 +77,7 @@ async function boot() {
     sound.update(ctl.t, ctl.playing, ctl.seeked);
     ctl.seeked = false;
     ctl.tick();
+    progress.update();
     frames++;
     if (now - fpsT > 500) { fps = (frames * 1000) / (now - fpsT); frames = 0; fpsT = now; }
     if (DEBUG) {
