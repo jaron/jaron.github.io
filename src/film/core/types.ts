@@ -148,6 +148,8 @@ export interface SceneContent {
   total: number;
   title: string;
   beats?: Partial<Record<BeatName, number>>;
+  /** Plays the 1996 beat this much faster (default 1): its animation is authored in its own seconds, and `beats.era1996` is the shorter real length. */
+  era1996Speed?: number;
   /** Optional: a scene whose bridge already says the problem can skip this beat. */
   problem?: { text: string; why: string; refs?: ThesisRef[] };
   era1996: Era1996Spec;

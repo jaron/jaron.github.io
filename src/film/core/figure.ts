@@ -32,6 +32,8 @@ export default class FigureScene extends Scene {
   private e26!: Era2026Renderer;
   private chain!: Chain;
   private dissolve = new Dissolve();
+  /** how much faster the 1996 beat plays than it was authored (see SceneContent.era1996Speed) */
+  private get speed() { return this.content.era1996Speed ?? 1; }
   private rtA = makeRT();
   private rtB = makeRT();
   private overlay = new Layer2D();
@@ -67,11 +69,11 @@ export default class FigureScene extends Scene {
     switch (span.name) {
       case 'bridge': this.bridge.render(f, out, L); break;
       case 'problem': this.problem?.render(f, out, L); break;
-      case 'era1996': this.e96.render(f, out, { ...L, lt: stepTime(lt) }); break;
+      case 'era1996': this.e96.render(f, out, { ...L, lt: stepTime(lt) * this.speed, dur: L.dur * this.speed }); break;
       case 'era2026': this.e26.render(f, out, L); break;
       case 'chain': {
         const d96 = this.local('era1996', this.spans.find((s) => s.name === 'era1996')!.end - this.spans.find((s) => s.name === 'era1996')!.start);
-        this.e96.render(f, this.rtA, { ...d96, lt: d96.dur, p: 1 });
+        this.e96.render(f, this.rtA, { ...d96, lt: d96.dur * this.speed, dur: d96.dur * this.speed, p: 1 });
         const d26 = this.local('era2026', 0);
         this.e26.render(f, this.rtB, d26);
         const k = this.chain.k(lt);
@@ -95,7 +97,7 @@ export default class FigureScene extends Scene {
     const s = (n: BeatName) => this.spans.find((x) => x.name === n)!;
     add(this.bridge.cues(), s('bridge').start);
     if (this.problem) add(this.problem.cues(), s('problem').start);
-    add(this.e96.cues(this.content, s('era1996').end - s('era1996').start), s('era1996').start);
+    add(this.e96.cues(this.content, (s('era1996').end - s('era1996').start) * this.speed).map((c) => ({ ...c, t: c.t / this.speed })), s('era1996').start);
     add(this.chain.cues(), s('chain').start);
     add(this.e26.cues(this.content.era2026, s('era2026').end - s('era2026').start), s('era2026').start);
     return out.sort((a, b) => a.t - b.t);

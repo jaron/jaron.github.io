@@ -13,7 +13,8 @@ const content: SceneContent = {
   number: 4,
   total: 7,
   title: 'Tool calling',
-  beats: { bridge: 6.5, era1996: 18, era2026: 15.4 },
+  beats: { bridge: 6.5, era1996: 15.6, era2026: 15.4 },
+  era1996Speed: 1.15,   // the 1996 animation is authored in its own seconds; this plays it 1.15x faster
   era1996: {
     kind: 'handoff',
     refs: [
