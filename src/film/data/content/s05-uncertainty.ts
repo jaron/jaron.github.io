@@ -14,7 +14,7 @@ const content: SceneContent = {
   number: 5,
   total: 7,
   title: 'Knowing how sure we are',
-  beats: { bridge: 6.5, era1996: 19, era2026: 15.0 },
+  beats: { bridge: 6, era1996: 19, era2026: 15.0 },
   era1996: {
     kind: 'triangles',
     refs: [

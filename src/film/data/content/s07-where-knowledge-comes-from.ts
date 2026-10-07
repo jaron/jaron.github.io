@@ -14,7 +14,7 @@ const content: SceneContent = {
   number: 7,
   total: 7,
   title: 'Where knowledge comes from',
-  beats: { bridge: 7, era1996: 34.5, chain: 12, era2026: 18.5 },
+  beats: { bridge: 5.5, era1996: 34.5, chain: 12, era2026: 18.5 },
   era1996: {
     kind: 'knowledge',
     refs: [

@@ -14,7 +14,7 @@ const content: SceneContent = {
   number: 6,
   total: 7,
   title: 'Showing our work',
-  beats: { bridge: 7, era1996: 27, era2026: 15.9 },
+  beats: { bridge: 6.3, era1996: 27, era2026: 15.9 },
   era1996: {
     kind: 'explain',
     refs: [
