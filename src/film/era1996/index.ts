@@ -4,6 +4,7 @@ import type { Era1996Renderer } from '../core/types';
 const loaders: Record<string, () => Promise<{ default: new () => Era1996Renderer }>> = {
   form: () => import('./form'),
   backtrack: () => import('./backtrack'),
+  knowledge: () => import('./knowledge'),
   explain: () => import('./explain'),
   triangles: () => import('./triangles'),
   handoff: () => import('./handoff'),

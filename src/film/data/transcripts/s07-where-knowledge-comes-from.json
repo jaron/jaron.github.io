@@ -1,0 +1,13 @@
+{
+  "fixture": false,
+  "model": "claude-sonnet-5-5",
+  "date": "2026-10-07",
+  "harness": "claude-code 2.1.285 (Claude Code), print mode, tools disabled, system prompt: \"You are a helpful assistant.\"",
+  "prompt": "Calculate the force due to gravity acting on a raindrop, 1 millimetre in diameter.",
+  "turns": [
+    {
+      "type": "text",
+      "text": "**Setup:** Treat the raindrop as a sphere of water with diameter 1 mm, so r = 0.5 mm = 5 × 10⁻⁴ m.\n\n**Volume:**\nV = (4/3)πr³ = (4/3)π(5 × 10⁻⁴ m)³ ≈ 5.24 × 10⁻¹⁰ m³\n\n**Mass** (water density ρ = 1000 kg/m³):\nm = ρV ≈ 1000 × 5.24 × 10⁻¹⁰ ≈ 5.24 × 10⁻⁷ kg (about 0.5 mg)\n\n**Weight** (g = 9.81 m/s²):\nF = mg ≈ 5.24 × 10⁻⁷ × 9.81 ≈ **5.1 × 10⁻⁶ N**\n\nSo the gravitational force on the raindrop is about 5 micronewtons."
+    }
+  ]
+}

@@ -94,7 +94,7 @@ for (const f of files) {
     if (years.some((y, i) => i && y < years[i - 1]!)) fail(`${where}: chain years are not in order`);
   }
 
-  if (c.era2026.kind === 'transcript' || c.era2026.kind === 'language' || c.era2026.kind === 'meaning' || c.era2026.kind === 'correction' || c.era2026.kind === 'toolcall' || c.era2026.kind === 'range' || c.era2026.kind === 'working') {
+  if (c.era2026.kind === 'transcript' || c.era2026.kind === 'language' || c.era2026.kind === 'meaning' || c.era2026.kind === 'correction' || c.era2026.kind === 'toolcall' || c.era2026.kind === 'range' || c.era2026.kind === 'working' || c.era2026.kind === 'sources') {
     const tp = join(root, 'data', 'transcripts', `${c.era2026.src}.json`);
     if (!existsSync(tp)) fail(`${where}: transcript ${c.era2026.src}.json missing`);
     else {
@@ -109,6 +109,13 @@ for (const f of files) {
         if (!m.clusters.some((x: { name: string }) => x.name === m.question.near)) fail(`${where}: question.near '${m.question.near}' is not a cluster`);
         if (m.found.length > 3) fail(`${where}: at most 3 found labels are supported`);
         for (const line of m.reply) if (!shown.split('\n').includes(line)) fail(`${where}: reply line is not verbatim in the transcript: "${line}"`);
+      }
+      if (c.era2026.kind === 'sources') {
+        const so = c.era2026;
+        const text = t.turns.map((x: { text?: string }) => x.text ?? '').join('\n').replace(/\*\*/g, '');
+        for (const l of so.reply) if (!text.includes(l)) fail(`${where}: reply line is not verbatim in the recorded reply: "${l}"`);
+        for (const f of so.facts) { if (!text.includes(f.text)) fail(`${where}: fact "${f.text}" is not verbatim in the reply`); if (!so.reply.some((l: string) => l.includes(f.text))) fail(`${where}: fact "${f.text}" is not in one of the reply lines shown`); }
+        if (so.prompt !== t.prompt) fail(`${where}: prompt in the content file differs from the one recorded`);
       }
       if (c.era2026.kind === 'working') {
         const wk = c.era2026;

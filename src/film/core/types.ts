@@ -103,8 +103,25 @@ export interface WorkingSpec {
   answer: string;
 }
 
+/** A model's reply whose facts nobody typed in, beside the published mix of text one large model learned from. */
+export interface SourcesSpec {
+  kind: 'sources';
+  src: string;
+  prompt: string;
+  lead: string;
+  /** verbatim lines from the recorded reply, in order */
+  reply: string[];
+  /** facts the 1996 program had to be given; `text` is verbatim in the reply, `tag` names the kind of entry */
+  facts: { text: string; tag: string }[];
+  /** the published training data of one large model: figures from its paper, quoted with the citation */
+  mix: { title: string; subtitle: string; citation: string; parts: { name: string; gloss: string; billions: number }[]; seenBillions: number };
+  /** a closing sentence for the scale argument */
+  crowd: string;
+}
+
 export type Era2026Spec =
   | { kind: 'transcript'; src: string; highlight?: string[] }
+  | SourcesSpec
   | WorkingSpec
   | RangeSpec
   | ToolCallSpec

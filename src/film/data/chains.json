@@ -281,5 +281,54 @@
         "verified": false
       }
     ]
+  },
+  "ingestion": {
+    "intro": "Knowledge moved from being typed in to being learned from web-scale repositories of text. Literally the sum of human knowledge.",
+    "nodes": [
+      {
+        "year": 2008,
+        "name": "Common Crawl",
+        "gist": "A free, regularly updated copy of the public web, so collecting text became a download, not a project.",
+        "source": {
+          "title": "Common Crawl",
+          "authors": "Common Crawl Foundation",
+          "url": "https://commoncrawl.org/"
+        },
+        "verified": false
+      },
+      {
+        "year": 2017,
+        "name": "The Transformer",
+        "gist": "A design that could learn from huge amounts of text in parallel, so more text meant more computers, not more people.",
+        "source": {
+          "title": "Attention Is All You Need",
+          "authors": "Vaswani et al.",
+          "url": "https://arxiv.org/abs/1706.03762"
+        },
+        "verified": false
+      },
+      {
+        "year": 2018,
+        "name": "Pretraining",
+        "gist": "A model could first learn from raw text with no labels, then be adapted to many tasks.",
+        "source": {
+          "title": "Improving Language Understanding by Generative Pre-Training",
+          "authors": "Radford et al.",
+          "url": "https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf"
+        },
+        "verified": false
+      },
+      {
+        "year": 2020,
+        "name": "Scaling laws",
+        "gist": "Results improved smoothly and predictably as models, text and computing power grew.",
+        "source": {
+          "title": "Scaling Laws for Neural Language Models",
+          "authors": "Kaplan et al.",
+          "url": "https://arxiv.org/abs/2001.08361"
+        },
+        "verified": false
+      }
+    ]
   }
 }
