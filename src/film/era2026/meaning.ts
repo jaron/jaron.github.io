@@ -156,7 +156,7 @@ export default class MeaningRenderer implements Era2026Renderer {
       if (k <= 0) return;
       const pt = this.pts[idx]!;
       // label anchors sit well clear of the question, each joined to its point by a short leader
-      const anchors = [[92, -84, 'left'], [-92, 88, 'right'], [120, 70, 'left']] as const;
+      const anchors = [[92, -84, 'left'], [-92, 88, 'right'], [120, 28, 'left']] as const;      // the third sits clear of the SHAPES label below it
       const [ax, ay, align] = anchors[i % anchors.length]!;
       const lx = this.q.x + ax, ly = this.q.y + ay;
       lb.seg2(pt.x, pt.y, lerp(pt.x, lx + (align === 'left' ? -8 : 8), k), lerp(pt.y, ly - 6, k), 1.2, hot, 0.7 * k);

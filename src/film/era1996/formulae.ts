@@ -1,7 +1,7 @@
 // 1996 beat, scene 2: how the program found the few formulae that mattered.
 //   1. a field of 122 formulae; the goal symbol lights the cards that contain it (exact match, by symbol)
 //   2. each formula needs more quantities, so the choices multiply (3 per step over 20 levels = 3.5 billion paths)
-//   3. a light-touch card: "easy to check, hard to find" is the shape P versus NP is about (hindsight, not thesis)
+//   3. under the big number: "easy to check, hard to find", the shape P versus NP is about (hindsight, not thesis), and a caption under the tree
 //   4. the hand-written rule that made it workable: try the formula with the fewest unknowns first
 import type * as THREE from 'three';
 import type { Frame, SceneCtx } from '../engine/scene';
@@ -89,16 +89,16 @@ export default class FormulaeRenderer implements Era1996Renderer {
     c.fillStyle = rgba('bone', 0.92);
     for (const l of qLines) { const n = Math.max(0, Math.min(l.text.length, typed - l.start)); if (n > 0) c.fillText(l.text.slice(0, n), 96, l.y); }
 
-    const fieldA = 1 - 0.86 * ease.inOutCubic(prog(lt, T_TREE - 0.3, T_TREE + 0.4));      // the field recedes while the tree grows
+    const fieldA = 1 - ease.inOutCubic(prog(lt, T_TREE - 0.3, T_TREE + 0.4));             // the field clears away as the tree grows
     const fieldBack = lt >= T_RANK - 0.2 ? 0 : 1;
     // ---- 1. the field of formulae
     if (fieldBack) {
       c.save();
       this.slots.forEach((s, i) => {
+        const candIdx = this.candSlots.indexOf(i);
         const a = ease.outCubic(prog(lt, T_FIELD + (i / this.d.field) * 1.3, T_FIELD + (i / this.d.field) * 1.3 + 0.3)) * fieldA;
         if (a <= 0) return;
         const name = this.named.get(i);
-        const candIdx = this.candSlots.indexOf(i);
         const hit = candIdx >= 0 ? ease.outExpo(prog(lt, T_GOAL + 0.5 + candIdx * 0.35, T_GOAL + 0.5 + candIdx * 0.35 + 0.4)) : 0;
         const col = hit > 0 ? sig : LIN.graphite;
         const w = hit > 0 ? 2 : 1;
@@ -124,18 +124,19 @@ export default class FormulaeRenderer implements Era1996Renderer {
       c.save(); c.globalAlpha = a; c.font = font(F.mono(500), 16); c.letterSpacing = '4px'; c.fillStyle = rgba('ash', 1);
       c.textAlign = 'right'; c.fillText(`${d.field} FORMULAE IN THE KNOWLEDGE BASE · A FEW SHOWN`, 1824, 322); c.restore();
     }
-    const goalA = ease.outCubic(prog(lt, T_GOAL, T_GOAL + 0.4)) * fieldA;
+    const goalA = ease.outCubic(prog(lt, T_GOAL, T_GOAL + 0.4));                          // the goal and the step label stay clear once the field has gone
     if (goalA > 0.01 && lt < T_RANK) {
       c.save(); c.globalAlpha = goalA;
       c.font = font(F.mono(500), 18); c.letterSpacing = '4px'; c.fillStyle = rgba('signal', 1);
       c.fillText(`GOAL  ${d.goal} = ?   (THE MASS OF THE GAS)`, 96, 322);
-      c.fillStyle = rgba('ash', 1);
+      c.globalAlpha = goalA * (1 - ease.inOutCubic(prog(lt, T_CARD - 0.2, T_CARD + 0.2)));
+      c.fillStyle = rgba('bone', 0.85);
       c.fillText('STEP 1 · FIND THE FORMULAE THAT CONTAIN THE GOAL, BY SYMBOL', 96, 948);
       c.restore();
     }
 
     // ---- 2. the choices multiply
-    const treeA = lt < T_CARD ? 0.5 : lerp(0.5, 0.12, ease.inOutCubic(prog(lt, T_CARD, T_CARD + 0.5)));
+    const treeA = 0.5;
     const rankP = ease.inOutCubic(prog(lt, T_RANK, T_RANK + 0.6));
     const levelP = (lvl: number) => ease.outExpo(prog(lt, T_TREE + lvl * LEVEL_GAP, T_TREE + lvl * LEVEL_GAP + 0.4));
     if (lt >= T_TREE) {
@@ -186,11 +187,11 @@ export default class FormulaeRenderer implements Era1996Renderer {
     const d = this.d;
     const lastLevel = Math.min(LEVELS, Math.max(1, Math.floor((lt - T_TREE) / LEVEL_GAP)));
     const jump = prog(lt, T_TREE + LEVELS * LEVEL_GAP + 0.25, T_TREE + LEVELS * LEVEL_GAP + 0.4);
-    const out = 1 - ease.inOutCubic(prog(lt, T_CARD - 0.1, T_CARD + 0.4)) * 0.0;   // stays, smaller, behind the card
+    const out = 1;
     const showDeep = jump > 0;
     const exp = showDeep ? d.depth : lastLevel;
     const val = Math.pow(d.branching, exp);
-    const al = lt >= T_CARD ? lerp(1, 0.0, ease.inOutCubic(prog(lt, T_CARD - 0.1, T_CARD + 0.4))) : 1;
+    const al = 1 - ease.inOutCubic(prog(lt, T_RANK - 0.5, T_RANK));       // it stays, with the words under it, until the ranking arrives
     if (al <= 0.01) return;
     c.save(); c.globalAlpha = al * out;
     const x = 1096, y = 300;
@@ -227,25 +228,22 @@ export default class FormulaeRenderer implements Era1996Renderer {
     void x;
   }
 
-  private drawCard(c: CanvasRenderingContext2D, lb: LineBatch, p: number, t: number) {
-    // a dark panel over the tree, with the idea in plain words
-    const panelX = 96, panelY = 330, panelW = 1728, panelH = 470;
-    c.save(); c.globalAlpha = p * 0.93; c.fillStyle = 'rgba(5,5,7,1)'; c.fillRect(panelX, panelY, panelW, panelH); c.restore();
-    lb.polyline([{ x: panelX, y: panelY }, { x: panelX + panelW, y: panelY }, { x: panelX + panelW, y: panelY + panelH }, { x: panelX, y: panelY + panelH }, { x: panelX, y: panelY }], 1.4, LIN.signal, 0.7 * p);
-    c.save(); c.globalAlpha = p;
-    c.font = font(F.mono(500), 20); c.letterSpacing = '5px'; c.fillStyle = rgba('signal', 1);
-    c.fillText('P  ≠  NP', panelX + 48, panelY + 70); c.letterSpacing = '0px';
+  private drawCard(c: CanvasRenderingContext2D, _lb: LineBatch, p: number, t: number) {
+    // under the big number: the idea in plain words, right-aligned with it; and the name of the problem under the tree
+    const fam = F.archivo(100, 900), size = 86, x1 = 1824;
+    const l1 = ease.outExpo(prog(t, 0.0, 0.5)), l2 = ease.outExpo(prog(t, 0.5, 1.0));
+    c.save();
     c.fillStyle = rgba('bone', 1);
-    const l1 = ease.outExpo(prog(t, 0.2, 0.7)), l2 = ease.outExpo(prog(t, 0.6, 1.1));
     c.globalAlpha = p * clamp(l1 * 3);
-    fillBigText(c, 'Easy to check.', F.archivo(100, 900), 112, panelX + 44, panelY + 200 + (1 - l1) * 30);
+    fillBigText(c, 'Easy to check.', fam, size, x1 - measure('Easy to check.', fam, size), 690 + (1 - l1) * 24);
+    c.fillStyle = rgba('signal', 1);
     c.globalAlpha = p * clamp(l2 * 3);
-    fillBigText(c, 'Hard to find.', F.archivo(100, 900), 112, panelX + 44, panelY + 330 + (1 - l2) * 30);
-    const l3 = ease.outCubic(prog(t, 1.4, 1.9));
-    c.globalAlpha = p * l3;
-    c.font = font(F.archivo(100, 500), 28); c.fillStyle = rgba('bone', 0.9);
-    c.fillText('This shape has a name: P versus NP. Whether finding is ever fundamentally harder than checking is unproven.', panelX + 48, panelY + 404);
-    c.fillText('Most researchers believe it is. So search needs shortcuts.', panelX + 48, panelY + 442);
+    fillBigText(c, 'Hard to find.', fam, size, x1 - measure('Hard to find.', fam, size), 800 + (1 - l2) * 24);
+    c.restore();
+    const l3 = ease.outCubic(prog(t, 1.1, 1.6));
+    c.save(); c.globalAlpha = p * l3;
+    c.font = font(F.archivo(100, 500), 30); c.fillStyle = rgba('bone', 0.92);
+    c.fillText('Researchers call this computational challenge P versus NP. It’s why search needs shortcuts.', 96, 948);
     c.restore();
   }
 
@@ -255,8 +253,11 @@ export default class FormulaeRenderer implements Era1996Renderer {
     c.save(); c.globalAlpha = p;
     // the ranking panel
     const x0 = 1180, y0 = 420, w = 644;
-    c.font = font(F.mono(500), 16); c.letterSpacing = '4px'; c.fillStyle = rgba('signal', 1);
-    c.fillText('STEP 2 · TRY THE FEWEST UNKNOWNS FIRST', x0, y0 - 28); c.letterSpacing = '0px';
+    // the step label sits at the foot of the screen, where step 1's was, with the point under it
+    c.save(); c.globalAlpha = ease.outCubic(prog(lt, T_RANK + 0.2, T_RANK + 0.7));
+    c.font = font(F.mono(500), 18); c.letterSpacing = '4px'; c.fillStyle = rgba('bone', 0.85);
+    c.fillText('STEP 2 · TRY THE FEWEST UNKNOWNS FIRST', 96, 936); c.letterSpacing = '0px';
+    c.restore();
     const rows = d.candidates.map((cd, i) => ({ ...cd, i })).sort((a, b) => a.unknowns.length - b.unknowns.length || a.i - b.i);
     rows.forEach((r, k) => {
       const a = ease.outCubic(prog(lt, T_RANK + 0.4 + k * 0.3, T_RANK + 0.8 + k * 0.3));
@@ -278,9 +279,9 @@ export default class FormulaeRenderer implements Era1996Renderer {
     // the point
     c.globalAlpha = p * ease.outCubic(prog(lt, T_RANK + 1.5, T_RANK + 2.0));
     c.font = font(F.archivo(100, 700), 40); c.fillStyle = rgba('bone', 1);
-    c.fillText('A heuristic doesn’t change the worst case.', 96, 940);
+    c.fillText('A heuristic doesn’t change the worst case.', 96, 988);
     c.fillStyle = rgba('signal', 1);
-    c.fillText('It makes the typical case fast.', 96, 990);
+    c.fillText('It makes the typical case fast.', 96, 1034);
     c.restore();
   }
 
