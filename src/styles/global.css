@@ -209,3 +209,5 @@ a:hover {
         font-size: clamp(1.8rem, 3.5vw, 2.5rem); /* Even smaller font size for mobile h1 */
     }
 }
+/* the "AI PhD" in the pillars links to the film */
+.pillar-link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; text-decoration-color: color-mix(in srgb, currentColor 45%, transparent); }

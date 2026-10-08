@@ -26,7 +26,15 @@ const scrub = document.getElementById('scrub') as HTMLInputElement;
 const info = document.getElementById('info')!;
 const soundBtn = document.getElementById('sound') as HTMLButtonElement;
 
+/** The live film cannot run here (no WebGL 2, or something failed): show the video instead. */
+function showFallback() {
+  for (const id of ['stage', 'dock', 'sound', 'status', 'debug']) document.getElementById(id)?.setAttribute('hidden', '');
+  for (const id of ['stage', 'dock', 'sound', 'status', 'debug']) { const el = document.getElementById(id); if (el) el.style.display = 'none'; }
+  document.getElementById('fallback')?.removeAttribute('hidden');
+}
+
 async function boot() {
+  if (!document.createElement('canvas').getContext('webgl2')) { showFallback(); return; }
   const built = buildTimeline();
   const engine = new Engine(canvas, () => built.entries, built.duration);
   await engine.init();
@@ -146,6 +154,5 @@ async function boot() {
 
 boot().catch((e) => {
   console.error(e);
-  status.textContent = String(e?.stack ?? e);
-  status.classList.add('error');
+  if (DEBUG) { status.textContent = String(e?.stack ?? e); status.classList.add('error'); } else showFallback();
 });

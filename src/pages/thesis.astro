@@ -1,13 +1,35 @@
 ---
 // Mode 1: the zero-click motion-graphics film. The 16:9 stage scales to fit the window.
+import { YOUTUBE_ID, YOUTUBE_URL, EDITION_PDF } from '../film/video';
+const title = 'How I made a machine think (in 1996): an AI PhD thesis, thirty years on';
+const description = 'A film of my 1996 PhD thesis in AI, traced forward thirty years to how machines think today. Each idea has a 1996 half and a 2026 half, joined by the research in between. Best with sound on.';
+const videoLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: title,
+  description,
+  thumbnailUrl: `https://i.ytimg.com/vi/${YOUTUBE_ID}/maxresdefault.jpg`,
+  uploadDate: '2026-10-08',
+  duration: 'PT7M47S',
+  embedUrl: `https://www.youtube.com/embed/${YOUTUBE_ID}`,
+  author: { '@type': 'Person', name: 'Dr Jaron Collis', url: 'https://jaroncollis.com' },
+};
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex" />
-    <title>A 1996 AI thesis, thirty years on — Jaron Collis</title>
+    <title>{title} — Jaron Collis</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href="https://jaroncollis.com/thesis" />
+    <meta property="og:type" content="video.other" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="https://jaroncollis.com/thesis" />
+    <meta property="og:image" content={`https://i.ytimg.com/vi/${YOUTUBE_ID}/maxresdefault.jpg`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(videoLd)} />
     <style is:global>
       :root { color-scheme: dark; }
       html, body { margin: 0; height: 100%; background: #050507; color: #eee9df; overflow: hidden; }
@@ -60,6 +82,21 @@
       #segs { transition: transform .3s; }
       @media (max-width: 700px) { #dock { --lift: 72px; padding-right: 22px; } body.debug #dock { --lift: 120px; } }
       @media (prefers-reduced-motion: reduce) { #dock, #segs, .seg, #play, #seekLabel { transition: none; } }
+      /* after the film: REPLAY, then links onward (PDF only once the edition is published) */
+      .endlink { display: none; flex: none; align-items: center; gap: 9px; height: 38px; padding: 0 18px; box-sizing: border-box; background: rgba(5, 5, 7, 0.62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border: 1px solid rgba(238, 233, 223, 0.55); border-radius: 999px; font: 500 12px/1 ui-monospace, Menlo, monospace; letter-spacing: 0.2em; color: #eee9df; text-decoration: none; pointer-events: auto; transition: border-color .2s; }
+      .endlink:hover, .endlink:focus-visible { border-color: #007aff; outline: none; }
+      .endlink svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+      #play[data-state="ended"] ~ .endlink:not([hidden]) { display: inline-flex; }
+      /* browsers that cannot run the live film get the video instead */
+      #fallback { position: fixed; inset: 0; overflow: auto; background: #050507; }
+      #fallback[hidden] { display: none; }
+      @font-face { font-family: 'ArchivoHeavy'; src: url('/fonts/Archivo-w1000-900.ttf'); font-weight: 900; font-display: swap; }
+      .fb { box-sizing: border-box; max-width: 980px; margin: 0 auto; padding: 48px 24px 64px; font: 16px/1.55 system-ui, -apple-system, 'Segoe UI', sans-serif; }
+      .fb h1 { margin: 0 0 14px; font: 900 clamp(32px, 6vw, 56px)/1.05 'ArchivoHeavy', system-ui, sans-serif; letter-spacing: -0.01em; }
+      .fb p { margin: 0 0 22px; color: #bcb7ad; }
+      .fb .vid { position: relative; aspect-ratio: 16 / 9; background: #000; border: 1px solid rgba(238, 233, 223, 0.2); }
+      .fb iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+      .fb a { color: #7cbaff; }
     </style>
   </head>
   <body>
@@ -82,11 +119,35 @@
         </svg>
         <span class="lbl">REPLAY</span>
       </button>
+      <a id="home" class="endlink" href="/" aria-label="Homepage">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.2 12 4l8.5 7.2" /><path d="M6 10v9h4.2v-5.2h3.6V19H18v-9" /></svg>
+        <span>HOMEPAGE</span>
+      </a>
+      {EDITION_PDF && (
+        <a id="pdf" class="endlink" href={EDITION_PDF} aria-label="The 2026 edition of the thesis, as a PDF" download>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4V20.5H7z" /><path d="M14 3.5v4h4" /><path d="M9.5 14.5h5M9.5 17.5h5" /></svg>
+          <span>PDF</span>
+        </a>
+      )}
       <div id="seek" role="progressbar" aria-label="Film progress" aria-valuemin="0" aria-valuenow="0">
         <div id="seekLabel"></div>
         <div id="segs"></div>
       </div>
     </div>
+    <div id="fallback" hidden>
+      <div class="fb">
+        <h1>How I made a machine think (in 1996)</h1>
+        <p>This film is drawn live in your browser with WebGL 2, which this browser cannot run right now. Here is the same film as a video.</p>
+        <div class="vid"><iframe title="How I made a machine think (in 1996)" src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}`} loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+        <p style="margin-top:22px"><a href={YOUTUBE_URL}>Watch on YouTube</a> &nbsp;·&nbsp; <a href="/">Homepage</a></p>
+      </div>
+    </div>
+    <noscript>
+      <div class="fb" style="position:fixed;inset:0;overflow:auto;background:#050507;color:#eee9df;box-sizing:border-box;max-width:none">
+        <h1>How I made a machine think (in 1996)</h1>
+        <p>This film needs JavaScript. You can watch it on <a href={YOUTUBE_URL}>YouTube</a>, or go to the <a href="/">homepage</a>.</p>
+      </div>
+    </noscript>
     <div id="debug"><input id="scrub" type="range" min="0" value="0" /><div id="info"></div></div>
     <script>
       import '../film/main';
