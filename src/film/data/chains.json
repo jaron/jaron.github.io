@@ -98,7 +98,7 @@
     ]
   },
   "backtracking": {
-    "intro": "Going back is still how hard problems get solved. Now the machine learns when to do it.",
+    "intro": "Backtracking is still how hard problems get solved. Now the machine learns when to do it.",
     "nodes": [
       {
         "year": 2006,
