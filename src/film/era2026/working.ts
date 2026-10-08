@@ -19,6 +19,7 @@ const PROMPT_AT = 1.8;
 const FORMULA_AT = 2.8;
 const ROW_AT = 3.9, ROW_GAP = 1.0;
 const ANSWER_AT = 9.0;
+const CAVEAT_AT = 10.4, QUOTE_AT = 12.0, QUOTE_LEN = 3.4, FIG_AT = 16.0;     // the model's own validity check, once the answer is on screen
 const COL = { q: 96, v: 560, tag: 900, src: 1090 };
 const HEAD_Y = 512, ROW_Y0 = 562, ROW_H = 52;
 
@@ -89,8 +90,9 @@ export default class WorkingRenderer implements Era2026Renderer {
       c.restore();
     }
 
+    const dim = sp.caveat ? 1 - ease.inOutCubic(prog(lt, CAVEAT_AT, CAVEAT_AT + 0.7)) : 1;
     // the table, row by row
-    const ha = ease.outCubic(prog(lt, ROW_AT - 0.3, ROW_AT + 0.2));
+    const ha = ease.outCubic(prog(lt, ROW_AT - 0.3, ROW_AT + 0.2)) * dim;
     if (ha > 0) {
       c.save(); c.globalAlpha = ha; c.font = font(F.mono(500), 13); c.letterSpacing = '4px'; c.fillStyle = rgba('ash', 1);
       c.fillText('QUANTITY', COL.q, HEAD_Y); c.fillText('VALUE', COL.v, HEAD_Y); c.fillText('WHERE IT CAME FROM', COL.tag, HEAD_Y);
@@ -99,7 +101,7 @@ export default class WorkingRenderer implements Era2026Renderer {
     }
     sp.rows.forEach((r, i) => {
       const t0 = ROW_AT + i * ROW_GAP;
-      const a = ease.outCubic(prog(lt, t0, t0 + 0.4));
+      const a = ease.outCubic(prog(lt, t0, t0 + 0.4)) * dim;
       if (a <= 0) return;
       const yy = ROW_Y0 + i * ROW_H;
       const assumed = r.tag === 'assumed';
@@ -121,6 +123,35 @@ export default class WorkingRenderer implements Era2026Renderer {
       c.restore();
       if (assumed) lb.seg2(96, yy + 16, 1824, yy + 16, 1, hot, 0.25 * a);
     });
+
+    // "wait": the model checks itself and finds its own answer would not be what happens in practice
+    const cv = sp.caveat;
+    if (cv) {
+      const ia = ease.outCubic(prog(lt, CAVEAT_AT + 0.3, CAVEAT_AT + 0.8));
+      if (ia > 0) {
+        c.save(); c.globalAlpha = ia; c.font = font(F.archivo(100, 700), 40); c.fillStyle = rgba('claudeHot', 1);
+        c.fillText(cv.intro, 96, 566 + (1 - ia) * 12); c.restore();
+      }
+      const total = cv.quote.reduce((n, l) => n + l.length + 1, 0);
+      const shownAll = Math.floor(total * prog(lt, QUOTE_AT, QUOTE_AT + QUOTE_LEN));
+      let off = 0;
+      const ql = ease.outCubic(prog(lt, QUOTE_AT - 0.4, QUOTE_AT));
+      if (ql > 0) { c.save(); c.globalAlpha = ql; c.font = font(F.mono(500), 15); c.letterSpacing = '4px'; c.fillStyle = rgba('ash', 1); c.fillText('ITS OWN VALIDITY CHECK, IN ITS OWN WORDS', 96, 622); c.restore(); }
+      c.save(); c.font = font(F.archivo(100, 600), 32); c.fillStyle = rgba('bone', 0.96);
+      cv.quote.forEach((l, k) => {
+        const n = Math.max(0, Math.min(l.length, shownAll - off)); off += l.length + 1;
+        if (n > 0) c.fillText(l.slice(0, n), 96, 672 + k * 46);
+      });
+      c.restore();
+      const fa = ease.outCubic(prog(lt, FIG_AT, FIG_AT + 0.6));
+      if (fa > 0) {
+        c.save(); c.globalAlpha = fa;
+        c.font = font(F.archivo(100, 800), 56); c.fillStyle = rgba('claudeHot', 1); c.fillText(cv.figure, 96, 784);
+        const w = c.measureText(cv.figure).width;
+        c.font = font(F.mono(500), 14); c.letterSpacing = '3px'; c.fillStyle = rgba('claude', 1); c.fillText(cv.figureTag, 96 + w + 24, 780);
+        c.restore();
+      }
+    }
 
     // its own answer line
     const aa = ease.outCubic(prog(lt, ANSWER_AT, ANSWER_AT + 0.5));
@@ -154,6 +185,11 @@ export default class WorkingRenderer implements Era2026Renderer {
     cues.push({ t: FORMULA_AT, voice: 'reveal', gain: 0.4, pitch: 0.9 });
     this.spec.rows.forEach((r, i) => cues.push({ t: ROW_AT + i * ROW_GAP, voice: r.tag === 'assumed' ? 'lock' : 'step', gain: 0.4, pitch: 0.9 + i * 0.07 }));
     cues.push({ t: ANSWER_AT, voice: 'stamp', gain: 0.6, pitch: 1.0 });
+    if (this.spec.caveat) {
+      cues.push({ t: CAVEAT_AT + 0.3, voice: 'reveal', gain: 0.4, pitch: 0.8 });
+      for (let t = QUOTE_AT; t < QUOTE_AT + QUOTE_LEN; t += 0.16) cues.push({ t, voice: 'type', gain: 0.14 });
+      cues.push({ t: FIG_AT, voice: 'stamp', gain: 0.55, pitch: 0.85 });
+    }
     if (this.note) cues.push(this.note.cue());
     return cues;
   }

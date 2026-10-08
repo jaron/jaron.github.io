@@ -130,6 +130,10 @@ for (const f of files) {
         for (const r of wk.rows) for (const k of ['quantity', 'value', 'source'] as const)
           if (!text.includes(r[k])) fail(`${where}: row "${r.quantity}": ${k} is not verbatim in the reply: "${r[k]}"`);
         if (!text.includes(wk.answer)) fail(`${where}: answer line is not verbatim in the reply: "${wk.answer}"`);
+        if (wk.caveat) {
+          for (const l of wk.caveat.quote) if (!text.includes(l.replace(/^…/, '').replace(/[….]$/, ''))) fail(`${where}: caveat line is not verbatim in the reply: "${l}"`);
+          if (!text.includes(wk.caveat.figure.replace('≈ ', ''))) fail(`${where}: caveat figure "${wk.caveat.figure}" is not in the reply`);
+        }
         if (wk.prompt !== t.prompt) fail(`${where}: prompt in the content file differs from the one recorded`);
       }
       if (c.era2026.kind === 'range') {

@@ -101,6 +101,8 @@ export interface WorkingSpec {
   rows: { quantity: string; value: string; source: string; tag: 'given' | 'looked up' | 'assumed' | 'worked out' }[];
   /** the model's answer line */
   answer: string;
+  /** after the answer, the model's own validity check: an intro line, two verbatim lines from the reply, and the figure it gives */
+  caveat?: { intro: string; quote: string[]; figure: string; figureTag: string };
 }
 
 /** A model's reply whose facts nobody typed in, beside the published mix of text one large model learned from. */

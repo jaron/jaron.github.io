@@ -14,7 +14,7 @@ const content: SceneContent = {
   number: 6,
   total: 7,
   title: 'Showing our work',
-  beats: { bridge: 6.3, era1996: 23, era2026: 15.9 },
+  beats: { bridge: 6.3, era1996: 23, era2026: 21.8 },
   era1996Speed: 1.2,   // the 1996 animation is authored in its own seconds; this plays it 1.2x faster
   era1996: {
     kind: 'explain',
@@ -74,7 +74,13 @@ const content: SceneContent = {
       { quantity: 'Second moment of area, I', value: '4.909×10⁻⁶ m⁴', source: 'Calculated below for a solid circular section', tag: 'worked out' },
     ],
     answer: 'P_cr ≈ 2.5 MN (about 2,520,000 N), assuming pinned–pinned ends.',
+    caveat: {
+      intro: 'You often see models correct themselves. Wait…',
+      quote: ['So in practice the bar would yield in compression before it buckles.', '…the real failure load is much lower…'],
+      figure: '≈ 0.55 MN',
+      figureTag: 'ITS OWN ESTIMATE OF THE REAL LOAD, FOR ANNEALED COPPER',
+    },
   },
-  note: { label: 'DIFFERS', text: 'My report recorded what the program did. A model’s explanation is more text, and may not be what happened inside it.', at: 10.4 },
+  note: { label: 'DIFFERS', text: 'My report recorded what the program did. A model’s explanation is more text, and may not be what happened inside it.', at: 16.0 },
 };
 export default content;
