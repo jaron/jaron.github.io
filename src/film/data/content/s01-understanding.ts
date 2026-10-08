@@ -34,7 +34,7 @@ const content: SceneContent = {
   era2026: {
     kind: 'language',
     src: 's01-understanding',
-    lead: 'Now we’ve been speaking to machines naturally for years.',
+    lead: 'We’ve been speaking to machines naturally for years now.',
     rows: [
       ['A', 'cylindrical', 'bar', 'of', 'copper', 'is', '5', 'centimetres', 'in', 'radius', ','],
       ['and', '1.5', 'metres', 'in', 'length', '.'],
@@ -49,6 +49,6 @@ const content: SceneContent = {
     reply: ['Formula: P_cr = π²EI / L²', '· Radius: r = 0.05 m', '· Length: L = 1.5 m'],
     highlight: ['Radius: r = 0.05 m', 'Length: L = 1.5 m'],
   },
-  note: { label: 'ECHO', text: 'The fixed form my program required is gone: the model reads the sentence itself.', at: 10.4 },
+  note: { label: 'ECHO', text: 'The fixed form my solver required is gone: the model reads the sentence itself.', at: 10.4 },
 };
 export default content;

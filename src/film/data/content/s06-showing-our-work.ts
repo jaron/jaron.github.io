@@ -1,12 +1,12 @@
 import type { SceneContent } from '../../core/types';
 
-// Scene 6: the program wrote out its working, so anyone could check it. The copper bar's report (Fig 5.8) used a formula
-// with pi where Euler's has pi squared, so the program's answer was wrong, and the working is what lets us see it.
+// Scene 6: the solver wrote out its working, so anyone could check it. The copper bar's report (Fig 5.8) used a formula
+// with pi where Euler's has pi squared, so the solver's answer was wrong, and the working is what lets us see it.
 // Quotes are verbatim from the thesis (check-content verifies them). The failure report is an illustration.
 const content: SceneContent = {
   id: 's06-showing-our-work',
   bridge: {
-    text: 'An answer nobody can check is not trusted. So my program wrote out its working: every formula, and where every value came from.',
+    text: 'An answer nobody can check is not trusted. So my solver wrote out its working: every formula, and where every value came from.',
     emphasis: 'wrote out its working: every formula, and where every value came from.',
     refs: [{ page: 105, pdfPage: 112, quote: 'The user will expect to see how the answer was derived' }],
   },
@@ -25,7 +25,7 @@ const content: SceneContent = {
       { page: 107, pdfPage: 114, quote: 'to calculate the resistivity of an object the problem solver will need to know its temperature' },
     ],
     data: {
-      label: 'THE PROGRAM EXPLAINS ITS ANSWER',
+      label: 'THE SOLVER EXPLAINS ITS ANSWER',
       problem: { material: 'copper', geometry: 'cylinder' },
       // the copper bar of scene 1: r = 5 cm, l = 1.5 m; E for copper from the knowledge base
       inputs: { r: 0.05, l: 1.5, E: 1.2e11 },
@@ -48,7 +48,7 @@ const content: SceneContent = {
         note: 'AN ILLUSTRATION OF THE FAILURE REPORT DESCRIBED ON THESIS P.106–107',
       },
       captions: [
-        { t: 2.4, text: 'The program gave its answer. An answer on its own can’t be checked.' },
+        { t: 2.4, text: 'The solver gave its answer. An answer on its own can’t be checked.' },
         { t: 4.6, text: 'Under it, the working: each formula in the order it was used, and where every value came from.' },
         { t: 8.4, text: 'Each value says whether it was given, looked up in the knowledge base, or worked out earlier.' },
         { t: 12.0, text: 'Thirty years later, the working lets me check it.' },
@@ -81,6 +81,6 @@ const content: SceneContent = {
       figureTag: 'ITS OWN ESTIMATE OF THE REAL LOAD, FOR ANNEALED COPPER',
     },
   },
-  note: { label: 'DIFFERS', text: 'My report recorded what the program did. A model’s explanation is more text, and may not be what happened inside it.', at: 16.0 },
+  note: { label: 'DIFFERS', text: 'My report recorded what the solver did. A model’s explanation is more text, and may not be what happened inside it.', at: 16.0 },
 };
 export default content;

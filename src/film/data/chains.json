@@ -1,6 +1,6 @@
 {
   "understanding": {
-    "intro": "In the 30 years since, a series of breakthroughs led to the thinking machines we use every day.",
+    "intro": "In the thirty years since, a series of breakthroughs led to the thinking machines we use every day.",
     "nodes": [
       {
         "year": 2013,
@@ -223,7 +223,7 @@
       {
         "year": 2017,
         "name": "Calibration",
-        "gist": "Modern networks turned out to be overconfident, and a simple fix made \"ninety percent sure\" mean right nine times in ten.",
+        "gist": "Modern networks turned out to be overconfident, and a simple fix made “ninety percent sure” mean right nine times in ten.",
         "source": {
           "title": "On Calibration of Modern Neural Networks",
           "authors": "Guo et al.",

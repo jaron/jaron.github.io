@@ -95,6 +95,6 @@ const content: SceneContent = {
       { role: 'answer', text: 'Answer: P_cr ≈ 2.5 × 10⁶ N (about 2.5 MN)' },
     ],
   },
-  note: { label: 'ECHO', text: 'Same move: try, notice a dead end, go back. Then by rules I wrote; now learned from practice.', at: 8.2 },
+  note: { label: 'ECHO', text: 'Same move: try, hit a dead end, go back. My solver followed rules I’d written; today, AI models have learned it from practice.', at: 8.2 },
 };
 export default content;

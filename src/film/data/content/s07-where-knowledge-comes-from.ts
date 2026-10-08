@@ -54,13 +54,13 @@ const content: SceneContent = {
         cross: { at: 22.2, label: 'THE CROSSOVER' },
         crossovers: { at: 24.6, text: 'Crossovers happen in every field eventually' },
         examples: [
-          { at: 25.0, head: 'CHESS · 1997', line: 'Deep Blue beat the world champion with massive search, not chess knowledge.' },
+          { at: 25.0, head: 'CHESS · 1997', line: 'Deep Blue beat the world champion mostly with massive search.' },
           { at: 26.2, head: 'IMAGES · 2012', line: 'AlexNet learned from 1.2 million labelled photos and beat hand-designed vision systems.' },
           { at: 27.4, head: 'GO · 2016', line: 'AlphaGo learned from data and self-play, and beat one of the world’s best players.' },
         ],
       },
       captions: [
-        { t: 1.0, text: 'Everything my program knew had to be typed in by hand. It was a laborious process.' },
+        { t: 1.0, text: 'Everything my solver knew had to be typed in by hand. It was a laborious process.' },
         { t: 7.6, text: 'Every entry typed in, and checked, by hand.' },
         { t: 11.6, text: 'In 2019 the AI researcher Rich Sutton described a pattern observed over seventy years of AI research.\nHe called it The Bitter Lesson.' },
         { t: 15.6, text: 'Builders of symbolic AI systems populated them with all the data they could find. It works well enough, initially.' },

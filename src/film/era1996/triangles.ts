@@ -155,7 +155,8 @@ export default class TrianglesRenderer implements Era1996Renderer {
       const a = ease.outCubic(prog(lt, cap.t, cap.t + 0.3)) * (1 - q);
       c.save(); c.globalAlpha = a;
       c.font = font(F.archivo(100, 500), 34); c.fillStyle = rgba('bone', 1);
-      for (const l of wrap(c, cap.text, 1728, 44, 962 + (1 - a) * 8)) c.fillText(l.text, 96, l.y);
+      let yy = 962 + (1 - a) * 8;                          // a \n in a caption starts a new line
+      for (const para of cap.text.split('\n')) for (const l of wrap(c, para, 1728, 44, yy)) { c.fillText(l.text, 96, l.y); yy = l.y + 44; }
       c.restore();
     }
 

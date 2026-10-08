@@ -1,11 +1,11 @@
 import type { SceneContent } from '../../core/types';
 
-// Scene 2: how the program found the few formulae that mattered, why that is hard (the P versus NP shape), and the
+// Scene 2: how the solver found the few formulae that mattered, why that is hard (the P versus NP shape), and the
 // heuristic that made it workable. Quotes are verbatim from the thesis (check-content verifies them).
 const content: SceneContent = {
   id: 's02-finding-knowledge',
   bridge: {
-    text: 'My program knew 122 formulae. Checking whether one fits is easy. Knowing which to try is the hard part.',
+    text: 'My solver knew 122 formulae. Checking whether one fits is easy. Knowing which to try is the hard part.',
     emphasis: 'Knowing which to try is the hard part.',
     refs: [{ page: 154, pdfPage: 161, quote: '122 formulae' }],
   },

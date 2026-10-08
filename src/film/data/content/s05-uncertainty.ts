@@ -6,8 +6,8 @@ import type { SceneContent } from '../../core/types';
 const content: SceneContent = {
   id: 's05-uncertainty',
   bridge: {
-    text: "Every measurement is a little wrong. A single number pretends otherwise. So my program carried each number's uncertainty through every step.",
-    emphasis: "carried each number's uncertainty through every step.",
+    text: 'Every measurement is a little wrong. A single number pretends otherwise. So my solver carried each number’s uncertainty through every step.',
+    emphasis: 'carried each number’s uncertainty through every step.',
     refs: [{ page: 109, pdfPage: 116, quote: 'Almost all numerical scientific data is subject to error' }],
   },
   figure: '§6.5 · THE TRIANGULAR FUZZY NUMBER',
@@ -44,7 +44,7 @@ const content: SceneContent = {
         { t: 5.5, text: 'The volume uses the radius three times, so the range widens.' },
         { t: 9.3, text: 'The answer is a range, and so is every value on the way to it.' },
         { t: 11.1, text: 'A wobble of 5% in the width became about 15% in the force.' },
-        { t: 13.0, text: 'Why not probability? That needs hundreds of repeated measurements. An engineer with one ruler has one.' },
+        { t: 13.0, text: 'Why not probability? That needs hundreds of repeated measurements.\nThe engineer only has what’s in front of them.' },
       ],
       closing: { text: 'Everything is vague to a degree you do not realise till you have tried to make it precise.', by: 'BERTRAND RUSSELL' },
     },
