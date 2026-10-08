@@ -9,21 +9,45 @@ import { F, font } from '../engine/type';
 import { ease, prog } from '../engine/util';
 import type { Cue } from '../core/types';
 import { wrap } from '../core/draw';
-import { OUTRO, INTERLUDE, outroTimes, wordTimes, fadeIn, type Prediction } from '../data/outro';
+import { OUTRO, INTERLUDE, SIGNATURE, outroTimes, wordTimes, fadeIn, type Prediction } from '../data/outro';
 
 interface Placed { w: string; x: number; y: number; t: number; size: number; run: number; emphasis?: 'past' | 'present' | 'coda' }
 const MAX_W = 1560, LEFT = 96, TOP = 330, PRED_TOP = 420;
 const ART = { x0: 1290, x1: 1824, y0: 380, y1: 820 };
 
 export default class Outro extends Scene {
-  private lb = new LineBatch(800, { blend: 'add' });
+  private lb = new LineBatch(4000, { blend: 'add' });
   private text = new Layer2D();
   private pages: Placed[][] = [];
   /** prediction pages: when the quotation finishes typing, and where its last baseline is */
   private quoteEnd: { t: number; y: number }[] = [];
   private times = outroTimes();
+  /** the signature: each stroke as a dense smoothed polyline in frame pixels, with its running length, and when the writing starts */
+  private pen: { pts: { x: number; y: number }[]; len: number[] }[] = [];
+  private penTotal = 0;
+  private penStart = 0;
 
   init() {
+    // the signature's strokes: Catmull-Rom through the hand-placed points
+    const S = SIGNATURE;
+    for (const raw of S.strokes) {
+      const P = raw.map(([x, y]) => ({ x: S.x + x * S.size, y: S.y + y * S.size })), pts: { x: number; y: number }[] = [];
+      for (let i = 0; i < P.length - 1; i++) {
+        const p0 = P[Math.max(0, i - 1)]!, p1 = P[i]!, p2 = P[i + 1]!, p3 = P[Math.min(P.length - 1, i + 2)]!;
+        for (let k = 0; k < 10; k++) {
+          const t = k / 10, t2 = t * t, t3 = t2 * t;
+          pts.push({
+            x: 0.5 * (2 * p1.x + (-p0.x + p2.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3),
+            y: 0.5 * (2 * p1.y + (-p0.y + p2.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 + (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3),
+          });
+        }
+      }
+      pts.push(P[P.length - 1]!);
+      const len = [0];
+      for (let i = 1; i < pts.length; i++) len.push(len[i - 1]! + Math.hypot(pts[i]!.x - pts[i - 1]!.x, pts[i]!.y - pts[i - 1]!.y));
+      this.pen.push({ pts, len });
+      this.penTotal += len[len.length - 1]!;
+    }
     // lay each page out once: greedy word wrap, emphasised words set heavier
     const c = this.text.ctx;
     OUTRO.pages.forEach((p) => {
@@ -94,6 +118,7 @@ export default class Outro extends Scene {
         c.restore();
       });
       if (p.prediction) this.drawPrediction(p.prediction, this.quoteEnd[i]!, lp, keep, c, lb);
+      if (tm.last) this.drawSignature(lp, c, lb);
     });
 
     lb.render(renderer, out);
@@ -101,6 +126,33 @@ export default class Outro extends Scene {
     // it fades up from black like every scene, and it does not fade out: the film ends on its last page
     const fade = 1 - ease.outCubic(prog(lt, 0, 0.45));
     return { bloom: 0.5, halation: 0.1, fade };
+  }
+
+  /** the closing flourish: the name is written out stroke by stroke, then the site appears well apart from it */
+  private drawSignature(lp: number, c: CanvasRenderingContext2D, lb: LineBatch) {
+    const S = SIGNATURE, page = this.pages[this.pages.length - 1]!;
+    const t0 = page[page.length - 1]!.t + 0.7 + S.startAfter, t1 = t0 + S.duration;
+    let remain = prog(lp, t0, t1, ease.inOutCubic) * this.penTotal;
+    let tip: { x: number; y: number } | null = null;
+    for (const st of this.pen) {
+      const total = st.len[st.len.length - 1]!, L = Math.min(remain, total);
+      if (L <= 0) break;
+      for (let i = 1; i < st.pts.length && st.len[i - 1]! < L; i++) {
+        const a = st.pts[i - 1]!, b = st.pts[i]!, segL = Math.max(1e-6, st.len[i]! - st.len[i - 1]!);
+        const f = Math.min(1, (L - st.len[i - 1]!) / segL), bx = a.x + (b.x - a.x) * f, by = a.y + (b.y - a.y) * f;
+        const w = 2.2 + 2.6 * Math.max(0, (b.y - a.y) / segL);                    // a pen presses harder on the downstrokes
+        lb.seg2(a.x, a.y, bx, by, w, LIN.bone, 0.9);
+        tip = { x: bx, y: by };
+      }
+      remain -= total;
+    }
+    if (tip && lp < t1) lb.seg2(tip.x, tip.y, tip.x + 0.01, tip.y, 9, LIN.bone, 0.6);      // the pen tip glints while it writes
+    const ua = ease.outCubic(prog(lp, t1 + S.urlAfter, t1 + S.urlAfter + 0.9));
+    if (ua > 0) {
+      c.save(); c.globalAlpha = ua; c.textAlign = 'left';
+      c.font = font(F.mono(500), 24); c.letterSpacing = '5px'; c.fillStyle = rgba('ash', 1);
+      c.fillText(S.url, S.urlX, S.urlY); c.restore();
+    }
   }
 
   /** the short quotation before the predictions: it arrives in two pieces, with its attribution, and clears */

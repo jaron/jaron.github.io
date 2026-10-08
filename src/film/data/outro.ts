@@ -94,7 +94,7 @@ export const OUTRO = {
       id: 'dad',
       reveal: 'clause', sentenceWord: 0.07,
       size: 52,
-      hold: 5, minGap: 0.35,
+      hold: 7.5, minGap: 0.35,
       runs: [
         { text: 'Sometimes the connections are simple acts of kindness, like the time my father bought me a Sinclair Spectrum home computer in the summer of 1983, and encouraged me to use it. Looking back, his inspired decision was the first step on the road that culminated in this thesis, and what you’re reading now. ' },
         { text: 'Thanks\u00a0Dad.', emphasis: 'present', pauseBefore: 0.6 },
@@ -166,3 +166,23 @@ export const MUSIC = {
 };
 /** When the music starts, in seconds into the outro. */
 export const musicStart = () => outroTimes()[3]!.start + MUSIC.delay;
+
+/** The closing flourish on the last page: the author's name written out by hand, and the site, set well apart from it.
+    Strokes are pen paths in a 540 x 230 box (y down), smoothed through the points; the pen lifts between strokes. */
+export const SIGNATURE = {
+  strokes: [
+    // J, with its long descending hook
+    [[150, 14], [146, 50], [138, 92], [128, 132], [114, 170], [94, 200], [68, 212], [44, 202], [40, 182], [58, 170], [88, 168], [118, 162], [146, 154]],
+    // "aron", joined, with a flourish that runs out beneath
+    [[204, 100], [186, 97], [168, 106], [160, 126], [168, 145], [186, 150], [202, 134], [204, 104], [205, 128], [208, 150], [222, 152],
+     [228, 122], [232, 102], [242, 97], [258, 99], [264, 108],
+     [286, 97], [266, 106], [260, 128], [270, 148], [292, 152], [308, 134], [302, 108], [286, 97], [298, 98], [314, 102],
+     [332, 100], [336, 102], [336, 128], [338, 150], [341, 124], [354, 103], [372, 100], [384, 114], [384, 150], [390, 158], [408, 164], [450, 158], [500, 144], [540, 130]],
+  ] as [number, number][][],
+  /** where the signature sits on the 1920 x 1080 frame (top-left of its box) and its size relative to the box above */
+  x: 1290, y: 780, size: 0.86,
+  /** the URL, left-aligned with the page's text and level with the loop of the J: near the signature, but not close */
+  url: 'jaroncollis.com', urlX: 96, urlY: 948,
+  /** seconds after the last line has finished appearing */
+  startAfter: 1.4, duration: 2.8, urlAfter: 0.5,
+};
