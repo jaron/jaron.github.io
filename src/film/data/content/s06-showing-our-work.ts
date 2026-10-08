@@ -14,7 +14,7 @@ const content: SceneContent = {
   number: 6,
   total: 7,
   title: 'Showing our work',
-  beats: { bridge: 6.3, era1996: 23, era2026: 21.8 },
+  beats: { bridge: 5.2, era1996: 23, era2026: 21.8 },
   era1996Speed: 1.2,   // the 1996 animation is authored in its own seconds; this plays it 1.2x faster
   era1996: {
     kind: 'explain',

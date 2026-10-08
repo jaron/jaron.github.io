@@ -13,7 +13,7 @@ const content: SceneContent = {
   number: 2,
   total: 7,
   title: 'Finding the right knowledge',
-  beats: { bridge: 4, era1996: 15, era2026: 16.5 },
+  beats: { bridge: 3.6, era1996: 15, era2026: 16.5 },
   era1996: {
     kind: 'formulae',
     refs: [

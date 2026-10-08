@@ -14,7 +14,7 @@ const content: SceneContent = {
   number: 7,
   total: 7,
   title: 'Where knowledge comes from',
-  beats: { bridge: 5.5, era1996: 29, chain: 12, era2026: 18.5 },
+  beats: { bridge: 4.6, era1996: 29, chain: 12, era2026: 18.5 },
   era1996Speed: 1.2,   // the 1996 animation is authored in its own seconds; this plays it 1.2x faster
   era1996: {
     kind: 'knowledge',

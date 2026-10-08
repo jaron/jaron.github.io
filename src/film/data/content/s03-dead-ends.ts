@@ -13,7 +13,7 @@ const content: SceneContent = {
   number: 3,
   total: 7,
   title: 'Backtracking from failure',
-  beats: { bridge: 8, era1996: 15, era2026: 13.7 },
+  beats: { bridge: 6.2, era1996: 15, era2026: 13.7 },
   era1996: {
     kind: 'backtrack',
     refs: [

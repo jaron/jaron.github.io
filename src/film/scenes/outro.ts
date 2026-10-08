@@ -9,7 +9,7 @@ import { F, font } from '../engine/type';
 import { ease, prog } from '../engine/util';
 import type { Cue } from '../core/types';
 import { wrap } from '../core/draw';
-import { OUTRO, outroTimes, wordTimes, type Prediction } from '../data/outro';
+import { OUTRO, outroTimes, wordTimes, fadeIn, type Prediction } from '../data/outro';
 
 interface Placed { w: string; x: number; y: number; t: number; size: number; run: number; emphasis?: 'past' | 'present' | 'coda' }
 const MAX_W = 1560, LEFT = 96, TOP = 330, PRED_TOP = 420;
@@ -53,7 +53,7 @@ export default class Outro extends Scene {
       });
       this.pages.push(placed);
       const q = placed.filter((w) => w.emphasis === 'past');
-      this.quoteEnd.push({ t: q.length ? q[q.length - 1]!.t : 0, y: quoteY });
+      this.quoteEnd.push({ t: (q.length ? q[q.length - 1]!.t : 0) + (p.reveal === 'sentence' ? 0.45 : 0), y: quoteY });   // the verdict waits for a sentence to finish fading in
     });
   }
 
@@ -82,12 +82,12 @@ export default class Outro extends Scene {
       const keep = 1 - clear;
       this.pages[i]!.forEach((wd) => {
         const t0 = wd.t;
-        const a = prog(lp, t0, t0 + 0.24, ease.outCubic) * keep;
+        const a = prog(lp, t0, t0 + fadeIn(p), ease.outCubic) * keep;
         if (a <= 0) return;
         c.save(); c.globalAlpha = a;
         c.font = font(F.archivo(100, wd.emphasis ? 800 : 600), wd.size);
         c.fillStyle = wd.emphasis === 'past' ? rgba('signal', 1) : wd.emphasis === 'present' ? rgba('claude', 1) : wd.emphasis === 'coda' ? rgba('bone', 1) : rgba('bone', 0.96);
-        c.fillText(wd.w, wd.x, wd.y + (1 - a) * 14);
+        c.fillText(wd.w, wd.x, wd.y + (1 - a) * (p.reveal ? 8 : 14));
         c.restore();
       });
       if (p.prediction) this.drawPrediction(p.prediction, this.quoteEnd[i]!, lp, keep, c, lb);
@@ -298,10 +298,10 @@ export default class Outro extends Scene {
       const tm = this.times[i]!;
       this.pages[i]!.forEach((wd, k) => {
         const t = start + tm.start + wd.t;
-        if (k % 2 === 0) cues.push({ t, voice: 'type', gain: 0.16 });
+        const sentence = !!p.reveal;
+        if (sentence ? (k === 0 || this.pages[i]![k - 1]!.t !== wd.t) : k % 2 === 0) cues.push({ t, voice: 'type', gain: sentence ? 0.3 : 0.16 });
         if (wd.emphasis && (k === 0 || !this.pages[i]![k - 1]!.emphasis)) cues.push({ t, voice: 'reveal', gain: 0.4, pitch: wd.emphasis === 'present' ? 1.1 : wd.emphasis === 'coda' ? 0.8 : 0.9 });
       });
-      void p;
     });
     const last = this.times[this.times.length - 1]!;
     cues.push({ t: start + last.typedEnd, voice: 'stamp', gain: 0.5, pitch: 0.9 });

@@ -14,7 +14,7 @@ const content: SceneContent = {
   number: 5,
   total: 7,
   title: 'Knowing how sure we are',
-  beats: { bridge: 6, era1996: 16.5, era2026: 15.0 },
+  beats: { bridge: 4.8, era1996: 16.5, era2026: 15.0 },
   era1996Speed: 1.1,   // the 1996 animation is authored in its own seconds; this plays it 1.1x faster
   era1996: {
     kind: 'triangles',

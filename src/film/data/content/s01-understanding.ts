@@ -29,7 +29,7 @@ const content: SceneContent = {
       ],
     },
   },
-  beats: { bridge: 4.5, era2026: 15.9 },
+  beats: { bridge: 4, era2026: 15.9 },
   chain: 'understanding',
   era2026: {
     kind: 'language',

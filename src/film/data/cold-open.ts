@@ -18,12 +18,15 @@ export interface Beat {
   lock?: string;
 }
 
+/** the challenge now arrives in clauses, finishing sooner, so everything after it moves earlier by this much */
+const S = 1.3;
+const L = (x: number) => +(x - S).toFixed(2);
 const BEAT = 2.5;
-const FIRST = 13.7;
+const FIRST = L(13.7);
 const at = (i: number) => +(FIRST + i * BEAT).toFixed(2);
 
 export const COLD_OPEN = {
-  duration: 39,
+  duration: L(39),
   /** the film opens on its title; it clears away as the date and the supervisor's challenge arrive */
   title: {
     lines: ['How I made', 'a machine', 'think'],
@@ -36,17 +39,17 @@ export const COLD_OPEN = {
     dateAt: 4.0,
     text: 'My PhD supervisor, Professor Jack Smith, set me a challenge: build intelligent software that was better at solving scientific problems than I was.',
     emphasis: 'better at solving scientific problems than I was.',
-    wordsFrom: 4.4, wordGap: 0.17,
+    wordsFrom: 4.4, perWord: 0.1, minGap: 0.5,
     /** the quote clears away here, handing over to the drawing */
-    exitAt: 9.4, end: 10.0,
+    exitAt: L(9.4), end: L(10.0),
   },
   /** the bridge: a scientific problem, drawn */
   problem: {
     label: 'A SCIENTIFIC PROBLEM',
-    drawFrom: 10.1,     // raindrop outline
-    barFrom: 11.3,      // diameter bar
-    arrowFrom: 12.0,    // downward arrow and the question mark
-    prompt: { text: 'Calculate the force due to gravity acting on a raindrop, 1 millimetre in diameter.', from: 10.5, to: 13.2 },
+    drawFrom: L(10.1),     // raindrop outline
+    barFrom: L(11.3),      // diameter bar
+    arrowFrom: L(12.0),    // downward arrow and the question mark
+    prompt: { text: 'Calculate the force due to gravity acting on a raindrop, 1 millimetre in diameter.', from: L(10.5), to: L(13.2) },
   },
   beatLen: BEAT,
   beats: [
@@ -60,14 +63,14 @@ export const COLD_OPEN = {
   ] as Beat[],
   /** working back up the tree: each value is filled into its node, with the plain-language rule that produced it */
   ledger: [
-    { at: 31.4, node: 'r', say: 'radius = half the diameter' },
-    { at: 32.0, node: 'V', say: 'volume = 4/3 π r³' },
-    { at: 32.6, node: 'm', say: 'mass = density × volume' },
-    { at: 33.2, node: 'F', say: 'force = mass × gravity' },
+    { at: L(31.4), node: 'r', say: 'radius = half the diameter' },
+    { at: L(32.0), node: 'V', say: 'volume = 4/3 π r³' },
+    { at: L(32.6), node: 'm', say: 'mass = density × volume' },
+    { at: L(33.2), node: 'F', say: 'force = mass × gravity' },
   ],
-  workBack: { q: 'Now work back up.', at: 31.25 },
-  answer: { at: 33.8, text: 'Every value traced back to its source.' },
-  reveal: { from: 35.4, to: 38.4, caption: 'Each question was a node in a search tree.', captionAt: 36.4 },
+  workBack: { q: 'Now work back up.', at: L(31.25) },
+  answer: { at: L(33.8), text: 'Every value traced back to its source.' },
+  reveal: { from: L(35.4), to: L(38.4), caption: 'Each question was a node in a search tree.', captionAt: L(36.4) },
   refs: [
     { page: 2, pdfPage: 9, quote: 'Calculate the force due to gravity acting on a raindrop, 1 millimetre in diameter.' },
     { page: 4, pdfPage: 11, quote: 'When the author began development of the QPS system in 1993' },

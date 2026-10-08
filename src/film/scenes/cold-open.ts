@@ -11,6 +11,7 @@ import { clamp, ease, lerp, prog, pulse } from '../engine/util';
 import { fillBigText, wrap } from '../core/draw';
 import type { Cue } from '../core/types';
 import { COLD_OPEN as C, type Beat } from '../data/cold-open';
+import { clauseTimes, CLAUSE_FADE } from '../core/reveal';
 import tree from '../data/figures/raindrop.json';
 
 interface TNode { id: string; label: string; kind: 'goal' | 'formula' | 'qty' | 'known'; level: number; row: number; parent?: string; name?: string; value?: string; source?: string }
@@ -188,18 +189,19 @@ export default class ColdOpen extends Scene {
     c.font = font(F.archivo(100, 600), 64);
     const lines = wrap(c, ch.text, 1560, 96, 330);
     const empStart = ch.text.indexOf(ch.emphasis);
+    const times = clauseTimes(ch.text, ch.wordsFrom, ch.perWord, ch.minGap);
     let wi = 0, pos = 0;
     for (const line of lines) {
       let xx = 96;
       for (const w of line.text.split(' ')) {
-        const at = ch.wordsFrom + wi * ch.wordGap;
-        const p = prog(t, at, at + 0.22, ease.outCubic);
+        const at = times[wi]!;
+        const p = prog(t, at, at + CLAUSE_FADE, ease.outCubic);
         const isEmp = pos >= empStart;
         if (p > 0) {
           c.save(); c.globalAlpha = p * keep;
           c.font = font(F.archivo(100, isEmp ? 800 : 600), 64);
           c.fillStyle = isEmp ? rgba('signal', 1) : rgba('bone', 0.96);
-          c.fillText(w, xx, line.y + (1 - p) * 18 - exit * 46);
+          c.fillText(w, xx, line.y + (1 - p) * 12 - exit * 46);
           c.restore();
         }
         c.font = font(F.archivo(100, isEmp ? 800 : 600), 64);
@@ -484,8 +486,8 @@ export default class ColdOpen extends Scene {
     const ch = C.challenge, pb = C.problem;
     C.title.lines.forEach((_, i) => add(0.3 + i * 0.32, 'stamp', 0.8, 0.85 + i * 0.12));
     add(1.45, 'reveal', 0.5, 1.1);
-    const nW = ch.text.split(' ').length;
-    for (let i = 0; i < nW; i += 2) add(ch.wordsFrom + i * ch.wordGap, 'type', 0.22);
+    const ct = clauseTimes(ch.text, ch.wordsFrom, ch.perWord, ch.minGap);
+    ct.forEach((tt, i) => { if (i === 0 || ct[i - 1] !== tt) add(tt, 'type', 0.3); });
     // the bridge: the drop draws, the bar, the arrow, the question mark
     add(pb.drawFrom, 'morph', 0.35);
     add(pb.barFrom, 'reveal', 0.5);
