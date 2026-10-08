@@ -25,6 +25,24 @@ Status as of 2026-10-05. Detail lives in [spec.md](spec.md) (film), [storyboard.
 
 Verbatim from the thesis, with the verdict against scenes 1–7. **Right:** agents ("several domain experts… all controlled by the problem solver", p.163); linking to third-party tools (p.165); formulae chosen by past success, i.e. learned shortcuts (p.162); default values for implicit facts like temperature (p.162); explanations "tailored to the inexperience, expertise or scepticism of the reader" (p.164); education as the first application (p.164); AI to "solve problems autonomously" (p.165); "instead of reaching for a calculator" (p.174). **Different:** the stress-engineering knowledge base "would be a major endeavour" (p.174; it was absorbed from text instead); knowledge bases growing in size (p.174; scale mattered, but learned); component frameworks "hailed as the solution to bloated software" (p.158; OpenDoc was cancelled in 1997, to verify); a Java-enabled browser client (p.161; the browser won, Java applets did not); partitioning knowledge by domain (p.162; one network holds it all); uncertainty as lower/best/upper ranges (p.130; models state ranges in words). Pages are thesis page numbers.
 
+## Launch to-do (as of 8 Oct 2026; the film itself is finished and its 4K master is rendering)
+
+Film and export:
+- [ ] Check the 4K master (`exports/film-4k.mp4`: length, loudness -23 LUFS, frames); Jaron uploads it to YouTube and gives us the video ID.
+- [ ] Commit state: everything is committed on `thesis-film`; push when ready.
+
+Deployment:
+- [ ] Apply the `npm audit` fix (http-cache-semantics, source-map-js: build tooling only), rebuild, and diff the home page's built output against a build of `main` (the branch moves the whole site to Astro 7).
+- [ ] Fallback on `/thesis` for browsers without WebGL 2 or if the film errors: a YouTube embed (one place for the video ID), a plain message while there is no ID.
+- [ ] Decide launch visibility: `/thesis` is `noindex`, out of the sitemap and unlinked today. Linking it from the home page (below) makes it public; then drop `noindex` and the sitemap filter.
+- [ ] Merge to `main` (deploys through `.github/workflows/deploy.yml`).
+
+Site changes Jaron has asked for:
+1. [ ] **Landing page refresh** (`src/pages/index.astro`, the site's only other page): same content, new look, taking the film's style as the reference (ink and bone, Archivo and IBM Plex Mono, signal blue, the hairline rules, the quiet motion). Keep structured data, meta tags and discovery files (`profile.md`, `humans.txt`, `mcp.json`, `ai.txt`) as they are.
+2. [ ] **"AI PhD" becomes a link to `/thesis`** (home page, the "AI PhD" text in the intro).
+3. [ ] **A "Homepage" button beside "Replay"** on the film's last page (the dock shows Replay when the film ends); it goes to `/`.
+4. [ ] **The 2026 edition of the thesis online, with a "PDF" button on the film's last page.** The typeset edition (192 pages, `source/thesis-2026-edition.pdf`, built by `edition/build.mjs`) is unproofread and its figures are low-resolution scans. It needs a proofreading pass (and the vector figures, see "Next: the edition") before it is published; a published PDF goes in `public/`. The button stays hidden until the file exists, so the film can launch first.
+
 ## Next: the film
 
 | # | Item | Notes |
