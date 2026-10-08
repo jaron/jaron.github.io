@@ -11,6 +11,7 @@ import { SoundEngine } from './audio/engine';
 import { makeEraAt } from './audio/era';
 import { renderAudio } from './audio/offline';
 import { makeBedAt } from './audio/bed';
+import { MUSIC, musicStart } from './data/outro';
 import { mountProgress } from './ui/progress';
 
 const params = new URLSearchParams(location.search);
@@ -42,7 +43,9 @@ async function boot() {
   const cues: Cue[] = built.entries.flatMap((e) => (engine.loaded.get(e.id)?.scene as { cues?: (s: number) => Cue[] } | undefined)?.cues?.(e.start) ?? []);
   const eraAt = makeEraAt(built.spans);
   const bedAt = makeBedAt(built.spans, eraAt);
-  const sound = new SoundEngine(cues, eraAt, bedAt);
+  const outroSpan = built.spans.find((x) => x.id === 'outro')!;
+  const musicSpec = { url: `${import.meta.env.BASE_URL}${MUSIC.file}`, start: outroSpan.start + musicStart(), fadeIn: MUSIC.fadeIn, level: MUSIC.gain };
+  const sound = new SoundEngine(cues, eraAt, bedAt, musicSpec);
   const soundLabel = document.getElementById('soundLabel')!;
   const syncButton = () => { soundLabel.textContent = sound.muted ? 'SOUND OFF' : 'SOUND ON'; soundBtn.setAttribute('aria-pressed', String(!sound.muted)); };
   soundBtn.onclick = async () => {
@@ -121,7 +124,9 @@ async function boot() {
   };
   w.__film = { engine, sound, built, duration: built.duration, still: (x: number) => engine.render(x, 1 / 60), determinism,
     /** the film's sound for t0..t1 as plain number arrays (for scripts/render-audio.mjs) */
-    renderAudio: async (t0: number, t1: number, withBed = true) => { const [l, r] = await renderAudio(cues, eraAt, withBed ? bedAt : null, t0, t1); return { left: Array.from(l), right: Array.from(r) }; } };
+    renderAudio: async (t0: number, t1: number, withBed = true, withMusic = true) => {
+      const data = withMusic ? await (await fetch(musicSpec.url)).arrayBuffer() : null;
+      const [l, r] = await renderAudio(cues, eraAt, withBed ? bedAt : null, t0, t1, data ? { data, start: musicSpec.start, fadeIn: musicSpec.fadeIn, level: musicSpec.level } : null); return { left: Array.from(l), right: Array.from(r) }; } };
 }
 
 boot().catch((e) => {

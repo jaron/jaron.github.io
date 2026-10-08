@@ -143,3 +143,15 @@ export function outroTimes() {
   return out;
 }
 export const OUTRO_DURATION = outroTimes()[OUTRO.pages.length - 1]!.end;
+
+/** The outro's music (made with Gemini Music to Jaron's brief; see the README). It plays only when the viewer has sound on. */
+export const MUSIC = {
+  file: 'audio/outro-music.mp3',
+  /** seconds after the first parting-thought page begins: the drone has gone, and there is a moment of silence first */
+  delay: 1.5,
+  fadeIn: 1.2,
+  /** the file is about -28 LUFS as supplied; this brings it to about -33, a quiet accompaniment under the film's own sounds */
+  gain: 0.58,
+};
+/** When the music starts, in seconds into the outro. */
+export const musicStart = () => outroTimes()[3]!.start + MUSIC.delay;

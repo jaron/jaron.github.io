@@ -303,8 +303,7 @@ export default class Outro extends Scene {
         if (wd.emphasis && (k === 0 || !this.pages[i]![k - 1]!.emphasis)) cues.push({ t, voice: 'reveal', gain: 0.4, pitch: wd.emphasis === 'present' ? 1.1 : wd.emphasis === 'coda' ? 0.8 : 0.9 });
       });
     });
-    const last = this.times[this.times.length - 1]!;
-    cues.push({ t: start + last.typedEnd, voice: 'stamp', gain: 0.5, pitch: 0.9 });
+    // no closing sound: the music fades into silence under the last page
     return cues.sort((a, b) => a.t - b.t);
   }
 }

@@ -4,6 +4,7 @@ import type { Cue } from '../core/types';
 import { VOICES } from './voices';
 import { createMix, type Mix } from './mix';
 import { Bed, type BedParams } from './bed';
+import { Music } from './music';
 
 const LOOKAHEAD = 0.12;   // schedule this far ahead of the playhead (seconds)
 
@@ -19,6 +20,7 @@ export class SoundEngine {
   private ctx: AudioContext | null = null;
   private mix: Mix | null = null;
   private bed: Bed | null = null;
+  private music: Music | null = null;
   private lastBed = -1;
   private next = 0;                 // index of the next unfired cue
   private lastT = 0;
@@ -28,7 +30,7 @@ export class SoundEngine {
   private cues: Cue[];
 
   /** `eraAt(t)` says how far into 2026 the film is at time t (0 = 1996, 1 = 2026); it picks each cue's timbre. */
-  constructor(cues: Cue[], private eraAt: (t: number) => number = () => 0, private bedAt: ((t: number) => BedParams) | null = null) { this.cues = [...cues].sort((a, b) => a.t - b.t); }
+  constructor(cues: Cue[], private eraAt: (t: number) => number = () => 0, private bedAt: ((t: number) => BedParams) | null = null, private musicSpec: { url: string; start: number; fadeIn: number; level: number } | null = null) { this.cues = [...cues].sort((a, b) => a.t - b.t); }
 
   /** First call must come from a user gesture (browser autoplay policy). */
   async enable() {
@@ -38,13 +40,14 @@ export class SoundEngine {
       this.ctx = new AC({ latencyHint: 'interactive' });
       this.mix = createMix(this.ctx, this.ctx.destination);
       if (this.bedAt) this.bed = new Bed(this.ctx, this.mix);
+      if (this.musicSpec) { const m = this.musicSpec; this.music = new Music(this.ctx, m.url, m.start, m.fadeIn, m.level); this.music.load().catch(() => { this.music = null; }); }
     }
     await this.ctx.resume();
     this.muted = false;
     return true;
   }
 
-  disable() { this.muted = true; this.bed?.silence(this.ctx!.currentTime); this.lastBed = -1; }
+  disable() { this.muted = true; this.bed?.silence(this.ctx!.currentTime); this.lastBed = -1; this.music?.stop(); }
 
   /** The bed follows the film's time, ten times a second; it fades away on pause and mute. */
   private updateBed(t: number, playing: boolean, seeked: boolean) {
@@ -66,6 +69,7 @@ export class SoundEngine {
   /** Call once per frame with the film time, whether it is advancing, and whether time jumped. */
   update(t: number, playing: boolean, seeked: boolean) {
     this.updateBed(t, playing, seeked);
+    this.music?.update(t, playing, seeked, this.muted);
     if (seeked || !playing || t < this.lastT) { this.seekTo(t); this.lastT = t; return; }
     this.lastT = t;
     const horizon = t + LOOKAHEAD;
