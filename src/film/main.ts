@@ -46,6 +46,7 @@ async function boot() {
   const outroSpan = built.spans.find((x) => x.id === 'outro')!;
   const musicSpec = { url: `${import.meta.env.BASE_URL}${MUSIC.file}`, start: outroSpan.start + musicStart(), fadeIn: MUSIC.fadeIn, level: MUSIC.gain };
   const sound = new SoundEngine(cues, eraAt, bedAt, musicSpec);
+  let fullAudio: [Float32Array, Float32Array] | null = null;
   const soundLabel = document.getElementById('soundLabel')!;
   const syncButton = () => { soundLabel.textContent = sound.muted ? 'SOUND OFF' : 'SOUND ON'; soundBtn.setAttribute('aria-pressed', String(!sound.muted)); };
   soundBtn.onclick = async () => {
@@ -126,7 +127,21 @@ async function boot() {
     /** the film's sound for t0..t1 as plain number arrays (for scripts/render-audio.mjs) */
     renderAudio: async (t0: number, t1: number, withBed = true, withMusic = true) => {
       const data = withMusic ? await (await fetch(musicSpec.url)).arrayBuffer() : null;
-      const [l, r] = await renderAudio(cues, eraAt, withBed ? bedAt : null, t0, t1, data ? { data, start: musicSpec.start, fadeIn: musicSpec.fadeIn, level: musicSpec.level } : null); return { left: Array.from(l), right: Array.from(r) }; } };
+      const [l, r] = await renderAudio(cues, eraAt, withBed ? bedAt : null, t0, t1, data ? { data, start: musicSpec.start, fadeIn: musicSpec.fadeIn, level: musicSpec.level } : null); return { left: Array.from(l), right: Array.from(r) }; },
+    /** the whole film's sound, rendered once and kept in the page; fetched with audioChunk (for scripts/render-video.mjs) */
+    renderAudioFull: async () => {
+      const data = await (await fetch(musicSpec.url)).arrayBuffer();
+      fullAudio = await renderAudio(cues, eraAt, bedAt, 0, built.duration, { data, start: musicSpec.start, fadeIn: musicSpec.fadeIn, level: musicSpec.level });
+      return Math.min(fullAudio[0].length, Math.round(built.duration * 48000));
+    },
+    /** `n` stereo samples from `from`, as interleaved 16-bit little-endian, base64 */
+    audioChunk: (from: number, n: number) => {
+      const [l, r] = fullAudio!, out = new Int16Array(n * 2);
+      for (let i = 0; i < n; i++) { out[2 * i] = Math.max(-32768, Math.min(32767, Math.round((l[from + i] ?? 0) * 32767))); out[2 * i + 1] = Math.max(-32768, Math.min(32767, Math.round((r[from + i] ?? 0) * 32767))); }
+      const bytes = new Uint8Array(out.buffer); let bin = '';
+      for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+      return btoa(bin);
+    } };
 }
 
 boot().catch((e) => {

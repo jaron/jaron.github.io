@@ -11,7 +11,8 @@
     "capture:transcript": "node scripts/capture-transcript.ts",
     "check:determinism": "node scripts/determinism.mjs",
     "report:pacing": "node scripts/pacing.mjs",
-    "render:audio": "node scripts/render-audio.mjs"
+    "render:audio": "node scripts/render-audio.mjs",
+    "render:video": "node scripts/render-video.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

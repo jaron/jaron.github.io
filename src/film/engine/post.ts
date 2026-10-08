@@ -58,6 +58,8 @@ export const DEFAULT_POST: PostParams = {
 const MIPS = 7;
 
 export class Post {
+  /** multiplies every scene's grain: 1 in the player; the upload master turns it down (YouTube's compression smears grain) */
+  grainScale = 1;
   private prefilter: FSPass;
   private down: FSPass;
   private up: FSPass;
@@ -197,7 +199,7 @@ ${SCALE === 1 ? `        float g1 = hash12(gl_FragCoord.xy + fract(time * 13.37)
     f.bloom!.value = p.bloom / 3; // pyramid sums ~MIPS levels; normalize
     f.halation!.value = p.halation;
     f.ca!.value = p.ca;
-    f.grain!.value = p.grain;
+    f.grain!.value = p.grain * this.grainScale;
     f.vignette!.value = p.vignette;
     f.hud!.value = p.hud;
     f.fade!.value = p.fade;
