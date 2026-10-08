@@ -9,7 +9,7 @@ import { F, font } from '../engine/type';
 import { ease, prog } from '../engine/util';
 import type { Cue } from '../core/types';
 import { wrap } from '../core/draw';
-import { OUTRO, outroTimes, wordTimes, fadeIn, type Prediction } from '../data/outro';
+import { OUTRO, INTERLUDE, outroTimes, wordTimes, fadeIn, type Prediction } from '../data/outro';
 
 interface Placed { w: string; x: number; y: number; t: number; size: number; run: number; emphasis?: 'past' | 'present' | 'coda' }
 const MAX_W = 1560, LEFT = 96, TOP = 330, PRED_TOP = 420;
@@ -68,11 +68,14 @@ export default class Outro extends Scene {
 
     const cur = OUTRO.pages.findIndex((_, i) => lt >= this.times[i]!.start && lt < this.times[i]!.end);
     const pred = cur >= 0 ? OUTRO.pages[cur]!.prediction : undefined;
-    c.font = font(F.mono(500), 18); c.letterSpacing = '4px'; c.fillStyle = rgba('ash', 1);
-    c.fillText(pred ? 'WHAT I PREDICTED IN 1996' : OUTRO.label, 96, 140);
-    if (pred) { c.textAlign = 'right'; c.fillText(`THESIS · PAGE ${pred.page}`, 1824, 140); c.textAlign = 'left'; }
-    c.letterSpacing = '0px';
-    lb.seg2(96, 168, 1824, 168, 1, LIN.bone, 0.35);
+    if (lt < INTERLUDE.duration) this.drawInterlude(lt, c);
+    else {
+      c.font = font(F.mono(500), 18); c.letterSpacing = '4px'; c.fillStyle = rgba('ash', 1);
+      c.fillText(pred ? 'WHAT I PREDICTED IN 1996' : OUTRO.label, 96, 140);
+      if (pred) { c.textAlign = 'right'; c.fillText(`THESIS · PAGE ${pred.page}`, 1824, 140); c.textAlign = 'left'; }
+      c.letterSpacing = '0px';
+      lb.seg2(96, 168, 1824, 168, 1, LIN.bone, 0.35);
+    }
 
     OUTRO.pages.forEach((p, i) => {
       const tm = this.times[i]!;
@@ -98,6 +101,26 @@ export default class Outro extends Scene {
     // it fades up from black like every scene, and it does not fade out: the film ends on its last page
     const fade = 1 - ease.outCubic(prog(lt, 0, 0.45));
     return { bloom: 0.5, halation: 0.1, fade };
+  }
+
+  /** the short quotation before the predictions: it arrives in two pieces, with its attribution, and clears */
+  private drawInterlude(lt: number, c: CanvasRenderingContext2D) {
+    const I = INTERLUDE, out = 1 - ease.inOutCubic(prog(lt, I.fadeOutAt, I.fadeOutAt + I.fadeOut));
+    const words = I.clauses.flatMap((cl, k) => cl.text.split(' ').map((w) => ({ w, k })));
+    c.font = font(F.archivo(100, 700), 72);
+    const lines = wrap(c, words.map((x) => x.w).join(' '), 1500, 92, 430);
+    let wi = 0;
+    for (const line of lines) {
+      let x = 96;
+      for (const w of line.text.split(' ')) {
+        const cl = I.clauses[words[wi]!.k]!, a = prog(lt, cl.at, cl.at + I.fadeIn, ease.outCubic) * out;
+        if (a > 0) { c.save(); c.globalAlpha = a; c.fillStyle = rgba('bone', 1); c.font = font(F.archivo(100, 700), 72); c.fillText(w, x, line.y + (1 - a) * 12); c.restore(); }
+        c.font = font(F.archivo(100, 700), 72);
+        x += c.measureText(w + ' ').width; wi++;
+      }
+    }
+    const ba = ease.outCubic(prog(lt, I.byAt, I.byAt + I.fadeIn)) * out;
+    if (ba > 0) { c.save(); c.globalAlpha = ba; c.font = font(F.mono(500), 15); c.letterSpacing = '4px'; c.fillStyle = rgba('ash', 1); c.fillText(I.by, 96, 430 + lines.length * 92 + 20); c.restore(); }
   }
 
   /** the verdict stamp under the quotation, and the small drawing beside it */
@@ -293,7 +316,8 @@ export default class Outro extends Scene {
 
   /** sound cues in film time: soft ticks as the words arrive, a lift on each emphasised phrase */
   cues(start: number): Cue[] {
-    const cues: Cue[] = [];
+    const cues: Cue[] = INTERLUDE.clauses.map((cl) => ({ t: start + cl.at, voice: 'type' as const, gain: 0.3 }));
+    cues.push({ t: start + INTERLUDE.byAt, voice: 'reveal', gain: 0.3, pitch: 0.9 });
     OUTRO.pages.forEach((p, i) => {
       const tm = this.times[i]!;
       this.pages[i]!.forEach((wd, k) => {

@@ -26,6 +26,17 @@ export interface OutroPage { id: string; runs: Run[]; size: number; prediction?:
 export const SENTENCE_FADE = 0.7;
 const WORD_GAP = 0.19, LEAD_IN = 0.6, FADE = 0.6, GAP_BETWEEN = 0.4, END_FADE = 0;   // the final page stays on screen
 
+/** A short quotation between the last scene and the predictions: a change of context and a breath. The saying is widely
+    attributed to Niels Bohr, but its origin is uncertain (earliest known: a Danish book of 1948), so the screen says "attributed". */
+export const INTERLUDE = {
+  /** the quotation, in the pieces that fade in one after another, with the time each appears */
+  clauses: [{ text: 'Prediction is very difficult,', at: 0.4 }, { text: 'especially if it’s about the future.', at: 1.5 }],
+  by: 'ATTRIBUTED TO NIELS BOHR', byAt: 2.7,
+  fadeIn: 0.8, fadeOutAt: 4.5, fadeOut: 0.6,
+  /** seconds before the first prediction page begins */
+  duration: 5.2,
+};
+
 export const OUTRO = {
   label: 'A PARTING THOUGHT',
   wordGap: WORD_GAP, leadIn: LEAD_IN, fade: FADE, gapBetween: GAP_BETWEEN, endFade: END_FADE,
@@ -130,7 +141,7 @@ export const fadeIn = (p: OutroPage) => (p.reveal === 'sentence' ? SENTENCE_FADE
 
 /** start and end of each page, seconds into the outro */
 export function outroTimes() {
-  let t = 0;
+  let t = INTERLUDE.duration;
   const out = OUTRO.pages.map((p, i) => {
     const wt = wordTimes(p);
     const typed = wt[wt.length - 1]! + (p.reveal ? fadeIn(p) : p.wordGap ?? WORD_GAP) + 0.3;

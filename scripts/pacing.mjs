@@ -30,6 +30,7 @@ const info = await page.evaluate(async () => {
 const screens = [];
 for (const s of info.spans) {
   if (s.id === 'outro') {
+    if (info.outro[0].start > 0) screens.push({ scene: 'outro', name: 'quotation', start: s.start, end: s.start + info.outro[0].start });
     info.outro.forEach((p, i) => screens.push({ scene: 'outro', name: `page ${i + 1}`, start: s.start + p.start, end: s.start + p.end, tail: p.last ? 0 : 1.0 }));   // a page clears (0.6 s + 0.4 s gap) before the next
   } else if (!s.beats.length) {
     screens.push({ scene: s.id, name: 'whole scene', start: s.start, end: s.end });
