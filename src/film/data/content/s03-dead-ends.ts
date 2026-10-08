@@ -13,7 +13,8 @@ const content: SceneContent = {
   number: 3,
   total: 7,
   title: 'Backtracking from failure',
-  beats: { bridge: 6.2, era1996: 15, era2026: 13.7 },
+  beats: { bridge: 6.2, era1996: 12.9, era2026: 13.7 },
+  era1996Speed: 1.2,   // the 1996 animation is authored in its own seconds; this plays it 1.2x faster
   era1996: {
     kind: 'backtrack',
     refs: [
