@@ -11,6 +11,7 @@
 //   --loudness -23   target integrated loudness in LUFS; peaks are limited to -1.5 dBTP (default -23)
 //   --crf 14         x264 quality (lower is better and bigger); --preset slow|medium|fast
 //   --from 0 --to 20 render only this part of the film, in seconds (for tests)
+//   --frame-timeout 180  give up (exit code 3) if one frame takes longer than this many seconds, so a hung browser cannot stall a long render
 //   --out exports/film.mp4
 import { chromium } from 'playwright-core';
 import { spawn, spawnSync } from 'node:child_process';
@@ -26,6 +27,7 @@ const grain = Number(arg('--grain', '0.5')), loudness = Number(arg('--loudness',
 const crf = arg('--crf', '14'), preset = arg('--preset', 'medium');
 const out = arg('--out', 'exports/film.mp4');
 const noAudio = process.argv.includes('--no-audio');
+const frameTimeout = Number(arg('--frame-timeout', '180')) * 1000;
 const W = 1920 * scale, H = 1080 * scale, RATE = 48000;
 const CHROME = process.env.CHROME_PATH ?? ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/chromium'].find(existsSync);
 if (!CHROME) { console.error('No Chrome found. Set CHROME_PATH.'); process.exit(2); }
@@ -99,7 +101,11 @@ await page.evaluate(({ t, dt, samples }) => { window.__film.engine.render(t, dt,
 
 const t0 = Date.now(); let sub = 0;
 for (let i = 0; i < frames; i++) {
-  sub += await renderFrame(from + i / fps);
+  let timer;
+  sub += await Promise.race([
+    renderFrame(from + i / fps),
+    new Promise((_, rej) => { timer = setTimeout(() => rej(new Error(`frame ${i} (t=${(from + i / fps).toFixed(2)}s) took longer than ${frameTimeout / 1000}s`)), frameTimeout); }),
+  ]).catch((e) => { console.error(`\n${e.message}: giving up so it can be restarted`); ff.kill('SIGKILL'); process.exit(3); }).finally(() => clearTimeout(timer));
   if ((i + 1) % 120 === 0 || i === frames - 1) {
     const el = (Date.now() - t0) / 1000, perFrame = el / (i + 1), left = perFrame * (frames - i - 1);
     process.stdout.write(`\rframe ${i + 1}/${frames}  ${(1 / perFrame).toFixed(2)} fps  avg ${(sub / (i + 1)).toFixed(1)} sub-frames  ${Math.floor(left / 60)}m ${Math.round(left % 60)}s left   `);
