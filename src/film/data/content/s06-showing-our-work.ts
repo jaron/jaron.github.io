@@ -46,6 +46,10 @@ const content: SceneContent = {
         why: 'Not enough known quantities',
         supply: 'temperature',
         note: 'AN ILLUSTRATION OF THE FAILURE REPORT DESCRIBED ON THESIS P.106–107',
+        callout: {
+          head: 'JUST AS USEFUL',
+          lines: ['Explaining a failure is as useful as explaining a success.', 'The user learns exactly what to supply, and can try again.'],
+        },
       },
       captions: [
         { t: 2.4, text: 'The solver gave its answer. An answer on its own can’t be checked.' },

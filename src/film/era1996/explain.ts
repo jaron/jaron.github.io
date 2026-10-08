@@ -21,7 +21,7 @@ interface Data {
   legend: { key: Src; label: string }[];
   times: Record<'problem' | 'solution' | 'explanation' | 'step1' | 'step1Value' | 'step2' | 'kb' | 'above' | 'given' | 'check' | 'pulse' | 'morph' | 'recompute' | 'fadeReport' | 'failure', number>;
   callout: { head: string; lines: string[] };
-  failure: { title: string; problem: string; result: string; why: string; supply: string; note: string };
+  failure: { title: string; problem: string; result: string; why: string; supply: string; note: string; callout: { head: string; lines: string[] } };
   captions: { t: number; text: string }[];
 }
 
@@ -250,29 +250,50 @@ export default class ExplainRenderer implements Era1996Renderer {
     }
   }
 
+  /** the failure report, laid out like the first window: the same panel on the left, and on the right the point of it */
   private drawFailure(lb: LineBatch, c: CanvasRenderingContext2D, lt: number, fa: number) {
-    const f = this.d.failure, t0 = this.d.times.failure;
-    const x = 360, y = 290, w = 1200, h = 480;
-    lb.polyline(rectPts(x, y, w, h), 1.4, LIN.signal, 0.6 * fa);
-    lb.seg2(x, y + 38, x + w, y + 38, 1, LIN.signal, 0.4 * fa);
+    const f = this.d.failure, t0 = this.d.times.failure, P = PANEL;
+    lb.polyline(rectPts(P.x, P.y, P.w, P.h), 1.4, LIN.signal, 0.6 * fa);
+    lb.seg2(P.x, P.y + 38, P.x + P.w, P.y + 38, 1, LIN.signal, 0.4 * fa);
     c.save(); c.globalAlpha = fa;
     c.font = font(F.mono(500), 14); c.letterSpacing = '4px'; c.fillStyle = rgba('ash', 1);
-    c.fillText(f.title, x + 20, y + 26); c.letterSpacing = '0px';
+    c.fillText('EXPLAIN WINDOW', P.x + 20, P.y + 26);
+    c.textAlign = 'right'; c.fillText(f.title, P.x + P.w - 20, P.y + 26); c.textAlign = 'left'; c.letterSpacing = '0px';
+    const X = P.x + 36;
     const row = (label: string, value: string, yy: number, at: number, hot = false) => {
       const a = ease.outCubic(prog(lt, at, at + 0.4));
       c.save(); c.globalAlpha = fa * a;
-      c.font = font(F.mono(500), 15); c.letterSpacing = '4px'; c.fillStyle = rgba('signal', 1); c.fillText(label, x + 40, yy);
+      c.font = font(F.mono(500), 15); c.letterSpacing = '5px'; c.fillStyle = rgba('signal', 1); c.fillText(label, X, yy);
       c.letterSpacing = '0px'; c.font = font(F.mono(500), hot ? 40 : 28); c.fillStyle = rgba(hot ? 'ember' : 'bone', 1);
-      c.fillText(value, x + 40, yy + (hot ? 60 : 44), w - 80);
+      c.fillText(value, X + 24, yy + (hot ? 62 : 46), P.w - 120);
       c.restore();
     };
-    row('PROBLEM', f.problem, y + 96, t0 + 0.4);
-    row('RESULT', f.result, y + 196, t0 + 1.2);
-    row('WHY', f.why, y + 296, t0 + 2.0);
-    row('TO TRY AGAIN, SUPPLY', f.supply, y + 396, t0 + 2.9, true);
+    row('PROBLEM', f.problem, P.y + 106, t0 + 0.4);
+    row('RESULT', f.result, P.y + 226, t0 + 1.2);
+    row('WHY', f.why, P.y + 346, t0 + 2.0);
+    row('TO TRY AGAIN, SUPPLY', f.supply, P.y + 486, t0 + 2.9, true);
     c.font = font(F.mono(400), 13); c.letterSpacing = '3px'; c.fillStyle = rgba('ash', 1); c.textAlign = 'right';
-    c.fillText(f.note, x + w - 20, y + h + 30);
+    c.fillText(f.note, P.x + P.w - 20, P.y + P.h - 18);
     c.restore();
+    // on the right, where the check was: the point, made large
+    const ca = ease.outCubic(prog(lt, t0 + 1.0, t0 + 1.6)) * fa;
+    if (ca > 0) {
+      const bx = RIGHT_X - 10, by = P.y + 40, bw = 514, bh = 390;
+      lb.polyline(rectPts(bx, by, bw, bh), 1.6, LIN.ember, 0.8 * ca);
+      c.save(); c.globalAlpha = ca;
+      c.font = font(F.mono(500), 15); c.letterSpacing = '4px'; c.fillStyle = rgba('ember', 1);
+      c.fillText(f.callout.head, bx + 24, by + 44); c.letterSpacing = '0px';
+      c.font = font(F.archivo(100, 700), 36); c.fillStyle = rgba('bone', 1);
+      let yy = by + 108;
+      f.callout.lines.forEach((ln, i) => {
+        const la = ease.outCubic(prog(lt, t0 + 1.2 + i * 1.8, t0 + 1.7 + i * 1.8));
+        c.globalAlpha = ca * la;
+        c.fillStyle = rgba(i === 0 ? 'bone' : 'ember', 1);
+        for (const w of wrap(c, ln, bw - 48, 46, yy)) { c.fillText(w.text, bx + 24, w.y); yy = w.y + 46; }
+        yy += 18;
+      });
+      c.restore();
+    }
   }
 
   cues(): Cue[] {
