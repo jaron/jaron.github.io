@@ -1,46 +1,51 @@
-# Astro Starter Kit: Basics
+# jaroncollis.com
 
-```sh
-npm create astro@latest -- --template basics
-```
+Source for [Jaron Collis](https://jaroncollis.com)'s personal site, built with [Astro](https://astro.build) and deployed to GitHub Pages.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The repository also holds a work in progress: **a motion-graphics film about the author's 1996 PhD thesis** (a symbolic-AI problem solver), traced forward to how machines think today. It lives at `/thesis` (not linked from the site, `noindex`, and excluded from the sitemap) until it is finished.
 
-## 🚀 Project Structure
+## Commands
 
-Inside of your Astro project, you'll see the following folders and files:
+Run from the repository root. CI builds with Node 22.
+
+| Command | Action |
+| :-- | :-- |
+| `npm install` | Install dependencies |
+| `npm run dev` | Dev server at `localhost:4321` (open `/thesis?debug` for the film with its scrubber) |
+| `npm run build` | Build the site to `./dist/` |
+| `npm run preview` | Serve the build locally |
+| `npm run check:content` | Validate the film's content data: quotes against the thesis text, chain dates, transcripts (`-- --strict` before publishing) |
+| `npm run check:determinism` | Check that every film frame is a pure function of time (needs `npm run dev` and Chrome) |
+| `npm run report:pacing` | Measure when every screen finishes drawing and how long it then holds; writes `docs/pacing.md` (needs `npm run dev` and Chrome) |
+| `npm run render:audio` | Render the film's sound offline to `sound-check/` (git-ignored) and measure loudness and peaks (needs `npm run dev` and Chrome) |
+| `npm run capture:transcript -- <scene-id>` | Record a real model reply, or a tool-using run, for a scene's 2026 half (needs a logged-in `claude` CLI) |
+
+Pushes to `main` build and deploy through `.github/workflows/deploy.yml`.
+
+## Layout
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+public/            static files: fonts, images, robots.txt, profile and discovery files
+src/pages/         index.astro (the site) and thesis.astro (the film page)
+src/components/    shared Astro components
+src/film/          the film: engine, scene template, scenes, content data (see docs/spec.md)
+scripts/           content checker, transcript capture, determinism test
+docs/              storyboard, technical spec, design notes and roadmap for the film
+edition/           builds a re-typeset PDF of the thesis (see docs/design.md)
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## The thesis film
 
-## 🧞 Commands
+- **What it says:** [docs/storyboard.md](docs/storyboard.md). A cold open, seven scenes (each pairs a 1996 technique with a chain of dated innovations leading to its 2026 descendant), and an outro.
+- **How it works:** [docs/spec.md](docs/spec.md). Every frame is a pure function of film time, content is data kept apart from animation code, and the 2026 half of each scene is a swappable slot (recorded model transcripts now, model-internals visualisations later).
+- **Sound:** off until the viewer turns it on. Every sound effect and the drone under the film are synthesized in the browser (`src/film/audio/`): no samples, a shared reverb, one musical scale, and a 1996 and a 2026 timbre. The only recorded sound is the outro's music (`public/audio/outro-music.mp3`), which plays only with sound on.
+- **Look and the PDF pipeline:** [docs/design.md](docs/design.md).
+- **Where it is up to:** [docs/roadmap.md](docs/roadmap.md).
 
-All commands are run from the root of the project, from a terminal:
+Not in the repository, on purpose: the 1996 scan, figures extracted from it, the unproofread re-typeset edition, and the machine-converted thesis text (`source/` and `src/film/data/thesis-text/`). The content checker warns, but still runs, without them.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Credits
 
-## 👀 Want to learn more?
+The film engine is forked from pdoom-video (MIT, Giacomo Magnanini); see `src/film/LICENSE-pdoom-video`.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+The outro's music was made with Gemini Music to the author's brief and is released with the rest of the repository.

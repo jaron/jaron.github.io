@@ -1,0 +1,345 @@
+{
+  "understanding": {
+    "intro": "In the thirty years since, a series of breakthroughs led to the thinking machines we use every day.",
+    "nodes": [
+      {
+        "year": 2013,
+        "name": "Word embeddings",
+        "gist": "Words became numbers a machine could compare, so similar meanings landed close together.",
+        "source": {
+          "title": "Efficient Estimation of Word Representations in Vector Space",
+          "authors": "Mikolov, Chen, Corrado, Dean",
+          "url": "https://arxiv.org/abs/1301.3781"
+        },
+        "verified": true
+      },
+      {
+        "year": 2017,
+        "name": "The Transformer",
+        "gist": "A model built on attention alone could weigh every word against every other, and train in parallel on far more text.",
+        "source": {
+          "title": "Attention Is All You Need",
+          "authors": "Vaswani et al.",
+          "url": "https://arxiv.org/abs/1706.03762"
+        },
+        "verified": true
+      },
+      {
+        "year": 2020,
+        "name": "Few-shot prompting",
+        "gist": "A large model could take on a new task from a few examples written as text, with no retraining.",
+        "source": {
+          "title": "Language Models are Few-Shot Learners",
+          "authors": "Brown et al.",
+          "url": "https://arxiv.org/abs/2005.14165"
+        },
+        "verified": true
+      },
+      {
+        "year": 2022,
+        "name": "Instruction tuning",
+        "gist": "Models trained on human feedback learned to do what people actually asked, so anyone could simply ask.",
+        "source": {
+          "title": "Training language models to follow instructions with human feedback",
+          "authors": "Ouyang et al.",
+          "url": "https://arxiv.org/abs/2203.02155"
+        },
+        "verified": true
+      }
+    ]
+  },
+  "finding": {
+    "intro": "Finding is still hard. The shortcuts are now learned from data, not written by hand.",
+    "nodes": [
+      {
+        "year": 1998,
+        "name": "PageRank",
+        "gist": "Search results began to be ranked by who linked to whom, so the web’s own links decided which pages mattered.",
+        "verified": true,
+        "source": {
+          "title": "The Anatomy of a Large-Scale Hypertextual Web Search Engine",
+          "authors": "Brin and Page",
+          "url": "https://research.google/pubs/the-anatomy-of-a-large-scale-hypertextual-web-search-engine/"
+        }
+      },
+      {
+        "year": 2014,
+        "name": "Attention",
+        "gist": "A model could learn which parts of its input matter for each step, instead of being told.",
+        "source": {
+          "title": "Neural Machine Translation by Jointly Learning to Align and Translate",
+          "authors": "Bahdanau, Cho, Bengio",
+          "url": "https://arxiv.org/abs/1409.0473"
+        },
+        "verified": true
+      },
+      {
+        "year": 2020,
+        "name": "Dense retrieval",
+        "gist": "Questions and passages became points in one space, so the closest passages could be found by meaning.",
+        "source": {
+          "title": "Dense Passage Retrieval for Open-Domain Question Answering",
+          "authors": "Karpukhin et al.",
+          "url": "https://arxiv.org/abs/2004.04906"
+        },
+        "verified": true
+      },
+      {
+        "year": 2020,
+        "name": "Retrieval-augmented generation",
+        "gist": "A model could look up relevant passages itself, then answer using what it found.",
+        "source": {
+          "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+          "authors": "Lewis et al.",
+          "url": "https://arxiv.org/abs/2005.11401"
+        },
+        "verified": true
+      }
+    ]
+  },
+  "backtracking": {
+    "intro": "Backtracking is still how hard problems get solved. Now the machine learns when to do it.",
+    "nodes": [
+      {
+        "year": 2006,
+        "name": "Monte Carlo tree search",
+        "gist": "A program could try many random lines of play and spend its effort on the branches that kept working.",
+        "source": {
+          "title": "Bandit based Monte-Carlo Planning",
+          "authors": "Kocsis, Szepesvári",
+          "url": "https://link.springer.com/chapter/10.1007/11871842_29"
+        },
+        "verified": true
+      },
+      {
+        "year": 2016,
+        "name": "AlphaGo",
+        "gist": "Networks trained on past games learned which branches were worth trying, so the shortcuts were no longer written by hand.",
+        "source": {
+          "title": "Mastering the game of Go with deep neural networks and tree search",
+          "authors": "Silver et al.",
+          "url": "https://www.nature.com/articles/nature16961"
+        },
+        "verified": true
+      },
+      {
+        "year": 2022,
+        "name": "Chain-of-thought prompting",
+        "gist": "Language models reasoned far better when they wrote out their steps, so the search could happen in words.",
+        "source": {
+          "title": "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models",
+          "authors": "Wei et al.",
+          "url": "https://arxiv.org/abs/2201.11903"
+        },
+        "verified": true
+      },
+      {
+        "year": 2024,
+        "name": "Reasoning models",
+        "gist": "Models trained by trial and reward learned to try an approach, notice it failing, and switch to another.",
+        "source": {
+          "title": "Learning to reason with LLMs",
+          "authors": "OpenAI",
+          "url": "https://openai.com/index/learning-to-reason-with-llms/"
+        },
+        "verified": true
+      }
+    ]
+  },
+  "toolcalling": {
+    "intro": "A model that can reason can also decide when to ask a specialist for help.",
+    "nodes": [
+      {
+        "year": 2022,
+        "name": "ReAct",
+        "gist": "A language model could alternate between reasoning and acting: call a tool, read what came back, and carry on.",
+        "source": {
+          "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+          "authors": "Yao et al.",
+          "url": "https://arxiv.org/abs/2210.03629"
+        },
+        "verified": true
+      },
+      {
+        "year": 2023,
+        "name": "Toolformer",
+        "gist": "A model taught itself when to call a calculator or a search engine, and how to use the answer.",
+        "source": {
+          "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
+          "authors": "Schick et al.",
+          "url": "https://arxiv.org/abs/2302.04761"
+        },
+        "verified": true
+      },
+      {
+        "year": 2023,
+        "name": "Function calling",
+        "gist": "Developers could describe tools to a model, which would then ask for one to be called and read the result.",
+        "source": {
+          "title": "Function calling and other API updates",
+          "authors": "OpenAI",
+          "url": "https://openai.com/index/function-calling-and-other-api-updates/"
+        },
+        "verified": true
+      },
+      {
+        "year": 2024,
+        "name": "Model Context Protocol",
+        "gist": "An open standard let developers connect tools and data to AI models through one protocol, not a custom connector for each.",
+        "source": {
+          "title": "Introducing the Model Context Protocol",
+          "authors": "Anthropic",
+          "url": "https://www.anthropic.com/news/model-context-protocol"
+        },
+        "verified": true
+      }
+    ]
+  },
+  "uncertainty": {
+    "intro": "Machines have since learned to say how sure they are, and to be tested on whether they are right.",
+    "nodes": [
+      {
+        "year": 1988,
+        "name": "Bayesian networks",
+        "gist": "Probability became the standard way for a machine to say how sure it is, and to update that as evidence arrives.",
+        "source": {
+          "title": "Probabilistic Reasoning in Intelligent Systems",
+          "authors": "Pearl",
+          "url": "https://doi.org/10.1016/C2009-0-27609-4"
+        },
+        "verified": true
+      },
+      {
+        "year": 2015,
+        "name": "Monte Carlo dropout",
+        "gist": "A neural network could ask the same question many times with parts switched off, and read its uncertainty from how much the answers differed.",
+        "source": {
+          "title": "Dropout as a Bayesian Approximation",
+          "authors": "Gal, Ghahramani",
+          "url": "https://arxiv.org/abs/1506.02142"
+        },
+        "verified": true
+      },
+      {
+        "year": 2017,
+        "name": "Calibration",
+        "gist": "Modern networks turned out to be overconfident, and a simple fix made “ninety percent sure” mean right nine times in ten.",
+        "source": {
+          "title": "On Calibration of Modern Neural Networks",
+          "authors": "Guo et al.",
+          "url": "https://arxiv.org/abs/1706.04599"
+        },
+        "verified": true
+      },
+      {
+        "year": 2024,
+        "name": "Semantic entropy",
+        "gist": "A method for language models: sample several answers, group them by meaning, and read strong disagreement as a sign the answer may be invented.",
+        "source": {
+          "title": "Detecting hallucinations in large language models using semantic entropy",
+          "authors": "Farquhar, Kossen, Kuhn and Gal",
+          "url": "https://doi.org/10.1038/s41586-024-07421-0"
+        },
+        "verified": true
+      }
+    ]
+  },
+  "explaining": {
+    "intro": "Explaining a machine’s answer became a field of research in its own right.",
+    "nodes": [
+      {
+        "year": 2016,
+        "name": "LIME",
+        "gist": "A method could explain any single prediction by fitting a simple, readable model around it.",
+        "source": {
+          "title": "“Why Should I Trust You?”: Explaining the Predictions of Any Classifier",
+          "authors": "Ribeiro, Singh, Guestrin",
+          "url": "https://arxiv.org/abs/1602.04938"
+        },
+        "verified": true
+      },
+      {
+        "year": 2017,
+        "name": "SHAP",
+        "gist": "One framework gave every input an importance value for each answer, unifying six earlier methods so explanations could be compared.",
+        "source": {
+          "title": "A Unified Approach to Interpreting Model Predictions",
+          "authors": "Lundberg, Lee",
+          "url": "https://arxiv.org/abs/1705.07874"
+        },
+        "verified": true
+      },
+      {
+        "year": 2021,
+        "name": "Scratchpads",
+        "gist": "Models that wrote out their intermediate steps got long calculations right far more often.",
+        "source": {
+          "title": "Show Your Work: Scratchpads for Intermediate Computation with Language Models",
+          "authors": "Nye et al.",
+          "url": "https://arxiv.org/abs/2112.00114"
+        },
+        "verified": true
+      },
+      {
+        "year": 2024,
+        "name": "Mechanistic interpretability",
+        "gist": "Researchers found millions of human-readable features inside a large language model, and showed that adjusting them changed what it said.",
+        "source": {
+          "title": "Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet",
+          "authors": "Templeton et al.",
+          "url": "https://transformer-circuits.pub/2024/scaling-monosemanticity/"
+        },
+        "verified": true
+      }
+    ]
+  },
+  "ingestion": {
+    "intro": "Knowledge moved from being typed in to being learned from web-scale repositories of text. Literally the sum of human knowledge.",
+    "nodes": [
+      {
+        "year": 2008,
+        "name": "Common Crawl",
+        "gist": "An open archive of the public web, crawled from 2008 and still growing, so collecting text became a download, not a project.",
+        "source": {
+          "title": "Common Crawl",
+          "authors": "Common Crawl Foundation",
+          "url": "https://commoncrawl.org/"
+        },
+        "verified": true
+      },
+      {
+        "year": 2017,
+        "name": "The Transformer",
+        "gist": "A design that could learn from huge amounts of text in parallel, so more text meant more computers, not more people.",
+        "source": {
+          "title": "Attention Is All You Need",
+          "authors": "Vaswani et al.",
+          "url": "https://arxiv.org/abs/1706.03762"
+        },
+        "verified": true
+      },
+      {
+        "year": 2018,
+        "name": "Pretraining",
+        "gist": "A model could first learn from raw text with no labels, then be adapted to many tasks.",
+        "source": {
+          "title": "Improving Language Understanding by Generative Pre-Training",
+          "authors": "Radford et al.",
+          "url": "https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf"
+        },
+        "verified": true
+      },
+      {
+        "year": 2020,
+        "name": "Scaling laws",
+        "gist": "Results improved smoothly and predictably as models, text and computing power grew.",
+        "source": {
+          "title": "Scaling Laws for Neural Language Models",
+          "authors": "Kaplan et al.",
+          "url": "https://arxiv.org/abs/2001.08361"
+        },
+        "verified": true
+      }
+    ]
+  }
+}

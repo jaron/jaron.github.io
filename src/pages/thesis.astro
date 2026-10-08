@@ -1,0 +1,157 @@
+---
+// Mode 1: the zero-click motion-graphics film. The 16:9 stage scales to fit the window.
+import { YOUTUBE_ID, YOUTUBE_URL, EDITION_PDF } from '../film/video';
+const title = 'How I made a machine think (in 1996): an AI PhD thesis, thirty years on';
+const description = 'A film of my 1996 PhD thesis in AI, traced forward thirty years to how machines think today. Each idea has a 1996 half and a 2026 half, joined by the research in between. Best with sound on.';
+const videoLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: title,
+  description,
+  thumbnailUrl: `https://i.ytimg.com/vi/${YOUTUBE_ID}/maxresdefault.jpg`,
+  uploadDate: '2026-10-08',
+  duration: 'PT7M47S',
+  embedUrl: `https://www.youtube.com/embed/${YOUTUBE_ID}`,
+  author: { '@type': 'Person', name: 'Dr Jaron Collis', url: 'https://jaroncollis.com' },
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title} — Jaron Collis</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href="https://jaroncollis.com/thesis" />
+    <meta property="og:type" content="video.other" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="https://jaroncollis.com/thesis" />
+    <meta property="og:image" content={`https://i.ytimg.com/vi/${YOUTUBE_ID}/maxresdefault.jpg`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(videoLd)} />
+    <style is:global>
+      :root { color-scheme: dark; }
+      html, body { margin: 0; height: 100%; background: #050507; color: #eee9df; overflow: hidden; }
+      #stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+      #film { width: min(100vw, calc(100vh * 16 / 9)); height: min(100vh, calc(100vw * 9 / 16)); background: #050507; cursor: pointer; }
+      #status { position: fixed; left: 24px; bottom: 24px; font: 12px/1.4 ui-monospace, Menlo, monospace; color: #9c978f; white-space: pre-wrap; }
+      #status.error { color: #7cbaff; }
+      #debug { display: none; position: fixed; left: 0; right: 0; bottom: 0; padding: 8px 16px; background: #0e1014; font: 12px ui-monospace, Menlo, monospace; color: #9c978f; }
+      body.debug #debug { display: block; }
+      #scrub { width: 100%; accent-color: #007aff; margin: 0 0 4px; }
+      #sound { position: fixed; right: 22px; bottom: 20px; z-index: 20; display: inline-flex; align-items: center; gap: 9px; padding: 9px 14px 9px 11px; background: rgba(5, 5, 7, 0.62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border: 1px solid rgba(238, 233, 223, 0.3); border-radius: 999px; font: 500 12px/1 ui-monospace, Menlo, monospace; letter-spacing: 0.16em; color: #eee9df; opacity: 0.82; cursor: pointer; transition: opacity .2s, border-color .2s, color .2s; }
+      #sound:hover, #sound:focus-visible { opacity: 1; border-color: #007aff; outline: none; }
+      #sound svg { width: 18px; height: 18px; flex: none; }
+      #sound .waves { display: none; }
+      #sound[aria-pressed="true"] { color: #7cbaff; border-color: rgba(0, 122, 255, 0.7); }
+      #sound[aria-pressed="true"] .waves { display: inline; }
+      #sound[aria-pressed="true"] .slash { display: none; }
+      /* a few soft pulses at the start so first-time viewers notice it */
+      #sound.attention { animation: soundping 2.4s ease-out 1.2s 3; }
+      @keyframes soundping { 0% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0.55); } 70% { box-shadow: 0 0 0 14px rgba(0, 122, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 122, 255, 0); } }
+      @media (prefers-reduced-motion: reduce) { #sound.attention { animation: none; } }
+      body.debug #sound { bottom: 84px; }
+      /* progress dock: play/pause, a label for where we are, and one segment per section */
+      #dock { --lift: 20px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; align-items: flex-end; gap: 14px; padding: 0 200px var(--lift) 22px; transition: opacity .3s; pointer-events: none; font: 500 12px/1 ui-monospace, Menlo, monospace; color: #eee9df; }
+      body.debug #dock { --lift: 84px; }
+      #play { flex: none; width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; padding: 0; background: rgba(5, 5, 7, 0.62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border: 1px solid rgba(238, 233, 223, 0.3); border-radius: 50%; color: #eee9df; cursor: pointer; opacity: 0.82; transition: opacity .3s, border-color .2s; }
+      #play:hover, #play:focus-visible { opacity: 1; border-color: #007aff; outline: none; }
+      #play svg { width: 16px; height: 16px; }
+      #play .i-replay { display: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+      #play .lbl { display: none; letter-spacing: 0.2em; }
+      /* once the film has ended the play button becomes REPLAY, at the bottom left of the final page */
+      #play[data-state="ended"] { width: auto; gap: 10px; padding: 0 20px 0 14px; border-radius: 999px; border-color: rgba(238, 233, 223, 0.55); opacity: 1; }
+      #play[data-state="ended"] .i-play, #play[data-state="ended"] .i-pause { display: none; }
+      #play[data-state="ended"] .i-replay, #play[data-state="ended"] .lbl { display: inline; }
+      #play[data-state="ended"] svg { width: 18px; height: 18px; }
+      #play[data-state="playing"] .i-play, #play[data-state="paused"] .i-pause { display: none; }
+      #seek { flex: 1 1 auto; min-width: 0; }
+      #play, #seek { pointer-events: auto; }
+      #seekLabel { height: 14px; margin: 0 0 2px; letter-spacing: 0.16em; text-transform: uppercase; text-shadow: 0 0 8px #050507, 0 0 3px #050507; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: opacity .3s; }
+      #segs { display: flex; gap: 3px; padding: 10px 0; cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none; }
+      .seg { position: relative; flex: 1 1 0; min-width: 4px; height: 5px; border-radius: 3px; background: rgba(238, 233, 223, 0.24); overflow: hidden; transition: height .2s; }
+      #segs:hover .seg { height: 9px; }
+      .seg .fill { position: absolute; inset: 0; background: #007aff; transform-origin: left center; transform: scaleX(0); }
+      #dock.is2026 .seg.now .fill { background: #d97757; }
+      /* idle: everything fades but a hairline of progress along the bottom edge */
+      #dock.idle #play, #dock.idle #seek { pointer-events: none; }
+      #dock.idle #play, #dock.idle #seekLabel { opacity: 0; }
+      #dock.idle #segs { transform: translateY(calc(var(--lift) + 8px)); }
+      #dock.idle .seg, #dock.idle #segs:hover .seg { height: 2px; border-radius: 0; }
+      #segs { transition: transform .3s; }
+      @media (max-width: 700px) { #dock { --lift: 72px; padding-right: 22px; } body.debug #dock { --lift: 120px; } }
+      @media (prefers-reduced-motion: reduce) { #dock, #segs, .seg, #play, #seekLabel { transition: none; } }
+      /* after the film: REPLAY, then links onward (PDF only once the edition is published) */
+      .endlink { display: none; flex: none; align-items: center; gap: 9px; height: 38px; padding: 0 18px; box-sizing: border-box; background: rgba(5, 5, 7, 0.62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border: 1px solid rgba(238, 233, 223, 0.55); border-radius: 999px; font: 500 12px/1 ui-monospace, Menlo, monospace; letter-spacing: 0.2em; color: #eee9df; text-decoration: none; pointer-events: auto; transition: border-color .2s; }
+      .endlink:hover, .endlink:focus-visible { border-color: #007aff; outline: none; }
+      .endlink svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+      #play[data-state="ended"] ~ .endlink:not([hidden]) { display: inline-flex; }
+      /* browsers that cannot run the live film get the video instead */
+      #fallback { position: fixed; inset: 0; overflow: auto; background: #050507; }
+      #fallback[hidden] { display: none; }
+      @font-face { font-family: 'ArchivoHeavy'; src: url('/fonts/Archivo-w1000-900.ttf'); font-weight: 900; font-display: swap; }
+      .fb { box-sizing: border-box; max-width: 980px; margin: 0 auto; padding: 48px 24px 64px; font: 16px/1.55 system-ui, -apple-system, 'Segoe UI', sans-serif; }
+      .fb h1 { margin: 0 0 14px; font: 900 clamp(32px, 6vw, 56px)/1.05 'ArchivoHeavy', system-ui, sans-serif; letter-spacing: -0.01em; }
+      .fb p { margin: 0 0 22px; color: #bcb7ad; }
+      .fb .vid { position: relative; aspect-ratio: 16 / 9; background: #000; border: 1px solid rgba(238, 233, 223, 0.2); }
+      .fb iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+      .fb a { color: #7cbaff; }
+    </style>
+  </head>
+  <body>
+    <div id="stage"><canvas id="film"></canvas></div>
+    <div id="status">Loading…</div>
+    <button id="sound" class="attention" type="button" aria-pressed="false" aria-label="Turn sound on or off">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 9.5v5h3.6L12 18.5v-13L7.6 9.5H4z" />
+        <g class="waves"><path d="M15.5 9a4.2 4.2 0 0 1 0 6" /><path d="M18 6.6a7.6 7.6 0 0 1 0 10.8" /></g>
+        <line class="slash" x1="16" y1="9.5" x2="21" y2="14.5" /><line class="slash" x1="21" y1="9.5" x2="16" y2="14.5" />
+      </svg>
+      <span id="soundLabel">SOUND OFF</span>
+    </button>
+    <div id="dock">
+      <button id="play" type="button" data-state="playing" aria-label="Pause">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <g class="i-pause"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></g>
+          <path class="i-play" d="M8 5.2v13.6L19 12z" />
+          <g class="i-replay"><path d="M4 12a8 8 0 1 0 2.6-5.9" /><path d="M4 4v4.6h4.6" /></g>
+        </svg>
+        <span class="lbl">REPLAY</span>
+      </button>
+      <a id="home" class="endlink" href="/" aria-label="Homepage">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.2 12 4l8.5 7.2" /><path d="M6 10v9h4.2v-5.2h3.6V19H18v-9" /></svg>
+        <span>HOMEPAGE</span>
+      </a>
+      {EDITION_PDF && (
+        <a id="pdf" class="endlink" href={EDITION_PDF} aria-label="The 2026 edition of the thesis, as a PDF" download>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7l4 4V20.5H7z" /><path d="M14 3.5v4h4" /><path d="M9.5 14.5h5M9.5 17.5h5" /></svg>
+          <span>PDF</span>
+        </a>
+      )}
+      <div id="seek" role="progressbar" aria-label="Film progress" aria-valuemin="0" aria-valuenow="0">
+        <div id="seekLabel"></div>
+        <div id="segs"></div>
+      </div>
+    </div>
+    <div id="fallback" hidden>
+      <div class="fb">
+        <h1>How I made a machine think (in 1996)</h1>
+        <p>This film is drawn live in your browser with WebGL 2, which this browser cannot run right now. Here is the same film as a video.</p>
+        <div class="vid"><iframe title="How I made a machine think (in 1996)" src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}`} loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+        <p style="margin-top:22px"><a href={YOUTUBE_URL}>Watch on YouTube</a> &nbsp;·&nbsp; <a href="/">Homepage</a></p>
+      </div>
+    </div>
+    <noscript>
+      <div class="fb" style="position:fixed;inset:0;overflow:auto;background:#050507;color:#eee9df;box-sizing:border-box;max-width:none">
+        <h1>How I made a machine think (in 1996)</h1>
+        <p>This film needs JavaScript. You can watch it on <a href={YOUTUBE_URL}>YouTube</a>, or go to the <a href="/">homepage</a>.</p>
+      </div>
+    </noscript>
+    <div id="debug"><input id="scrub" type="range" min="0" value="0" /><div id="info"></div></div>
+    <script>
+      import '../film/main';
+    </script>
+  </body>
+</html>

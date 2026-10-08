@@ -1,0 +1,79 @@
+// Cold open: the title card, the author's challenge, a scientific problem drawn as a vector raindrop, and the machine's
+// chain of questions (full sentences, so the viewer always knows why the next step is needed), ending on the payoff.
+// Pure data. Timing in film seconds. Quotes are verbatim from the thesis (checked by check-content).
+import type { ThesisRef } from '../core/types';
+
+export interface Beat {
+  /** time the question slams in */
+  at: number;
+  q: string;
+  a: string;
+  /** a smaller mono line under the answer */
+  sub?: string;
+  /** node the camera moves to */
+  focus: string;
+  /** nodes that appear with the answer */
+  reveal?: string[];
+  /** node that locks to KNOWN with the answer */
+  lock?: string;
+}
+
+/** the challenge now arrives in clauses, finishing sooner, so everything after it moves earlier by this much */
+const S = 1.3;
+const L = (x: number) => +(x - S).toFixed(2);
+const BEAT = 2.5;
+const FIRST = L(13.7);
+const at = (i: number) => +(FIRST + i * BEAT).toFixed(2);
+
+export const COLD_OPEN = {
+  duration: L(39),
+  /** the film opens on its title; it clears away as the date and the supervisor's challenge arrive */
+  title: {
+    lines: ['How I made', 'a machine', 'think'],
+    tag: '(in 1996)',
+    sub: 'A PhD thesis in artificial intelligence, thirty years on',
+    exitAt: 3.7, end: 4.2,
+  },
+  challenge: {
+    date: 'SEPTEMBER 1993',
+    dateAt: 4.0,
+    text: 'My PhD supervisor, Professor Jack Smith, set me a challenge: build intelligent software that was better at solving scientific problems than I was.',
+    emphasis: 'better at solving scientific problems than I was.',
+    wordsFrom: 4.4, perWord: 0.1, minGap: 0.5,
+    /** the quote clears away here, handing over to the drawing */
+    exitAt: L(9.4), end: L(10.0),
+  },
+  /** the bridge: a scientific problem, drawn */
+  problem: {
+    label: 'A SCIENTIFIC PROBLEM',
+    drawFrom: L(10.1),     // raindrop outline
+    barFrom: L(11.3),      // diameter bar
+    arrowFrom: L(12.0),    // downward arrow and the question mark
+    prompt: { text: 'Calculate the force due to gravity acting on a raindrop, 1 millimetre in diameter.', from: L(10.5), to: L(13.2) },
+  },
+  beatLen: BEAT,
+  beats: [
+    { at: at(0), q: 'What is force?',                       a: 'F = m g',                              sub: 'Mass times gravity.',            focus: 'F',   reveal: ['f1', 'm', 'g'] },
+    { at: at(1), q: 'Gravity? We know that.',               a: 'g = 9.81',                             sub: 'KNOWN · m/s²',                   focus: 'g',   lock: 'g' },
+    { at: at(2), q: 'But what is its mass?',                a: 'm = ρ V',                              sub: 'Density times volume.',          focus: 'm',   reveal: ['f2', 'rho', 'V'] },
+    { at: at(3), q: 'Density of what?',                     a: 'Raindrops are water.',                 sub: 'KNOWN · 1000 kg/m³',             focus: 'rho', lock: 'rho' },
+    { at: at(4), q: 'But what is its volume?',              a: 'It’s a sphere.',                       sub: 'V = 4/3 π r³',                   focus: 'V',   reveal: ['f3', 'r'] },
+    { at: at(5), q: 'But that requires knowing its radius.', a: 'We know its diameter. Just halve it.', sub: 'r = d / 2',                      focus: 'r',   reveal: ['f4', 'd'] },
+    { at: at(6), q: 'And the diameter?',                    a: '1 mm. You told me.',                   sub: 'KNOWN · given',                  focus: 'd',   lock: 'd' },
+  ] as Beat[],
+  /** working back up the tree: each value is filled into its node, with the plain-language rule that produced it */
+  ledger: [
+    { at: L(31.4), node: 'r', say: 'radius = half the diameter' },
+    { at: L(32.0), node: 'V', say: 'volume = 4/3 π r³' },
+    { at: L(32.6), node: 'm', say: 'mass = density × volume' },
+    { at: L(33.2), node: 'F', say: 'force = mass × gravity' },
+  ],
+  workBack: { q: 'Now work back up.', at: L(31.25) },
+  answer: { at: L(33.8), text: 'Every value traced back to its source.' },
+  reveal: { from: L(35.4), to: L(38.4), caption: 'Each question was a node in a search tree.', captionAt: L(36.4) },
+  refs: [
+    { page: 2, pdfPage: 9, quote: 'Calculate the force due to gravity acting on a raindrop, 1 millimetre in diameter.' },
+    { page: 4, pdfPage: 11, quote: 'When the author began development of the QPS system in 1993' },
+    { page: null, pdfPage: 3, quote: 'Professor Jack Smith' },
+  ] as ThesisRef[],
+};
