@@ -13,10 +13,10 @@ const BED_GAIN = 0.05;
 const smooth = (x: number) => { const c = Math.max(0, Math.min(1, x)); return c * c * (3 - 2 * c); };
 const ramp = (t: number, a: number, b: number) => smooth((t - a) / (b - a));
 
-/** Root note (Hz) per scene: open fifths that walk around D major pentatonic, so the bed moves without ever clashing. */
+/** Root note (Hz) per scene: open fifths on D, B, E and A (D major pentatonic), so the bed moves without clashing. Scenes 6 and 7 use A and D, which have the fewest scale notes a tone away. */
 const ROOTS: Record<string, number> = {
   'cold-open': 146.83, 's01-understanding': 146.83, 's02-finding-knowledge': 123.47, 's03-dead-ends': 164.81,
-  's04-tool-calling': 110.0, 's05-uncertainty': 146.83, 's06-showing-our-work': 123.47, 's07-where-knowledge-comes-from': 164.81, outro: 146.83,
+  's04-tool-calling': 110.0, 's05-uncertainty': 146.83, 's06-showing-our-work': 110.0, 's07-where-knowledge-comes-from': 146.83, outro: 146.83,
 };
 
 export function makeBedAt(spans: SceneSpan[], eraAt: (t: number) => number): (t: number) => BedParams {
@@ -39,48 +39,69 @@ export function makeBedAt(spans: SceneSpan[], eraAt: (t: number) => number): (t:
   };
 }
 
+interface Bank { bg: GainNode; g96: GainNode; g26: GainNode; oscs: { osc: OscillatorNode; mult: number }[] }
+
+/** The drone itself. Two identical banks of oscillators: when the root changes, the idle bank is tuned to the new root while
+    silent and the two are crossfaded, so the pitch never slides through the notes in between (a glide would pass through
+    notes outside the scale, and bends the intervals of the chord while it moves). */
 export class Bed {
   private out: GainNode;
-  private g96: GainNode;
-  private g26: GainNode;
-  private oscs: { osc: OscillatorNode; mult: number }[] = [];
+  private banks: [Bank, Bank];
+  private active = 0;
+  private root = 0;
   private first = true;
 
   constructor(private ctx: BaseAudioContext, mix: Mix) {
     this.out = ctx.createGain(); this.out.gain.value = 0;
     this.out.connect(mix.input(0.3));
+    this.banks = [this.bank(), this.bank()];
+  }
+
+  private bank(): Bank {
+    const ctx = this.ctx, oscs: Bank['oscs'] = [];
+    const bg = ctx.createGain(); bg.gain.value = 0; bg.connect(this.out);
+    const add = (type: OscillatorType, mult: number, cents: number, amp: number, dest: AudioNode) => {
+      const osc = ctx.createOscillator(); osc.type = type; osc.detune.value = cents;
+      const g = ctx.createGain(); g.gain.value = amp;
+      osc.connect(g); g.connect(dest); osc.start();
+      oscs.push({ osc, mult });
+    };
     // 1996: two square waves a fifth apart through a low-pass filter that breathes slowly
-    this.g96 = ctx.createGain(); this.g96.gain.value = 0;
+    const g96 = ctx.createGain(); g96.gain.value = 0;
     const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 420; lp.Q.value = 0.7;
     const lfo = ctx.createOscillator(); lfo.frequency.value = 0.09;
     const depth = ctx.createGain(); depth.gain.value = 130;
     lfo.connect(depth); depth.connect(lp.frequency); lfo.start();
-    lp.connect(this.g96); this.g96.connect(this.out);
-    for (const [mult, cents] of [[1, 0], [1.5, 4]] as const) this.add('square', mult, cents, 0.5, lp);
+    lp.connect(g96); g96.connect(bg);
+    for (const [mult, cents] of [[1, 0], [1.5, 2]] as const) add('square', mult, cents, 0.5, lp);
     // 2026: a pad of sines (root, octave, fifth), each doubled a few cents apart for shimmer, with a slow swell
-    this.g26 = ctx.createGain(); this.g26.gain.value = 0;
+    const g26 = ctx.createGain(); g26.gain.value = 0;
     const swell = ctx.createGain(); swell.gain.value = 0.85;
     const lfo2 = ctx.createOscillator(); lfo2.frequency.value = 0.06;
     const d2 = ctx.createGain(); d2.gain.value = 0.15;
     lfo2.connect(d2); d2.connect(swell.gain); lfo2.start();
-    swell.connect(this.g26); this.g26.connect(this.out);
-    for (const [mult, cents, a] of [[1, -5, 0.4], [1, 5, 0.4], [2, -4, 0.28], [2, 4, 0.28], [3, 0, 0.22]] as const) this.add('sine', mult, cents, a, swell);
-  }
-
-  private add(type: OscillatorType, mult: number, cents: number, amp: number, dest: AudioNode) {
-    const osc = this.ctx.createOscillator(); osc.type = type; osc.detune.value = cents;
-    const g = this.ctx.createGain(); g.gain.value = amp;
-    osc.connect(g); g.connect(dest); osc.start();
-    this.oscs.push({ osc, mult });
+    swell.connect(g26); g26.connect(bg);
+    for (const [mult, cents, a] of [[1, -3, 0.4], [1, 3, 0.4], [2, -3, 0.28], [2, 3, 0.28], [3, 0, 0.22]] as const) add('sine', mult, cents, a, swell);
+    return { bg, g96, g26, oscs };
   }
 
   /** Move toward these parameters, from `when`, with time constant `tc` seconds (the first call jumps there). */
   set(p: BedParams, when: number, tc: number) {
     const to = (param: AudioParam, v: number, t = tc) => { if (this.first) param.setValueAtTime(v, when); else param.setTargetAtTime(v, when, t); };
+    const tune = (b: Bank, root: number) => { for (const { osc, mult } of b.oscs) osc.frequency.setValueAtTime(root * mult, when); };
+    if (this.first) {
+      tune(this.banks[0], p.root); tune(this.banks[1], p.root);
+      this.banks[0].bg.gain.setValueAtTime(1, when); this.banks[1].bg.gain.setValueAtTime(0, when);
+      this.root = p.root;
+    } else if (Math.abs(p.root - this.root) > 0.5) {
+      const next = 1 - this.active;
+      tune(this.banks[next]!, p.root);                                         // the idle bank is silent, so it can jump
+      this.banks[next]!.bg.gain.setTargetAtTime(1, when, 0.55);
+      this.banks[this.active]!.bg.gain.setTargetAtTime(0, when, 0.55);
+      this.active = next; this.root = p.root;
+    }
     to(this.out.gain, p.level * BED_GAIN);
-    to(this.g96.gain, 1 - p.e);
-    to(this.g26.gain, p.e);
-    for (const { osc, mult } of this.oscs) to(osc.frequency, p.root * mult, 1.2);            // a change of root glides slowly
+    for (const b of this.banks) { to(b.g96.gain, 1 - p.e); to(b.g26.gain, p.e); }
     this.first = false;
   }
 

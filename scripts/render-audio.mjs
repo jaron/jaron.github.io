@@ -59,7 +59,9 @@ const clips = [
   ['1-cold-open', 0, span('cold-open').end],
   ['2-scene-1', span('s01-understanding').start, span('s01-understanding').end],
   ['3-scene-4', span('s04-tool-calling').start, span('s04-tool-calling').end],
-  ['4-outro', span('outro').start, duration],
+  ['4-scene-6', span('s06-showing-our-work').start, span('s06-showing-our-work').end],
+  ['5-scene-7', span('s07-where-knowledge-comes-from').start, span('s07-where-knowledge-comes-from').end],
+  ['6-outro', span('outro').start, duration],
 ];
 for (const [name, t0, t1] of clips) {
   const [l, r] = await render(t0, t1 + 2);
