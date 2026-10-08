@@ -11,7 +11,7 @@ export const DEFAULT_BEATS: Record<BeatName, number> = { bridge: 3.5, problem: 4
 /** `page` is null for unnumbered front matter (title page, abstract, acknowledgements). */
 export interface ThesisRef { page: number | null; pdfPage: number; quote?: string }
 
-export type VoiceName = 'type' | 'reveal' | 'lock' | 'fail' | 'call' | 'step' | 'morph' | 'stamp';
+export type VoiceName = 'type' | 'reveal' | 'lock' | 'fail' | 'call' | 'step' | 'morph' | 'stamp' | 'transition';
 /** A sound cue at film time `t` (seconds). Sound is data: derived from the same timing as the animation. */
 export interface Cue { t: number; voice: VoiceName; gain?: number; pan?: number; /** frequency multiplier (1 = the voice's own pitch) */ pitch?: number }
 

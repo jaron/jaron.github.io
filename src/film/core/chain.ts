@@ -135,9 +135,10 @@ export class Chain {
   }
 
   cues(): Cue[] {
-    const cues: Cue[] = [{ t: this.at(0) - 0.2, voice: 'morph', gain: 0.5 }];
+    const cues: Cue[] = [{ t: 0.05, voice: 'transition', gain: 0.5 }];     // the handover starts with the chain and is over before the first node
     if (this.data.intro) for (let i = 0; i < this.data.intro.split(' ').length; i += 3) cues.push({ t: INTRO_FROM + i * INTRO_GAP, voice: 'type', gain: 0.18 });
-    for (let i = 0; i < this.nodes.length; i++) cues.push({ t: this.at(i), voice: 'step', gain: 0.55, pitch: 0.9 + i * 0.12 });
+    const n = this.nodes.length;
+    for (let i = 0; i < n; i++) cues.push({ t: this.at(i), voice: 'step', gain: 0.55, pitch: 0.9 + i * 0.12, pan: n > 1 ? (i / (n - 1) - 0.5) * 1.0 : 0 });   // the nodes arrive left to right
     return cues;
   }
 }

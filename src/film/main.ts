@@ -8,6 +8,9 @@ import { FilmController } from './core/controller';
 import type FigureScene from './core/figure';
 import type { Cue } from './core/types';
 import { SoundEngine } from './audio/engine';
+import { makeEraAt } from './audio/era';
+import { renderAudio } from './audio/offline';
+import { makeBedAt } from './audio/bed';
 import { mountProgress } from './ui/progress';
 
 const params = new URLSearchParams(location.search);
@@ -37,7 +40,9 @@ async function boot() {
 
   // sound cues come from the loaded scenes, which derive them from the same constants as their animation
   const cues: Cue[] = built.entries.flatMap((e) => (engine.loaded.get(e.id)?.scene as { cues?: (s: number) => Cue[] } | undefined)?.cues?.(e.start) ?? []);
-  const sound = new SoundEngine(cues);
+  const eraAt = makeEraAt(built.spans);
+  const bedAt = makeBedAt(built.spans, eraAt);
+  const sound = new SoundEngine(cues, eraAt, bedAt);
   const soundLabel = document.getElementById('soundLabel')!;
   const syncButton = () => { soundLabel.textContent = sound.muted ? 'SOUND OFF' : 'SOUND ON'; soundBtn.setAttribute('aria-pressed', String(!sound.muted)); };
   soundBtn.onclick = async () => {
@@ -114,7 +119,9 @@ async function boot() {
       return { checked: shuffled.length, mismatches: bad };
     } finally { busy = false; }
   };
-  w.__film = { engine, sound, built, duration: built.duration, still: (x: number) => engine.render(x, 1 / 60), determinism };
+  w.__film = { engine, sound, built, duration: built.duration, still: (x: number) => engine.render(x, 1 / 60), determinism,
+    /** the film's sound for t0..t1 as plain number arrays (for scripts/render-audio.mjs) */
+    renderAudio: async (t0: number, t1: number, withBed = true) => { const [l, r] = await renderAudio(cues, eraAt, withBed ? bedAt : null, t0, t1); return { left: Array.from(l), right: Array.from(r) }; } };
 }
 
 boot().catch((e) => {

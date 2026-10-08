@@ -34,3 +34,6 @@ edition/build.log
 
 # local tooling config
 .claude/
+
+# rendered audio for listening and measuring (npm run render:audio)
+sound-check/

@@ -10,7 +10,8 @@
     "check:content": "node scripts/check-content.ts",
     "capture:transcript": "node scripts/capture-transcript.ts",
     "check:determinism": "node scripts/determinism.mjs",
-    "report:pacing": "node scripts/pacing.mjs"
+    "report:pacing": "node scripts/pacing.mjs",
+    "render:audio": "node scripts/render-audio.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

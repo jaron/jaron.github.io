@@ -277,12 +277,13 @@ export default class HandoffRenderer implements Era1996Renderer {
     const cues: Cue[] = [];
     cues.push({ t: 0.7, voice: 'reveal', gain: 0.4, pitch: 0.9 });
     d.handoffs.forEach((h, i) => {
-      cues.push({ t: h.need, voice: 'step', gain: 0.35, pitch: 0.8 + i * 0.1 });
-      cues.push({ t: h.send, voice: 'call', gain: 0.5, pitch: 0.9 + i * 0.1 });
-      cues.push({ t: h.back, voice: 'call', gain: 0.4, pitch: 1.3 });
-      cues.push({ t: h.back + BACK_TRAVEL, voice: 'lock', gain: 0.6, pitch: 1.0 + i * 0.12 });
+      // the Solver is on the left and the specialists on the right: requests go out right, answers arrive back left
+      cues.push({ t: h.need, voice: 'step', gain: 0.35, pitch: 0.8 + i * 0.1, pan: -0.35 });
+      cues.push({ t: h.send, voice: 'call', gain: 0.5, pitch: 0.9 + i * 0.1, pan: 0.2 });
+      cues.push({ t: h.back, voice: 'call', gain: 0.4, pitch: 1.3, pan: 0.45 });
+      cues.push({ t: h.back + BACK_TRAVEL, voice: 'lock', gain: 0.6, pitch: 1.0 + i * 0.12, pan: -0.3 });
     });
-    this.trials.forEach((_, k) => cues.push({ t: d.handoffs[1]!.working + 0.2 + k * TRIAL_GAP, voice: 'step', gain: 0.25, pitch: 0.7 + k * 0.05 }));
+    this.trials.forEach((_, k) => cues.push({ t: d.handoffs[1]!.working + 0.2 + k * TRIAL_GAP, voice: 'step', gain: 0.25, pitch: 0.7 + k * 0.05, pan: 0.45 }));
     cues.push({ t: d.loop.t, voice: 'morph', gain: 0.35 });
     cues.push({ t: d.integral, voice: 'reveal', gain: 0.3, pitch: 0.8 });
     return cues.sort((a, b) => a.t - b.t);
