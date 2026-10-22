@@ -1,0 +1,118 @@
+---
+// One project on the home page: a still, a mono label, a title and one line. A project that is not open yet
+// (no href) is shown without a link and says so.
+import RaindropMark from './RaindropMark.astro';
+
+export interface Project {
+  href?: string;
+  label: string;
+  title: string;
+  line: string;
+  img: string;
+  alt: string;
+  mark?: 'raindrop'; // a logotype drawn over the still
+}
+
+const { project } = Astro.props as { project: Project };
+const { href, label, title, line, img, alt, mark } = project;
+const Tag = href ? 'a' : 'div';
+---
+
+<li>
+  <Tag class:list={['plate', { soon: !href }]} href={href}>
+    <div class="still">
+      <img src={img} alt={alt} width="1280" height="720" loading="lazy" decoding="async" />
+      {mark === 'raindrop' && <span class="mark"><RaindropMark /></span>}
+    </div>
+    <p class="label">{label}{!href && <span class="soon-tag">Opening soon</span>}</p>
+    <h3 class="title">{title}</h3>
+    <p class="line">{line}</p>
+  </Tag>
+</li>
+
+<style>
+  .plate {
+    display: block;
+  }
+
+  .still {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 1px solid rgb(238 233 223 / 0.14);
+    border-radius: 6px;
+    background: rgb(238 233 223 / 0.025);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .still img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .mark {
+    position: absolute;
+    left: 6%;
+    bottom: 10%;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .label {
+    margin-top: 1.1rem;
+  }
+
+  .soon-tag {
+    margin-left: 0.9em;
+    padding: 0.15em 0.45em;
+    border: 1px solid currentColor;
+    border-radius: 3px;
+  }
+
+  .title {
+    margin-top: 0.4rem;
+    font-weight: 700;
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    color: var(--bone);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+  }
+
+  .line {
+    margin-top: 0.4rem;
+    max-width: 34em;
+    color: var(--ash);
+  }
+
+  /* Only what can be followed lights up, in the signal blue. */
+  a.plate:hover .still,
+  a.plate:focus-visible .still {
+    border-color: rgb(0 122 255 / 0.6);
+    box-shadow: 0 0 0 1px rgb(0 122 255 / 0.25), 0 0 2rem rgb(0 122 255 / 0.18);
+  }
+
+  a.plate:hover .still img,
+  a.plate:focus-visible .still img {
+    transform: scale(1.025);
+  }
+
+  a.plate:hover .title,
+  a.plate:focus-visible .title {
+    color: var(--ember);
+    text-shadow: 0 0 0.3em rgb(0 122 255 / 0.55);
+  }
+
+  a.plate:focus-visible {
+    outline: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .still img {
+      transition: none;
+    }
+  }
+</style>
