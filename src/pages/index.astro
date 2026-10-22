@@ -1,9 +1,57 @@
 ---
 import '../styles/global.css';
-import CyclingH2 from '../components/CyclingH2.astro';
-import ContactScript from '../components/ContactScript.astro';
-import FadingImage from '../components/FadingImage.astro';
-import Footer from '../components/Footer.astro';
+import Plate, { type Project } from '../components/Plate.astro';
+
+// Raindrop lives on its own subdomain (hosted on Cloudflare). Its plate says "Opening soon" and has no link until
+// RAINDROP_LIVE is true.
+const RAINDROP_URL = 'https://raindrop.jaroncollis.com';
+const RAINDROP_LIVE = false;
+
+const work: Project[] = [
+  {
+    href: '/thesis',
+    label: 'Film · 8 min',
+    title: 'How I made a machine think',
+    line: 'My AI PhD thesis as a short film, traced forward to how machines think today.',
+    img: '/imgs/plate-thesis.jpg',
+    alt: 'A 1996 terminal beside a 2026 laptop chat, split by a diagonal: AI in 1996, AI in 2026',
+  },
+  {
+    href: RAINDROP_LIVE ? RAINDROP_URL : undefined,
+    label: 'Lab · 2026',
+    title: 'Raindrop',
+    line: 'A laboratory for exploring how things became thinkable.',
+    img: '/imgs/plate-raindrop.jpg',
+    alt: 'Contour lines of a landscape at night, with raindrops pooled in a valley',
+    mark: 'raindrop',
+  },
+];
+
+const doing = [
+  'I build AI companies',
+  'I advise deep-tech investors',
+  'I take ideas from zero to one',
+  'I write so I may think',
+];
+
+const facts = ['PhD in AI', 'Entrepreneurs First alum', 'Founder & CTO'];
+
+const contact = [
+  { name: 'LinkedIn', href: 'https://linkedin.com/in/drjaron' },
+  { name: 'X', href: 'https://x.com/jaroncollis' },
+  { name: 'Medium', href: 'https://jaroncollis.medium.com' },
+];
+
+// Each assistant opens with a question that points it at the machine-readable profile, so the answer starts from it.
+// Gemini has no documented way to pass a question in a link, so it keeps the shared conversation made for this page.
+const ask = encodeURIComponent('Read https://jaroncollis.com/index.md, then introduce me to Dr Jaron Collis and his work.');
+const assistants = [
+  { name: 'Claude', href: `https://claude.ai/new?q=${ask}` },
+  { name: 'ChatGPT', href: `https://chatgpt.com/?q=${ask}` },
+  { name: 'Gemini', href: 'https://gemini.google.com/share/424093b1b1f1' },
+  { name: 'Grok', href: `https://grok.com/?q=${ask}` },
+  { name: 'Perplexity', href: `https://www.perplexity.ai/search?q=${ask}` },
+];
 
 const person = {
     "@type": "Person",
@@ -110,12 +158,9 @@ const stringifiedSchema = JSON.stringify(profilePageSchema);
 
   <!-- ==============  5. IMPORTED RESOURCES ============== -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
-      rel="stylesheet"
-  />
+  <link rel="preload" href="/fonts/Archivo-w1000-700.ttf" as="font" type="font/ttf" crossorigin />
+  <link rel="preload" href="/fonts/Archivo-w1000-500.ttf" as="font" type="font/ttf" crossorigin />
+  <meta name="theme-color" content="#050507" />
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-14NQ6ESSXV"></script>
@@ -123,74 +168,59 @@ const stringifiedSchema = JSON.stringify(profilePageSchema);
 
 </head>
 
-    <body>
-        <FadingImage />
-        <main>
-            <!-- HERO SECTION -->
-            <section class="hero">
-              <h1>Dr &nbsp; Jaron &nbsp; Collis</h1>
-              <CyclingH2 captions={[
-                "I build AI companies",
-                "I ship ingenious products",
-                "I advise deep-tech investments",
-                "I develop ideas from zero to one",
-                "I write so I may think"
-              ]} />
-              <h4>PhD AI &bull; Founder &bull; Agentsmith</h4>
-            </section>
+  <body>
+    <header class="hero">
+      <img class="portrait" src="/imgs/profile.jpg" alt="Portrait of Dr Jaron Collis" width="850" height="850" fetchpriority="high" />
+      <div class="words">
+        <h1 class="name"><span class="dr label">Dr </span>Jaron Collis</h1>
+        <p class="doing" data-lines={JSON.stringify(doing)}>{doing[0]}</p>
+      </div>
+    </header>
 
-            <!-- PILLARS OF IMPACT SECTION -->
-            <section class="pillars">
-                <div class="pillar">
-                    <h3 class="pillar-title">ENTREPRENEUR</h3>
-                    <p class="pillar-text">
-                        EF Alum<br/> 
-                        Founder &amp; CTO<br/>
-                        Raised &amp; Exited<br/>
-                    </p>
-                </div>
-                <div class="pillar">
-                    <h3 class="pillar-title">INNOVATOR</h3>
-                    <p class="pillar-text">
-                      <a href="/thesis" class="pillar-link" title="How I made a machine think (in 1996): the film of my AI PhD thesis">AI PhD</a><br/>
-                      Published R&amp;D<br/>
-                      Problems to Products<br/>
-                    </p>
-                </div>
-                <div class="pillar">
-                    <h3 class="pillar-title">BUILDER</h3>
-                    <p class="pillar-text">
-                      Zero to One<br/>
-                      Ideas to Companies<br/>
-                      Bootstrap to Scale<br/>
-                    </p>
-                </div>
-            </section>
+    <main>
+      <section class="projects" id="projects">
+        <h2 class="label">Featured projects</h2>
+        <ul class="plates">
+          {work.map((project) => <Plate project={project} />)}
+        </ul>
+      </section>
 
-            <!-- CONTACT SECTION -->
-            <section class="contact">
-                <h3>Let's build</h3>
-                <h4 id="contact-h4">Contact me through</h4>
-                <div class="links">
-                    <a href="https://linkedin.com/in/drjaron" target="_blank" rel="noopener noreferrer" class="icon-link" title="Find me on LinkedIn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/>
-                        </svg>
-                    </a>
-                    <a href="https://x.com/jaroncollis" target="_blank" rel="noopener noreferrer" class="icon-link" title="Find me on X">
-                        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                        </svg>
-                    </a>
-                    <a href="https://jaroncollis.medium.com" target="_blank" rel="noopener noreferrer" class="icon-link" title="Find me on Medium">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M0 0v24h24V0H0zm19.938 5.686L18.651 6.92a.376.376 0 0 0-.143.362v9.067a.376.376 0 0 0 .143.361l1.257 1.234v.271h-6.322v-.27l1.302-1.265c.128-.128.128-.165.128-.36V8.99l-3.938 7.007c-.128.227-.256.36-.448.36h-.271v.271H4.062v-.271h.271c.192 0 .32-.133.448-.36l3.938-7.007V7.282c0-.195 0-.227-.128-.36L7.27 5.686V5.415h6.322v.271l-1.302 1.265c-.128.128-.128.165-.128.36v7.007l3.938-7.007c.128-.227.256-.36.448-.36h.271V5.415h6.322z"/>
-                        </svg>
-                    </a>
-                </div>
-            </section>
-            <Footer />
-        </main>
-        <ContactScript />
-    </body>
+      <section class="facts" aria-label="In short">
+        <ul class="label">
+          {facts.map((f) => <li>{f}</li>)}
+        </ul>
+        <p class="row label"><span>Ask an AI about my work</span>{assistants.map((a) => <a href={a.href} target="_blank" rel="noopener noreferrer">{a.name}</a>)}</p>
+      </section>
+    </main>
+
+    <footer class="site-footer label">
+      <p class="row"><span>Contact</span>{contact.map((c) => <a href={c.href} target="_blank" rel="noopener noreferrer">{c.name}</a>)}</p>
+    </footer>
+
+    <script>
+      // What I do, one line at a time: each word fades up 35 ms after the one before (as Raindrop's text does), the
+      // line holds, then fades out for the next. With reduced motion the first line simply stays.
+      const el = document.querySelector<HTMLElement>('.doing');
+      const lines: string[] = el ? JSON.parse(el.dataset.lines ?? '[]') : [];
+      if (el && lines.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        let n = 0;
+        const show = (text: string) => {
+          el.replaceChildren(
+            ...text.split(' ').flatMap((w, i) => {
+              const span = document.createElement('span');
+              span.className = 'word hidden';
+              span.textContent = w;
+              setTimeout(() => span.classList.remove('hidden'), 60 + i * 35);
+              return i ? [document.createTextNode(' '), span] : [span];
+            }),
+          );
+        };
+        setInterval(() => {
+          el.querySelectorAll('.word').forEach((w) => w.classList.add('hidden'));
+          n = (n + 1) % lines.length;
+          setTimeout(() => show(lines[n]), 400);
+        }, 7000);
+      }
+    </script>
+  </body>
 </html>

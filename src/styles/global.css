@@ -1,15 +1,24 @@
-/* src/styles/global.css */
+/* src/styles/global.css: the home page, in the register of Raindrop's landing page and the thesis film: one dark
+   ground, Archivo for the words, IBM Plex Mono for labels, signal blue only for what you can follow, and a warm
+   orange glow for the line that says what I do. */
 
-/* 1. Reset and Base Styles */
-/* src/styles/global.css */
+@font-face { font-family: 'Archivo'; src: url('/fonts/Archivo-w1000-500.ttf') format('truetype'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Archivo'; src: url('/fonts/Archivo-w1000-700.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Plex Mono'; src: url('/fonts/src/IBMPlexMono-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Plex Mono'; src: url('/fonts/src/IBMPlexMono-Medium.ttf') format('truetype'); font-weight: 500; font-display: swap; }
 
-/* 1. Reset and Base Styles */
 :root {
-    --bg-color: #000000;
-    --text-color: #e2e2e2;
-    --primary-color: #ffffff;
-    --secondary-color: #888888; /* Slightly darker grey for more contrast */
-    --accent-color: #007AFF;   /* A more refined, Apple-style blue */
+    --ink: #050507;
+    --bone: #eee9df;
+    --ash: #9c978f;
+    --graphite: #5e5b57;
+    --signal: #007aff;
+    --signal-text: #3d8bff; /* the signal as text on ink, 4.5:1 or better */
+    --ember: #7cbaff;
+    --font: 'Archivo', sans-serif;
+    --font-mono: 'Plex Mono', monospace;
+    --gutter: max(16px, 7vw);
+    color-scheme: dark;
 }
 
 *,
@@ -21,193 +30,225 @@
 }
 
 html {
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-        Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
-        sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    text-align: center;
+    background: var(--ink);
+    color: var(--bone);
+    font: 500 1rem/1.5 var(--font);
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
 }
 
 body {
-    display: flex;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 2rem;
-}
-
-main {
-    max-width: 800px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 4rem;
+    background: var(--ink);
+    min-height: 100svh;
 }
 
 a {
-    color: var(--accent-color); /* <-- CHANGE THIS LINE */
+    color: inherit;
     text-decoration: none;
-    transition: filter 0.2s ease; /* Smoother transition on hover */
 }
 
-a:hover {
-    filter: brightness(1.2); /* <-- ADD THIS LINE for a nice pop on hover */
+a:focus-visible {
+    outline: 1px solid var(--signal-text);
+    outline-offset: 4px;
+    border-radius: 2px;
 }
 
-.accent {
-    color: var(--accent-color);
-}
-
-/* 2. Section Specific Styles */
-
-/* Hero Section */
-.hero {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem; /* Increase gap slightly */
-}
-
-.hero h1 {
-    font-size: clamp(1.5rem, 6vw, 3.5rem); /* Make it even bigger */
-    font-weight: 900;
-    letter-spacing: -0.01em;
-    color: var(--primary-color); 
-}
-
-.hero h2 {
-    font-size: clamp(1.5rem, 4vw, 2.25rem); /* Also slightly larger */
-    font-weight: 700;
-    color: var(--accent-color); /* Apply accent color here for impact */
-}
-
-.hero h4 {
-    font-size: 1rem; /* Smaller, fixed size */
-    font-weight: 400;
-    color: var(--secondary-color);
-    margin-top: 0.5rem; /* Add a little space */
-}
-
-/* Pillars Section */
-.pillars {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    width: 100%;
-}
-
-.pillar {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1.5rem;
-    border: 1px solid #333;
-    border-radius: 8px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
-}
-
-.pillar:hover {
-    transform: translateY(-5px); /* Lift effect */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px var(--accent-color); /* Shadow and glow */
-}
-
-.pillar-title {
-    font-size: 0.875rem; /* Make the label even more subtle */
-    font-weight: 700;
-    color: var(--secondary-color);
+/* A label: mono capitals with a little tracking, as on Raindrop's stage. */
+.label {
+    font: 400 0.75rem/1.4 var(--font-mono);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    color: var(--ash);
 }
 
-.pillar-text {
-    font-size: 1.125rem;
-    color: var(--primary-color); /* Make proof text the brightest */
-    line-height: 1.5;
+a.label:hover,
+.label a:hover {
+    color: var(--bone);
 }
 
-/* Contact Section */
-.contact {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+/* 1. The opening: the portrait on the right, melting into the ink; the words lower left. It is kept short so the
+   whole page, projects and footer, fits a laptop's screen. */
+.hero {
+    position: relative;
+    height: clamp(11rem, 26svh, 16rem);
 }
 
-.contact h3 {
-    font-size: clamp(2rem, 5vw, 2.5rem);
-    font-weight: 900;
-    color: var(--primary-color);
+.portrait {
+    position: absolute;
+    top: 1rem;
+    right: var(--gutter);
+    width: auto;
+    height: calc(100% - 1rem);
+    max-width: 60%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: 60% 30%;
+    opacity: 0.9;
+    -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent);
+    mask-image: radial-gradient(closest-side, #000 55%, transparent);
+    animation: 1.6s ease both fade-in;
 }
 
-.contact h4 {
-    font-size: 1rem; /* Smaller, fixed size */
-    font-weight: 400;
-    color: var(--secondary-color);
-    margin-top: 0.5rem; /* Add a little space */
+.words {
+    position: absolute;
+    left: var(--gutter);
+    right: 16px;
+    bottom: 0;
+    animation: 1s 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) both rise;
 }
 
-.contact .links {
-    font-size: 1.25rem;
+.name {
+    width: fit-content;
     font-weight: 700;
+    font-size: clamp(2.75rem, min(6vw, 9svh), 5rem);
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+    color: #fffaf0;
+    text-shadow:
+        0 0 0.02em rgb(255 248 235 / 0.7),
+        0 0 0.12em rgb(255 240 220 / 0.35),
+        0 0 0.5em rgb(255 235 210 / 0.12);
 }
 
-.contact .links span {
-    color: var(--secondary-color);
-    margin: 0 0.5rem;
+/* "Dr" sits small above the name, so the name itself can be large. */
+.name .dr {
+    display: block;
+    margin: 0 0 0.6rem 0.1em;
+    text-shadow: none;
 }
 
-.contact .links {
-    display: flex; /* Use flexbox for alignment */
-    justify-content: center; /* Center the links */
-    align-items: center; /* Align items vertically */
-    gap: 1.5rem; /* Space between icons */
+/* What I do, one line at a time, in the film's and Raindrop's warm glow. */
+.doing {
+    min-height: 1.3em;
+    margin: 0.9em 0 0 0.12em;
+    font-weight: 500;
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    line-height: 1.3;
+    color: #ffdcbc;
+    text-shadow:
+        0 0 0.05em rgb(255 190 130 / 1),
+        0 0 0.22em rgb(255 122 47 / 1),
+        0 0 0.6em rgb(255 122 47 / 0.6),
+        0 0 1.4em rgb(255 100 30 / 0.35);
 }
 
-.contact .icon-link {
-    display: flex; /* Make the link a flex container */
-    align-items: center; /* Vertically align icon and text (if any) */
-    color: var(--text-color); /* Set icon color */
-    transition: color 0.3s ease; /* Smooth color transition */
+.doing .word {
+    transition: opacity 0.3s ease;
 }
 
-.contact .icon-link:hover {
-    color: var(--accent-color); /* Change color on hover */
+.doing .word.hidden {
+    opacity: 0;
 }
 
-.contact .icon-link svg {
-    width: 1.5em; /* Adjust icon size */
-    height: 1.5em; /* Adjust icon size */
-    fill: currentColor; /* Ensure SVG uses the parent's text color */
-    transition: transform 0.3s ease; /* Smooth transform transition */
+/* 2. Featured projects: one plate per project. */
+.projects,
+.facts,
+.site-footer {
+    padding: 0 var(--gutter);
 }
 
-.contact .icon-link:hover svg {
-    transform: scale(1.1); /* Pop effect */
+.projects {
+    padding-top: clamp(1.5rem, 5.5svh, 4rem);
 }
 
+.projects > .label {
+    margin-bottom: 1.25rem;
+}
 
-/* 3. Media Query for Mobile Responsiveness */
-@media (max-width: 768px) {
-    body {
-        padding: 1rem; /* Reduced padding for mobile */
+.plates {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    list-style: none;
+}
+
+/* 3. A few facts, in the machine's voice, then asking an AI about me. */
+.facts {
+    display: grid;
+    gap: 0.5rem;
+    padding-top: clamp(1.5rem, 5.5svh, 4rem);
+}
+
+.facts ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 0;
+    list-style: none;
+    max-width: 60rem;
+}
+
+.facts li {
+    color: var(--bone);
+}
+
+/* The facts grow with the width, up to body size, as there is room across the page. */
+.facts ul.label {
+    font-size: clamp(0.75rem, 1.15vw, 1.05rem);
+}
+
+.facts li:not(:last-child)::after {
+    content: '·';
+    margin: 0 0.9em;
+    color: var(--graphite);
+}
+
+/* 4. The footer: contact. */
+.site-footer {
+    padding-top: 0.5rem;
+    padding-bottom: max(16px, 3svh);
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 1.25rem;
+}
+
+.row > span {
+    min-width: 13rem;
+    color: var(--graphite);
+}
+
+.row a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+}
+
+/* With a mouse, the links need not be finger-sized. */
+@media (pointer: fine) {
+    .row a {
+        min-height: 2rem;
+    }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+}
+
+@keyframes rise {
+    from { opacity: 0; transform: translateY(1rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .portrait, .words { animation: none; }
+    .doing .word { transition: none; }
+}
+
+/* A phone: the portrait above the words, on the right. */
+@media (max-width: 720px) {
+    .hero {
+        height: 20rem;
     }
 
-    main {
-        gap: 3rem;
-    }
-    
-    .pillars {
-        grid-template-columns: 1fr; /* Stack pillars vertically */
-        gap: 1.5rem;
+    .portrait {
+        top: 0.5rem;
+        height: 58%;
     }
 
-    .pillar {
-        padding: 1.25rem;
-    }
-
-    .hero h1 {
-        font-size: clamp(1.8rem, 3.5vw, 2.5rem); /* Even smaller font size for mobile h1 */
+    .row > span {
+        min-width: 100%;
     }
 }
-/* the "AI PhD" in the pillars links to the film */
-.pillar-link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; text-decoration-color: color-mix(in srgb, currentColor 45%, transparent); }
