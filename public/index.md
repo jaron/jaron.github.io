@@ -1,12 +1,24 @@
 # Dr Jaron Collis
 
 ## Overview
-Dr Jaron Collis is an AI PhD, entrepreneurial engineer, and veteran of multiple startups. He is an expert in Semantic AI and Intelligent Agents, and he advises deep-tech investors.
+Dr Jaron Collis is an AI PhD, founder and CTO, based in London. He builds AI companies, advises deep-tech investors, and takes ideas from zero to one. He is an expert in Semantic AI and Intelligent Agents.
 
-## Key Roles
-- **Entrepreneur**: EF Alum, Founder & CTO, Raised & Exited.
-- **Innovator**: AI PhD, Published R&D, Problems to Products.
-- **Builder**: Zero to One, Ideas to Companies, Bootstrap to Scale.
+## In short
+- PhD in Artificial Intelligence
+- Entrepreneurs First (EF) alum
+- Founder & CTO; raised and exited
+- Patent awarded for agent technologies
+- Adviser to deep-tech investors
+
+## Featured projects
+
+### How I made a machine think (film, 2026)
+A short film (7 min 47 s) of his 1996 PhD thesis in AI, traced forward thirty years to how machines think today. Each idea has a 1996 half and a 2026 half, joined by the research in between.
+- Watch: https://jaroncollis.com/thesis
+- YouTube: https://youtu.be/fEKCQ_wuda4
+
+### Raindrop (lab, opening soon)
+A laboratory for exploring how things became thinkable. It explains how AI language models work through interactive lessons, picturing every way a sentence could go as a landscape: unlikely continuations stand high as peaks, plausible ones lie low in the valleys, and a raindrop that lands there is pulled down into the likelier valleys.
 
 ## Expertise (Semantic AI & Intelligent Agents)
 - Artificial Intelligence
@@ -18,13 +30,9 @@ Dr Jaron Collis is an AI PhD, entrepreneurial engineer, and veteran of multiple 
 - Knowledge Graphs
 - Technology Due Diligence
 
-## Credentials
-- PhD in Artificial Intelligence
-- Patent awarded for Agent technologies
-- Alumni of Entrepreneurs First (EF)
-
 ## Links
+- [Homepage](https://jaroncollis.com)
 - [LinkedIn](https://linkedin.com/in/drjaron)
 - [Google Scholar](https://scholar.google.com/citations?user=Mupl5E0AAAAJ)
-- [Twitter / X](https://twitter.com/jaroncollis)
+- [X](https://x.com/jaroncollis)
 - [Medium](https://jaroncollis.medium.com)
