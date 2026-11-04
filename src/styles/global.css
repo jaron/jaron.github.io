@@ -10,8 +10,8 @@
 :root {
     --ink: #050507;
     --bone: #eee9df;
-    --ash: #9c978f;
-    --graphite: #5e5b57;
+    --ash: #b3aea5; /* labels: lighter than Raindrop's #9c978f, as small mono capitals were lost on a phone */
+    --graphite: #8a857d; /* the footer's row labels, a step below the links: was #5e5b57 */
     --signal: #007aff;
     --signal-text: #3d8bff; /* the signal as text on ink, 4.5:1 or better */
     --ember: #7cbaff;
@@ -210,6 +210,27 @@ a.label:hover,
     color: var(--graphite);
 }
 
+/* Asking an AI: each assistant by its mark, in a finger-sized target; the first mark lines up with Contact's links. */
+.ask {
+    align-items: center;
+    column-gap: 0;
+}
+
+.ask > span {
+    margin-right: 0.65rem;
+}
+
+.ask .icon {
+    justify-content: center;
+    width: 2.25rem;
+}
+
+.ask svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    fill: currentColor;
+}
+
 .row a {
     display: inline-flex;
     align-items: center;
@@ -253,7 +274,12 @@ a.label:hover,
         position: static;
     }
 
+    /* Each row on one line: the labels as wide as their words, and asking an AI said briefly. */
     .row > span {
-        min-width: 100%;
+        min-width: 0;
+    }
+
+    .ask .wide {
+        display: none;
     }
 }
