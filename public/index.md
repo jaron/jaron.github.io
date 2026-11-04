@@ -14,7 +14,7 @@ Dr Jaron Collis is an AI PhD, founder and CTO, based in London. He builds AI com
 
 ### How I made a machine think (film, 2026)
 A short film (7 min 47 s) of his 1996 PhD thesis in AI, traced forward thirty years to how machines think today. Each idea has a 1996 half and a 2026 half, joined by the research in between.
-- Watch: https://jaroncollis.com/thesis
+- Watch: https://jaroncollis.com/thesis/
 - YouTube: https://youtu.be/fEKCQ_wuda4
 
 ### Raindrop (lab, 2026)
