@@ -78,10 +78,21 @@ const assistants = [
   },
 ];
 
+// The portrait, for search: a square picture of the person, which a results thumbnail crops well (the share card,
+// og-image.png, is for links shared elsewhere).
+const portrait = {
+    "@type": "ImageObject",
+    "url": "https://jaroncollis.com/imgs/profile.jpg",
+    "width": 850,
+    "height": 850,
+    "caption": "Portrait of Dr Jaron Collis"
+};
+
 const person = {
     "@type": "Person",
     "name": "Dr Jaron Collis",
     "url": "https://jaroncollis.com",
+    "image": portrait,
     "jobTitle": "AI Founder and CTO",
     "worksFor": {
       "@type": "Organization",
@@ -126,7 +137,8 @@ const person = {
 const profilePageSchema = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
-  "mainEntity": person
+  "mainEntity": person,
+  "primaryImageOfPage": portrait
 };
 
 const stringifiedSchema = JSON.stringify(profilePageSchema);
@@ -148,6 +160,9 @@ const stringifiedSchema = JSON.stringify(profilePageSchema);
 
   <!-- SEO: Canonical URL -->
   <link rel="canonical" href="https://jaroncollis.com" />
+
+  <!-- SEO: search may show this page's pictures large (Google's default is a small thumbnail) -->
+  <meta name="robots" content="max-image-preview:large" />
 
   <!-- ==============  2. SOCIAL & RICH PREVIEWS (OPEN GRAPH / TWITTER) ============== -->
   <meta property="og:title" content="Dr Jaron Collis | Homepage" />
