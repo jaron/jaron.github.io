@@ -2,10 +2,10 @@
 import '../styles/global.css';
 import Plate, { type Project } from '../components/Plate.astro';
 
-// Raindrop lives on its own subdomain (hosted on Cloudflare). Its plate says "Opening soon" and has no link until
-// RAINDROP_LIVE is true.
+// Raindrop lives on its own subdomain (hosted on Cloudflare Pages), live since 4 Nov 2026. With RAINDROP_LIVE false,
+// its plate says "Opening soon" and has no link.
 const RAINDROP_URL = 'https://raindrop.jaroncollis.com';
-const RAINDROP_LIVE = false;
+const RAINDROP_LIVE = true;
 
 const work: Project[] = [
   {

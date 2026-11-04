@@ -17,8 +17,9 @@ A short film (7 min 47 s) of his 1996 PhD thesis in AI, traced forward thirty ye
 - Watch: https://jaroncollis.com/thesis
 - YouTube: https://youtu.be/fEKCQ_wuda4
 
-### Raindrop (lab, opening soon)
+### Raindrop (lab, 2026)
 A laboratory for exploring how things became thinkable. It explains how AI language models work through interactive lessons, picturing every way a sentence could go as a landscape: unlikely continuations stand high as peaks, plausible ones lie low in the valleys, and a raindrop that lands there is pulled down into the likelier valleys.
+- Visit: https://raindrop.jaroncollis.com
 
 ## Expertise (Semantic AI & Intelligent Agents)
 - Artificial Intelligence
