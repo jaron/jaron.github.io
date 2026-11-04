@@ -34,7 +34,12 @@ const doing = [
   'I write so I may think',
 ];
 
-const facts = ['PhD in AI', 'Entrepreneurs First alum', 'Founder & CTO'];
+// Each fact in full, and as said on a phone, where the three fit one line.
+const facts = [
+  { full: 'PhD in AI', short: 'AI PhD' },
+  { full: 'Entrepreneurs First alum', short: 'EF alum' },
+  { full: 'Founder & CTO', short: 'Founder' },
+];
 
 const contact = [
   { name: 'LinkedIn', href: 'https://linkedin.com/in/drjaron' },
@@ -207,7 +212,7 @@ const stringifiedSchema = JSON.stringify(profilePageSchema);
 
       <section class="facts" aria-label="In short">
         <ul class="label">
-          {facts.map((f) => <li>{f}</li>)}
+          {facts.map((f) => <li><span class="wide">{f.full}</span><span class="narrow">{f.short}</span></li>)}
         </ul>
         <p class="row ask label">
           <span>Ask an AI<span class="wide"> about my work</span></span>

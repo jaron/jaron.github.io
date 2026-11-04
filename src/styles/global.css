@@ -186,6 +186,10 @@ a.label:hover,
     font-size: clamp(0.75rem, 1.15vw, 1.05rem);
 }
 
+.facts .narrow {
+    display: none;
+}
+
 .facts li:not(:last-child)::after {
     content: '·';
     margin: 0 0.9em;
@@ -274,12 +278,17 @@ a.label:hover,
         position: static;
     }
 
-    /* Each row on one line: the labels as wide as their words, and asking an AI said briefly. */
+    /* Each row on one line: the labels as wide as their words, and the facts and asking an AI said briefly. */
     .row > span {
         min-width: 0;
     }
 
-    .ask .wide {
+    .ask .wide,
+    .facts .wide {
         display: none;
+    }
+
+    .facts .narrow {
+        display: inline;
     }
 }
