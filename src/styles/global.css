@@ -237,15 +237,20 @@ a.label:hover,
     .doing .word { transition: none; }
 }
 
-/* A phone: the portrait above the words, on the right. */
+/* A phone: the name alone, without the portrait or what I do, so the projects come into view. */
 @media (max-width: 720px) {
     .hero {
-        height: 20rem;
+        height: auto;
+        padding: 1.5rem var(--gutter) 0;
     }
 
-    .portrait {
-        top: 0.5rem;
-        height: 58%;
+    .portrait,
+    .doing {
+        display: none;
+    }
+
+    .words {
+        position: static;
     }
 
     .row > span {
